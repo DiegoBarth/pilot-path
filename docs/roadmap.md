@@ -4,7 +4,7 @@
 
 - [x] Repository
 - [x] Documentation
-- [ ] Backend
+- [x] Backend
 - [ ] Frontend
 - [ ] PostgreSQL
 - [ ] Docker

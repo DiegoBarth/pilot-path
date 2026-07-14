@@ -5,7 +5,7 @@
 | Software | Version |
 |----------|---------|
 | Node.js | 22 LTS |
-| pnpm | Latest |
+| npm | Latest |
 | PostgreSQL | 16 |
 | Docker Desktop | Optional |
 | Git | Latest |
@@ -28,14 +28,14 @@ cd pilot-path
 Generate the project:
 
 ```bash
-npx @nestjs/cli new backend --package-manager pnpm
+npx @nestjs/cli new backend --package-manager npm
 ```
 
 ### Frontend
 
 ```bash
 cd frontend
-pnpm install
+npm install
 ```
 
 ---
@@ -46,13 +46,13 @@ pnpm install
 
 ```bash
 cd backend
-pnpm start:dev
+npm start:dev
 ```
 
 ### Frontend
 
 ```bash
-pnpm dev
+npm dev
 ```
 
 ---
