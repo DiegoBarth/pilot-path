@@ -5,10 +5,10 @@
 - [x] Repository
 - [x] Documentation
 - [x] Backend
-- [ ] Frontend
-- [ ] PostgreSQL
-- [ ] Docker
-- [ ] Environment Variables
+- [x] Frontend
+- [x] PostgreSQL
+- [x] Docker
+- [x] Environment Variables
 - [ ] ESLint
 - [ ] Prettier
 - [ ] Health Check API

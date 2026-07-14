@@ -8,6 +8,14 @@ The project aims to provide a complete study ecosystem, combining learning manag
 
 ---
 
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![NestJS](https://img.shields.io/badge/NestJS-11-E0234E)
+![React](https://img.shields.io/badge/React-19-61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791)
+
+---
+
 ## 🚀 Features
 
 ### 📚 Study Management
@@ -65,8 +73,8 @@ The project aims to provide a complete study ecosystem, combining learning manag
 
 ### Infrastructure
 
-- Docker
-- GitHub Actions
+- Docker (optional)
+- GitHub Actions (planned)
 
 ---
 
@@ -83,7 +91,7 @@ The project aims to provide a complete study ecosystem, combining learning manag
                   ▼
           NestJS Backend
                   │
-               Prisma ORM
+             Prisma ORM
                   │
                   ▼
             PostgreSQL
@@ -99,7 +107,6 @@ pilot-path/
 ├── backend/
 ├── frontend/
 ├── docs/
-├── docker/
 ├── .github/
 ├── docker-compose.yml
 ├── README.md
@@ -116,16 +123,24 @@ Project documentation is available in the `docs` directory.
 - Development Setup
 - Roadmap
 - Architecture Decision Records (ADR)
-- Database Design
-- API Documentation
 
 ---
 
 ## 🚧 Project Status
 
-**Current Version:** `v0.1 - Foundation`
+**Current Version:** `v0.1.0`
 
-The project is currently focused on establishing the development environment and application architecture.
+### Completed
+
+- NestJS backend
+- Next.js frontend
+- PostgreSQL connectivity
+- Initial project documentation
+
+### In Progress
+
+- Prisma ORM
+- Database modeling
 
 ---
 

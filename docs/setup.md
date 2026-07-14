@@ -6,9 +6,9 @@
 |----------|---------|
 | Node.js | 22 LTS |
 | npm | Latest |
+| Git | Latest |
 | PostgreSQL | 16 |
 | Docker Desktop | Optional |
-| Git | Latest |
 
 ---
 
@@ -25,17 +25,47 @@ cd pilot-path
 
 ### Backend
 
-Generate the project:
-
 ```bash
-npx @nestjs/cli new backend --package-manager npm
+cd backend
+npm install
 ```
 
 ### Frontend
 
 ```bash
-cd frontend
+cd ../frontend
 npm install
+```
+
+---
+
+## Configure Environment
+
+Create a `.env` file inside the `backend` directory.
+
+Example:
+
+```env
+NODE_ENV=development
+
+PORT=3001
+
+DATABASE_URL=postgresql://user:password@localhost:5432/pilotpath
+
+JWT_SECRET=development_secret
+JWT_EXPIRES_IN=7d
+```
+
+> Docker is optional. Any PostgreSQL instance can be used by updating the `DATABASE_URL`, including local installations or cloud providers such as Supabase.
+
+---
+
+## Database
+
+If using Docker:
+
+```bash
+docker compose up -d
 ```
 
 ---
@@ -46,21 +76,14 @@ npm install
 
 ```bash
 cd backend
-npm start:dev
+npm run start:dev
 ```
 
 ### Frontend
 
 ```bash
-npm dev
-```
-
----
-
-## Database
-
-```bash
-docker compose up -d
+cd frontend
+npm run dev
 ```
 
 ---
@@ -71,4 +94,4 @@ docker compose up -d
 |---------|-----|
 | Frontend | http://localhost:3000 |
 | Backend | http://localhost:3001 |
-| Swagger | http://localhost:3001/api |
+| API Base | http://localhost:3001/api/v1 |
