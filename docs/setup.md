@@ -25,9 +25,10 @@ cd pilot-path
 
 ### Backend
 
+Generate the project:
+
 ```bash
-cd backend
-pnpm install
+npx @nestjs/cli new backend --package-manager pnpm
 ```
 
 ### Frontend
@@ -44,6 +45,7 @@ pnpm install
 ### Backend
 
 ```bash
+cd backend
 pnpm start:dev
 ```
 

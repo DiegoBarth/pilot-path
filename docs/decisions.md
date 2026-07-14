@@ -1,35 +1,75 @@
 # Architecture Decision Records
 
-## ADR-001: Database Choice
+---
 
-Date:
-2026-07-14
+## ADR-001
 
-Status:
+### Title
+
+Database Selection
+
+### Status
+
 Accepted
 
-Decision:
+### Date
 
-Use PostgreSQL as the main database.
+2026-07-14
 
-Reason:
+### Decision
 
-The application domain contains highly relational data, making a relational database the best choice.
+Use PostgreSQL as the primary relational database.
+
+### Rationale
+
+PilotPath manages highly relational entities such as users, subjects, study sessions, flashcards and exams.
+
+PostgreSQL provides excellent consistency, performance and long-term scalability.
 
 ---
 
-## ADR-002: Backend Technology
+## ADR-002
 
-Date:
-2026-07-14
+### Title
 
-Status:
+Backend Framework
+
+### Status
+
 Accepted
 
-Decision:
+### Date
 
-Use TypeScript with NestJS as backend framework.
+2026-07-14
 
-Reason:
+### Decision
 
-NestJS provides a scalable architecture inspired by enterprise frameworks, with excellent TypeScript ecosystem support.
+Use NestJS with TypeScript.
+
+### Rationale
+
+NestJS offers a scalable modular architecture, dependency injection and excellent TypeScript support, making it well suited for medium and large applications.
+
+---
+
+## ADR-003
+
+### Title
+
+Package Manager
+
+### Status
+
+Accepted
+
+### Date
+
+2026-07-14
+
+### Decision
+
+Use npm as the project's package manager.
+
+### Rationale
+
+npm is the default package manager for Node.js, requires no additional setup, has excellent ecosystem compatibility, and is sufficient for the project's size and complexity.
