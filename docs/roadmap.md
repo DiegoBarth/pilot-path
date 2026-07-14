@@ -1,49 +1,54 @@
 # Roadmap
 
-## Phase 1 - Foundation
+## v0.1 - Foundation
 
-- [x] Repository created
-- [x] Initial documentation
-- [ ] Development setup guide
-- [ ] Backend (NestJS)
-- [ ] Frontend (Next.js)
+- [x] Repository
+- [x] Documentation
+- [ ] Backend
+- [ ] Frontend
 - [ ] PostgreSQL
 - [ ] Docker
-- [ ] Environment variables
-- [ ] ESLint + Prettier
+- [ ] Environment Variables
+- [ ] ESLint
+- [ ] Prettier
 - [ ] Health Check API
-- [ ] Frontend ↔ Backend communication
 
 ---
 
-## Phase 2 - Authentication
+## v0.2 - Authentication
 
-- [ ] User registration
+- [ ] Register
 - [ ] Login
-- [ ] JWT authentication
-- [ ] User profile
+- [ ] JWT
+- [ ] User Profile
 
 ---
 
-## Phase 3 - Study Management
+## v0.3 - Study Management
 
-- [ ] Aviation courses
 - [ ] Subjects
-- [ ] Study sessions
-- [ ] Study history
+- [ ] Study Plans
+- [ ] Study Sessions
+- [ ] Study History
 
 ---
 
-## Phase 4 - Knowledge Assessment
+## v0.4 - Learning
 
-- [ ] Question bank
 - [ ] Flashcards
-- [ ] Mock exams
+- [ ] Question Bank
+- [ ] Mock Exams
 
 ---
 
-## Phase 5
+## v0.5 - Dashboard
 
-- [ ] Dashboard
 - [ ] Statistics
+- [ ] Charts
 - [ ] Achievements
+
+---
+
+## v1.0
+
+First public release.

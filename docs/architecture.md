@@ -2,103 +2,111 @@
 
 ## Overview
 
-PilotPath is an aviation learning platform designed to help student pilots organize their studies, track progress and prepare for aviation certifications.
+PilotPath is a modern aviation learning platform designed to help student pilots organize their studies, monitor their progress, and prepare for aviation certifications.
 
-The system will be developed as a full-stack application using a separated frontend and backend architecture.
+The application follows a modern full-stack architecture with a clear separation between frontend, backend, and database layers.
 
 ---
 
 # High Level Architecture
           User
-            |
-            |
-        Next.js
-            |
-            |
-        REST API
-            |
-            |
-        NestJS
-            |
-            |
-        Prisma
-            |
-            |
+            │
+            ▼
+    Next.js Frontend
+            │
+      REST / JSON API
+            │
+            ▼
+    NestJS Backend
+            │
+          Prisma ORM
+            │
+            ▼
       PostgreSQL
 ---
 
-# Backend
+## Backend
 
-Technology:
+### Technologies
 
 - NestJS
 - TypeScript
 - Prisma ORM
 - REST API
 
-Responsibilities:
+### Responsibilities
 
-- Business rules
-- Authentication
-- Data persistence
-- API management
+- Business logic
+- Authentication & Authorization
+- Validation
+- Database access
+- API endpoints
+- Error handling
 
 ---
 
-# Frontend
+## Frontend
 
-Technology:
+### Technologies
 
 - Next.js
 - React
 - TypeScript
 - Tailwind CSS
 - shadcn/ui
-- React Query
+- TanStack Query
 
-Responsibilities:
+### Responsibilities
 
 - User interface
-- Client-side state
-- User interactions
+- Client-side routing
+- API communication
+- State management
+- Form validation
 
 ---
 
-# Database
+## Database
 
-Technology:
+### Technology
 
 - PostgreSQL
 
-Responsibilities:
+### Main Entities
 
-- Store users
-- Courses
+- Users
+- Study Plans
 - Subjects
-- Study sessions
+- Study Sessions
 - Questions
+- Flashcards
+- Mock Exams
 - Statistics
+- Achievements
 
 ---
 
-# API Style
+## API
 
-The backend will expose REST APIs using JSON communication.
+PilotPath exposes a REST API using JSON.
 
-Example:
-GET /api/v1/subjects
+### Example Endpoints
 
-POST /api/v1/study-sessions
-
-GET /api/v1/dashboard
+```http
+GET    /api/v1/subjects
+POST   /api/v1/study-sessions
+GET    /api/v1/dashboard
+```
 
 ---
 
-# Architecture Principles
+## Architecture Principles
 
-- Clean Code
-- SOLID principles
-- Separation of responsibilities
+- Clean Architecture
+- SOLID
+- Separation of Concerns
+- Feature-based modules
 - Database migrations
-- Automated tests
-- Documentation
+- Automated testing
+- API-first development
+- Documentation-first approach
