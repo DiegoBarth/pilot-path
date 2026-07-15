@@ -30,8 +30,8 @@
 
 ## v0.3 - Study Management
 
-- [ ] Subjects
-- [ ] Study Plans
+- [ ] Certifications
+- [ ] Enrollments
 - [ ] Study Sessions
 - [ ] Study History
 

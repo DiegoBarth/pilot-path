@@ -2,9 +2,7 @@
 
 > Your journey to becoming a pilot.
 
-PilotPath is a modern aviation learning platform designed to help student pilots organize their studies, track their progress, and prepare for aviation certifications.
-
-The project aims to provide a complete study ecosystem, combining learning management, knowledge assessment, and performance analytics.
+PilotPath is a platform built to accompany a pilot throughout their entire journey, from the first certification to their professional career. It combines study management, operational tools, performance tracking, and aviation resources in a single ecosystem.
 
 ---
 
@@ -20,7 +18,7 @@ The project aims to provide a complete study ecosystem, combining learning manag
 
 ### 📚 Study Management
 
-- Study plans
+- Certification enrollments
 - Study sessions
 - Study history
 - Learning progress

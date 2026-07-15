@@ -74,18 +74,26 @@ The application follows a modern full-stack architecture with a clear separation
 
 - PostgreSQL
 
-### Main Entities
+### Current Core Entities
 
-- Users
-- Study Plans
-- Subjects
-- Study Sessions
-- Questions
-- Flashcards
-- Mock Exams
-- Statistics
-- Achievements
+- User
+- Certification
+- Subject
+- CertificationSubject
+- Enrollment
+- StudySession
 
+### Planned Entities
+
+- Question
+- Flashcard
+- MockExam
+- Achievement
+- Dashboard Statistics
+- Flight Logbook
+- Aircraft
+- Airport
+  
 ---
 
 ## Database Access Layer
@@ -104,19 +112,14 @@ The application accesses the database through PrismaService, integrated with Nes
 
 ## Domain Model
 
+````md
 ```mermaid
 erDiagram
-
     User ||--o{ Enrollment : enrolls
-
     Certification ||--o{ Enrollment : contains
-
     Certification ||--o{ CertificationSubject : includes
-
     Subject ||--o{ CertificationSubject : belongs_to
-
     Enrollment ||--o{ StudySession : records
-
     CertificationSubject ||--o{ StudySession : references
 ```
 
@@ -149,5 +152,4 @@ GET    /api/v1/dashboard
 - Database migrations
 - Automated testing
 - API-first development
-- Documentation-first approach
 - Documentation-first approach
