@@ -136,11 +136,13 @@ Project documentation is available in the `docs` directory.
 - Next.js frontend
 - PostgreSQL connectivity
 - Prisma ORM integration
+- Initial database schema
+- First database migration
 - Initial project documentation
 
 ### In Progress
 
-- Database modeling
+- Core database modeling
 
 ---
 

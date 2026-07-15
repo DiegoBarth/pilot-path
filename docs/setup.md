@@ -84,6 +84,12 @@ Validate Prisma schema:
 npx prisma validate
 ```
 
+Apply database migrations:
+
+```bash
+npx prisma migrate dev
+```
+
 ---
 
 ## Run Applications

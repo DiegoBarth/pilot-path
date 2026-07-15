@@ -33,3 +33,13 @@ DATABASE_URL=postgresql://user:password@localhost:5432/pilotpath
 - created_at
 - updated_at
 - deleted_at (soft delete when applicable)
+
+## Current Schema
+
+The initial database schema has been created.
+
+Current entities:
+
+- User
+
+Additional entities will be introduced incrementally as new features are implemented.

@@ -12,6 +12,9 @@
 - [x] ESLint
 - [x] Prettier
 - [x] Health Check API
+- [x] Prisma Setup
+- [x] Initial Database Schema
+- [x] Initial Database Migration
 
 ---
 
