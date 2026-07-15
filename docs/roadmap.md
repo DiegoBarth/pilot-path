@@ -9,9 +9,9 @@
 - [x] PostgreSQL
 - [x] Docker
 - [x] Environment Variables
-- [ ] ESLint
-- [ ] Prettier
-- [ ] Health Check API
+- [x] ESLint
+- [x] Prettier
+- [x] Health Check API
 
 ---
 
