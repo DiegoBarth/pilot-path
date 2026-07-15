@@ -6,7 +6,24 @@ PostgreSQL
 
 ## ORM
 
-Prisma
+Prisma ORM
+
+Prisma is used as the database access layer between the NestJS application and PostgreSQL.
+
+Responsibilities:
+
+- Database queries
+- Schema management
+- Migrations
+- Type-safe database access
+
+## Connection
+
+Database connection is configured through environment variables.
+
+Example:
+
+DATABASE_URL=postgresql://user:password@localhost:5432/pilotpath
 
 ## Naming Convention
 

@@ -19,6 +19,8 @@ The application follows a modern full-stack architecture with a clear separation
             ▼
     NestJS Backend
             │
+       PrismaService
+            │
           Prisma ORM
             │
             ▼
@@ -83,6 +85,22 @@ The application follows a modern full-stack architecture with a clear separation
 - Mock Exams
 - Statistics
 - Achievements
+
+---
+
+## Database Access Layer
+
+The backend uses Prisma ORM as the database access layer.
+
+Prisma is responsible for:
+
+- Database connection management
+- Type-safe queries
+- Database migrations
+- Schema management
+- PostgreSQL communication
+
+The application accesses the database through PrismaService, integrated with NestJS dependency injection.
 
 ---
 

@@ -135,11 +135,11 @@ Project documentation is available in the `docs` directory.
 - NestJS backend
 - Next.js frontend
 - PostgreSQL connectivity
+- Prisma ORM integration
 - Initial project documentation
 
 ### In Progress
 
-- Prisma ORM
 - Database modeling
 
 ---

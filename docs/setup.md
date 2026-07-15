@@ -70,6 +70,22 @@ docker compose up -d
 
 ---
 
+## Prisma
+
+Generate Prisma Client:
+
+```bash
+npx prisma generate
+```
+
+Validate Prisma schema:
+
+```bash
+npx prisma validate
+```
+
+---
+
 ## Run Applications
 
 ### Backend
