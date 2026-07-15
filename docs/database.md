@@ -41,5 +41,31 @@ The initial database schema has been created.
 Current entities:
 
 - User
+- Certification
+- Subject
+- CertificationSubject
+- Enrollment
+- StudySession
 
 Additional entities will be introduced incrementally as new features are implemented.
+
+## Development Workflow
+
+Whenever the database schema changes:
+
+1. Update the Prisma schema.
+2. Validate the schema.
+3. Generate a new migration.
+4. Apply the migration.
+5. Regenerate the Prisma Client.
+6. Update the seed if necessary.
+
+Common commands:
+
+```bash
+npx prisma validate
+npx prisma format
+npx prisma migrate dev --name <migration-name>
+npx prisma generate
+npx prisma db seed
+```

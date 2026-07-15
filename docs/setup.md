@@ -62,32 +62,34 @@ JWT_EXPIRES_IN=7d
 
 ## Database
 
-If using Docker:
+Start PostgreSQL (if using Docker):
 
 ```bash
 docker compose up -d
 ```
 
----
+Apply all database migrations:
 
-## Prisma
+```bash
+npx prisma migrate dev
+```
 
-Generate Prisma Client:
+Generate the Prisma Client:
 
 ```bash
 npx prisma generate
 ```
 
-Validate Prisma schema:
+Populate the database with initial data:
 
 ```bash
-npx prisma validate
+npx prisma db seed
 ```
 
-Apply database migrations:
+Open Prisma Studio (optional):
 
 ```bash
-npx prisma migrate dev
+npx prisma studio
 ```
 
 ---
@@ -117,3 +119,17 @@ npm run dev
 | Frontend | http://localhost:3000 |
 | Backend | http://localhost:3001 |
 | API Base | http://localhost:3001/api/v1 |
+
+---
+
+## Common Prisma Commands
+
+| Command | Description |
+|----------|-------------|
+| `npx prisma generate` | Generate Prisma Client |
+| `npx prisma validate` | Validate the Prisma schema |
+| `npx prisma format` | Format the Prisma schema |
+| `npx prisma migrate dev` | Create and apply a new migration |
+| `npx prisma migrate reset` | Reset the database and reapply all migrations |
+| `npx prisma db seed` | Execute the database seed |
+| `npx prisma studio` | Open Prisma Studio |

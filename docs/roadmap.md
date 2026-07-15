@@ -15,6 +15,7 @@
 - [x] Prisma Setup
 - [x] Initial Database Schema
 - [x] Initial Database Migration
+- [x] Core Database Modeling
 
 ---
 

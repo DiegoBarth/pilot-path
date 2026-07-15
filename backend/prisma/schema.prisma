@@ -6,16 +6,153 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  PAUSED
+  DROPPED
+}
+
+enum StudyType {
+  READING
+  EXERCISES
+  FLASHCARDS
+  VIDEO
+  SIMULATOR
+  OTHER
+}
+
+enum Mood {
+  EXCELLENT
+  GOOD
+  NEUTRAL
+  TIRED
+  FRUSTRATED
+}
+
 model User {
-  id         String    @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-  name       String
-  email      String    @unique
-  password   String
+  name     String
+  email    String @unique
+  password String
 
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
-  deletedAt  DateTime? @map("deleted_at")
+  googleId String? @unique @map("google_id")
+
+  role UserRole @default(USER)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  enrollments Enrollment[]
 
   @@map("users")
+}
+
+model Certification {
+  id String @id @default(uuid()) @db.Uuid
+
+  name String
+  slug String @unique
+
+  description String?
+
+  isActive Boolean @default(true) @map("is_active")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  enrollments Enrollment[]
+
+  subjects CertificationSubject[]
+
+  @@map("certifications")
+}
+
+model Subject {
+  id          String  @id @default(uuid()) @db.Uuid
+  name        String
+  description String?
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  certifications CertificationSubject[]
+
+  @@map("subjects")
+}
+
+model CertificationSubject {
+  id              String         @id @default(uuid()) @db.Uuid
+  certificationId String         @map("certification_id") @db.Uuid
+  subjectId       String         @map("subject_id") @db.Uuid
+  displayOrder    Int            @default(0) @map("display_order")
+  isRequired      Boolean        @default(true) @map("is_required")
+  estimatedHours  Int?           @map("estimated_hours")
+  certification   Certification  @relation(fields: [certificationId], references: [id])
+  subject         Subject        @relation(fields: [subjectId], references: [id])
+  studySessions   StudySession[]
+
+  @@unique([certificationId, subjectId])
+  @@index([certificationId])
+  @@index([subjectId])
+  @@map("certification_subjects")
+}
+
+model Enrollment {
+  id              String           @id @default(uuid()) @db.Uuid
+  userId          String           @map("user_id") @db.Uuid
+  certificationId String           @map("certification_id") @db.Uuid
+  status          EnrollmentStatus @default(ACTIVE)
+  targetExamDate  DateTime?        @map("target_exam_date")
+
+  startedAt   DateTime  @default(now()) @map("started_at")
+  completedAt DateTime? @map("completed_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  certification Certification @relation(fields: [certificationId], references: [id])
+
+  studySessions StudySession[]
+
+  @@unique([userId, certificationId])
+  @@index([userId])
+  @@index([certificationId])
+  @@map("enrollments")
+}
+
+model StudySession {
+  id                     String @id @default(uuid()) @db.Uuid
+  enrollmentId           String @map("enrollment_id") @db.Uuid
+  certificationSubjectId String @map("certification_subject_id") @db.Uuid
+
+  startedAt DateTime @map("started_at")
+  endedAt   DateTime @map("ended_at")
+
+  studyType StudyType @map("study_type")
+  mood      Mood?
+  notes     String?
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  enrollment           Enrollment           @relation(fields: [enrollmentId], references: [id])
+  certificationSubject CertificationSubject @relation(fields: [certificationSubjectId], references: [id])
+
+  @@index([enrollmentId])
+  @@index([certificationSubjectId])
+  @@index([enrollmentId, startedAt])
+  @@map("study_sessions")
 }

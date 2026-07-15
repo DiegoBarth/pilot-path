@@ -102,6 +102,28 @@ Prisma is responsible for:
 
 The application accesses the database through PrismaService, integrated with NestJS dependency injection.
 
+## Domain Model
+
+```mermaid
+erDiagram
+
+    User ||--o{ Enrollment : enrolls
+
+    Certification ||--o{ Enrollment : contains
+
+    Certification ||--o{ CertificationSubject : includes
+
+    Subject ||--o{ CertificationSubject : belongs_to
+
+    Enrollment ||--o{ StudySession : records
+
+    CertificationSubject ||--o{ StudySession : references
+```
+
+The PilotPath domain is centered around aviation certifications.
+
+A user may enroll in multiple certifications throughout their career. Each certification contains one or more subjects, and every study session is associated with both an enrollment and a certification subject, allowing accurate progress tracking across different certifications.
+
 ---
 
 ## API
@@ -127,4 +149,5 @@ GET    /api/v1/dashboard
 - Database migrations
 - Automated testing
 - API-first development
+- Documentation-first approach
 - Documentation-first approach

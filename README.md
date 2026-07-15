@@ -123,6 +123,8 @@ Project documentation is available in the `docs` directory.
 - Development Setup
 - Roadmap
 - Architecture Decision Records (ADR)
+- Database Migrations
+- Database Seeding
 
 ---
 
@@ -139,10 +141,10 @@ Project documentation is available in the `docs` directory.
 - Initial database schema
 - First database migration
 - Initial project documentation
+- Core database modeling
 
 ### In Progress
 
-- Core database modeling
 
 ---
 
