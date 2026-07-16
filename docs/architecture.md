@@ -164,6 +164,8 @@ A user may enroll in multiple certifications throughout their career.
 
 Each certification contains one or more subjects, and every study session is associated with both an enrollment and a certification subject, allowing accurate progress tracking across different certifications.
 
+Certifications represent aviation milestones that users can pursue throughout their pilot career.
+
 ---
 
 ## API

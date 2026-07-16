@@ -147,6 +147,8 @@ Project documentation is available in the `docs` directory.
 - Password hashing
 - Protected API routes
 - Swagger/OpenAPI documentation
+- Certification management
+- Aviation certification catalog
 
 ### In Progress
 

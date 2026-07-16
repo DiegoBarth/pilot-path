@@ -32,7 +32,7 @@
 
 ## v0.3 - Study Management
 
-- [ ] Certifications
+- [x] Certifications
 - [ ] Enrollments
 - [ ] Study Sessions
 - [ ] Study History
