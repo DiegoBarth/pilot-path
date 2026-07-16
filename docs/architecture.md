@@ -2,29 +2,37 @@
 
 ## Overview
 
-PilotPath is a modern aviation learning platform designed to help student pilots organize their studies, monitor their progress, and prepare for aviation certifications.
+PilotPath is a modern platform designed to accompany pilots throughout their entire journey, from their first aviation certification to their professional career.
 
-The application follows a modern full-stack architecture with a clear separation between frontend, backend, and database layers.
+The first version focuses on study management and certification preparation, while future releases will expand the platform with operational tools, flight planning, logbooks, and career management features.
+
+The application follows a modern full-stack architecture with a clear separation between presentation, business, persistence, and infrastructure layers.
 
 ---
 
 # High Level Architecture
-          User
-            │
-            ▼
-    Next.js Frontend
-            │
-      REST / JSON API
-            │
-            ▼
-    NestJS Backend
-            │
-       PrismaService
-            │
-          Prisma ORM
-            │
-            ▼
-      PostgreSQL
+
+```text
+                User
+                  │
+                  ▼
+          Next.js Frontend
+                  │
+           REST / JSON API
+                  │
+                  ▼
+          NestJS Backend
+                  │
+      Authentication Layer
+                  │
+           PrismaService
+                  │
+             Prisma ORM
+                  │
+                  ▼
+            PostgreSQL
+```
+
 ---
 
 ## Backend
@@ -34,16 +42,19 @@ The application follows a modern full-stack architecture with a clear separation
 - NestJS
 - TypeScript
 - Prisma ORM
+- Passport
+- JWT
 - REST API
 
 ### Responsibilities
 
 - Business logic
 - Authentication & Authorization
-- Validation
+- Request validation
 - Database access
 - API endpoints
 - Error handling
+- OpenAPI documentation
 
 ---
 
@@ -65,6 +76,23 @@ The application follows a modern full-stack architecture with a clear separation
 - API communication
 - State management
 - Form validation
+- Authentication flow
+
+---
+
+## Authentication
+
+Authentication is implemented using JWT-based authentication.
+
+The authentication flow includes:
+
+- User registration
+- Password hashing
+- JWT token generation
+- JWT token validation
+- Protected routes using guards
+
+Protected endpoints use the `@Auth()` decorator, which applies JWT validation and role authorization.
 
 ---
 
@@ -93,7 +121,7 @@ The application follows a modern full-stack architecture with a clear separation
 - Flight Logbook
 - Aircraft
 - Airport
-  
+
 ---
 
 ## Database Access Layer
@@ -108,38 +136,55 @@ Prisma is responsible for:
 - Schema management
 - PostgreSQL communication
 
-The application accesses the database through PrismaService, integrated with NestJS dependency injection.
+The application accesses the database through `PrismaService`, integrated with NestJS Dependency Injection.
+
+---
 
 ## Domain Model
 
-````md
 ```mermaid
 erDiagram
+
     User ||--o{ Enrollment : enrolls
+
     Certification ||--o{ Enrollment : contains
+
     Certification ||--o{ CertificationSubject : includes
+
     Subject ||--o{ CertificationSubject : belongs_to
+
     Enrollment ||--o{ StudySession : records
+
     CertificationSubject ||--o{ StudySession : references
 ```
 
 The PilotPath domain is centered around aviation certifications.
 
-A user may enroll in multiple certifications throughout their career. Each certification contains one or more subjects, and every study session is associated with both an enrollment and a certification subject, allowing accurate progress tracking across different certifications.
+A user may enroll in multiple certifications throughout their career.
+
+Each certification contains one or more subjects, and every study session is associated with both an enrollment and a certification subject, allowing accurate progress tracking across different certifications.
 
 ---
 
 ## API
 
-PilotPath exposes a REST API using JSON.
+PilotPath exposes a REST API using JSON over HTTP.
 
-### Example Endpoints
+### Main Endpoints
 
 ```http
+POST   /api/v1/auth/register
+POST   /api/v1/auth/login
+
+GET    /api/v1/health
+
 GET    /api/v1/subjects
 POST   /api/v1/study-sessions
+
 GET    /api/v1/dashboard
 ```
+
+The API is documented through OpenAPI (Swagger) and generated automatically from NestJS decorators.
 
 ---
 
@@ -149,7 +194,9 @@ GET    /api/v1/dashboard
 - SOLID
 - Separation of Concerns
 - Feature-based modules
+- Stateless authentication
 - Database migrations
 - Automated testing
 - API-first development
 - Documentation-first approach
+- OpenAPI-first documentation

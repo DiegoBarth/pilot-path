@@ -38,12 +38,13 @@ PilotPath is a platform built to accompany a pilot throughout their entire journ
 - Progress tracking
 - Achievements
 
-### 👤 User Experience
+### 🔐 Authentication
 
-- Authentication
-- User profile
-- Responsive interface
-- Modern UI
+- User registration
+- User login
+- JWT authentication
+- Protected API routes
+- Role-based authorization foundation
 
 ---
 
@@ -89,11 +90,12 @@ PilotPath is a platform built to accompany a pilot throughout their entire journ
                   ▼
           NestJS Backend
                   │
+      Authentication Layer
+                  │
              Prisma ORM
                   │
                   ▼
             PostgreSQL
-```
 
 ---
 
@@ -128,7 +130,7 @@ Project documentation is available in the `docs` directory.
 
 ## 🚧 Project Status
 
-**Current Version:** `v0.1.0`
+**Current Version:** `v0.2.0`
 
 ### Completed
 
@@ -140,6 +142,11 @@ Project documentation is available in the `docs` directory.
 - First database migration
 - Initial project documentation
 - Core database modeling
+- JWT authentication
+- User registration and login
+- Password hashing
+- Protected API routes
+- Swagger/OpenAPI documentation
 
 ### In Progress
 

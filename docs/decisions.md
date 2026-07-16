@@ -8,10 +8,6 @@
 
 Database Selection
 
-### Status
-
-Accepted
-
 ### Date
 
 2026-07-14
@@ -34,10 +30,6 @@ PostgreSQL provides excellent consistency, performance and long-term scalability
 
 Backend Framework
 
-### Status
-
-Accepted
-
 ### Date
 
 2026-07-14
@@ -58,10 +50,6 @@ NestJS offers a scalable modular architecture, dependency injection and excellen
 
 Package Manager
 
-### Status
-
-Accepted
-
 ### Date
 
 2026-07-14
@@ -73,3 +61,27 @@ Use npm as the project's package manager.
 ### Rationale
 
 npm is the default package manager for Node.js, requires no additional setup, has excellent ecosystem compatibility, and is sufficient for the project's size and complexity.
+
+---
+
+## ADR-004
+
+### Title
+
+Authentication Strategy
+
+### Date
+
+2026-07-16
+
+### Decision
+
+Use JWT Bearer Authentication with bcrypt password hashing.
+
+### Rationale
+
+JWT provides a stateless authentication mechanism suitable for REST APIs.
+
+Passwords are never stored in plain text and are hashed using bcrypt before persistence.
+
+The initial implementation uses access tokens only, keeping the authentication layer simple while allowing refresh tokens and session management to be introduced in future iterations.

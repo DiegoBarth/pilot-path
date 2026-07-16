@@ -21,10 +21,12 @@
 
 ## v0.2 - Authentication
 
-- [ ] Register
-- [ ] Login
-- [ ] JWT
-- [ ] User Profile
+- [x] Register
+- [x] Login
+- [x] JWT
+- [x] User Profile
+- [x] Protected Routes
+- [x] Swagger Authentication
 
 ---
 

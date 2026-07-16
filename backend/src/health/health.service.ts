@@ -1,19 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { HealthResponseDto } from './dto/health-response.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class HealthService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService
+  ) { }
 
-  async getHealth(): Promise<HealthResponseDto> {
-    await this.prisma.user.count();
+  async getHealth(): Promise < HealthResponseDto > {
+  await this.prisma.user.count();
 
-    return {
-      status: 'ok',
-      service: 'pilot-path-api',
-      version: process.env.npm_package_version ?? '0.1.0',
-      timestamp: new Date().toISOString(),
-    };
-  }
+  return {
+    status: 'ok',
+    service: this.configService.getOrThrow<string>('app.name'),
+    version: this.configService.getOrThrow<string>('app.version'),
+    timestamp: new Date().toISOString(),
+  };
+}
 }
