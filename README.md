@@ -19,19 +19,18 @@ PilotPath is a platform built to accompany a pilot throughout their entire journ
 ### 📚 Study Management
 
 - Certification enrollments
+- Certification curriculum
+- Subject management
 - Study sessions
-- Study history
-- Learning progress
-- Personal goals
 
 ### 🛫 Aviation Knowledge
 
 - Subjects
-- Question bank
-- Flashcards
-- Mock exams
+- Question bank (planned)
+- Flashcards (planned)
+- Mock exams (planned)
 
-### 📊 Analytics
+### 📊 Analytics (Planned)
 
 - Dashboard
 - Performance statistics
@@ -96,6 +95,7 @@ PilotPath is a platform built to accompany a pilot throughout their entire journ
                   │
                   ▼
             PostgreSQL
+```
 
 ---
 
@@ -130,7 +130,7 @@ Project documentation is available in the `docs` directory.
 
 ## 🚧 Project Status
 
-**Current Version:** `v0.2.3`
+**Current Version:** `v0.2.4`
 
 ### Completed
 
@@ -149,14 +149,15 @@ Project documentation is available in the `docs` directory.
 - Swagger/OpenAPI documentation
 - Certification management
 - Aviation certification catalog
-- Certification management
 - User enrollments
 - Subject management
 - Certification curriculum
+- Study session tracking
 
 ### In Progress
 
-
+- Study history
+  
 ---
 
 ## 📄 License

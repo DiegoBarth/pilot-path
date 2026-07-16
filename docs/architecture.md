@@ -157,6 +157,7 @@ erDiagram
 
     CertificationSubject ||--o{ StudySession : references
 ```
+Study sessions are linked to both an enrollment and a certification subject, ensuring every recorded study activity belongs to a specific certification and subject while allowing accurate progress tracking.
 
 The PilotPath domain is centered around aviation certifications.
 
@@ -193,6 +194,10 @@ GET    /api/v1/enrollments/:id
 
 GET    /api/v1/subjects
 POST   /api/v1/subjects
+
+POST   /api/v1/study-sessions
+GET    /api/v1/study-sessions
+GET    /api/v1/study-sessions/:id
 ```
 
 The API is documented through OpenAPI (Swagger) and generated automatically from NestJS decorators.

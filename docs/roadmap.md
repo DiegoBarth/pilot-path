@@ -35,7 +35,7 @@
 - [x] Certifications
 - [x] Enrollments
 - [x] Subjects
-- [ ] Study Sessions
+- [x] Study Sessions
 - [ ] Study History
 
 ---
