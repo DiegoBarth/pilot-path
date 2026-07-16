@@ -36,7 +36,7 @@
 - [x] Enrollments
 - [x] Subjects
 - [x] Study Sessions
-- [ ] Study History
+- [x] Study History
 
 ---
 

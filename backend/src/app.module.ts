@@ -7,6 +7,7 @@ import { CertificationsModule } from './certifications/certifications.module';
 import { EnrollmentsModule } from './enrollments/enrollments.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { StudySessionsModule } from './study-sessions/study-sessions.module';
+import { StudyHistoryModule } from './study-history/study-history.module';
 import appConfig from './config/app.config';
 import authConfig from './config/auth.config';
 
@@ -26,7 +27,8 @@ import authConfig from './config/auth.config';
     CertificationsModule,
     EnrollmentsModule,
     SubjectsModule,
-    StudySessionsModule
+    StudySessionsModule,
+    StudyHistoryModule
   ],
 })
 export class AppModule { }

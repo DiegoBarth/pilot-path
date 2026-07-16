@@ -85,3 +85,38 @@ JWT provides a stateless authentication mechanism suitable for REST APIs.
 Passwords are never stored in plain text and are hashed using bcrypt before persistence.
 
 The initial implementation uses access tokens only, keeping the authentication layer simple while allowing refresh tokens and session management to be introduced in future iterations.
+
+---
+
+# ADR 005
+
+### Title
+
+Standard Pagination Response
+
+### Date
+
+2026-07-16
+
+## Decision
+
+All paginated endpoints will return:
+
+{
+  data: [],
+  meta: {}
+}
+
+using shared pagination DTOs and utilities.
+
+## Rationale
+
+Multiple API resources require pagination.
+
+Pros:
+- Consistent API responses
+- Easier frontend integration
+- Less duplicated code
+
+Cons:
+- Small initial abstraction cost

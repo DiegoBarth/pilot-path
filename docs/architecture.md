@@ -140,6 +140,22 @@ The application accesses the database through `PrismaService`, integrated with N
 
 ---
 
+## Shared Infrastructure
+
+The backend contains reusable infrastructure components shared across modules.
+
+Current shared components include:
+
+- Pagination DTOs
+- Pagination metadata handling
+- Pagination utilities
+- Common decorators
+- Swagger helpers
+
+These components provide consistency across paginated endpoints and reduce duplicated implementation across modules.
+
+---
+
 ## Domain Model
 
 ```mermaid
@@ -194,6 +210,8 @@ GET    /api/v1/enrollments/:id
 
 GET    /api/v1/subjects
 POST   /api/v1/subjects
+
+GET    /api/v1/study-history
 
 POST   /api/v1/study-sessions
 GET    /api/v1/study-sessions

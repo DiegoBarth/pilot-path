@@ -22,7 +22,9 @@ PilotPath is a platform built to accompany a pilot throughout their entire journ
 - Certification curriculum
 - Subject management
 - Study sessions
-
+- Paginated study history
+- Study activity filtering
+- 
 ### 🛫 Aviation Knowledge
 
 - Subjects
@@ -130,7 +132,7 @@ Project documentation is available in the `docs` directory.
 
 ## 🚧 Project Status
 
-**Current Version:** `v0.2.4`
+**Current Version:** `v0.3.0`
 
 ### Completed
 
@@ -153,7 +155,11 @@ Project documentation is available in the `docs` directory.
 - Subject management
 - Certification curriculum
 - Study session tracking
-
+- Study history endpoint
+- Paginated API responses
+- Reusable pagination infrastructure
+- Study activity filtering
+- 
 ### In Progress
 
 - Study history
