@@ -130,7 +130,7 @@ Project documentation is available in the `docs` directory.
 
 ## 🚧 Project Status
 
-**Current Version:** `v0.2.2`
+**Current Version:** `v0.2.3`
 
 ### Completed
 
@@ -151,6 +151,8 @@ Project documentation is available in the `docs` directory.
 - Aviation certification catalog
 - Certification management
 - User enrollments
+- Subject management
+- Certification curriculum
 
 ### In Progress
 

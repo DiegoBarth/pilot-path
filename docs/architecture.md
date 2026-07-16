@@ -185,10 +185,14 @@ GET    /api/v1/certifications
 POST   /api/v1/certifications
 GET    /api/v1/certifications/:id
 PATCH  /api/v1/certifications/:id
+GET    /api/v1/certifications/:id/subjects
 POST   /api/v1/certifications/:id/enroll
 
 GET    /api/v1/enrollments
 GET    /api/v1/enrollments/:id
+
+GET    /api/v1/subjects
+POST   /api/v1/subjects
 ```
 
 The API is documented through OpenAPI (Swagger) and generated automatically from NestJS decorators.

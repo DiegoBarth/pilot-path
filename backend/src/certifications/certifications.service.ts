@@ -29,7 +29,7 @@ export class CertificationsService {
 
   async create(dto: CreateCertificationDto) {
     try {
-      return await this.prisma.certification.create({data: dto});
+      return await this.prisma.certification.create({ data: dto });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
         throw new ConflictException('Certification slug already exists');
@@ -48,34 +48,59 @@ export class CertificationsService {
     });
   }
 
-async enroll(userId: string, certificationId: string) {
-  const certification = await this.prisma.certification.findUnique({
+  async enroll(userId: string, certificationId: string) {
+    const certification = await this.prisma.certification.findUnique({
       where: {
         id: certificationId
       }
     });
 
-  if (!certification) {
-    throw new NotFoundException('Certification not found');
-  }
-
-  try {
-    return await this.prisma.enrollment.create({
-      data: {
-        userId,
-        certificationId
-      },
-      include: {
-        certification: true
-      }
-    });
-  } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
-      throw new ConflictException('User is already enrolled in this certification');
+    if (!certification) {
+      throw new NotFoundException('Certification not found');
     }
 
-    throw error;
+    try {
+      return await this.prisma.enrollment.create({
+        data: {
+          userId,
+          certificationId
+        },
+        include: {
+          certification: true
+        }
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        throw new ConflictException('User is already enrolled in this certification');
+      }
+
+      throw error;
+    }
   }
-}
+
+  async findSubjects(id: string) {
+    const certification = await this.prisma.certification.findUnique({
+      where: {
+        id,
+        deletedAt: null
+      },
+      include: {
+        subjects: {
+          orderBy: {
+            displayOrder: 'asc'
+          },
+          include: {
+            subject: true
+          },
+        }
+      }
+    });
+
+    if (!certification) {
+      throw new NotFoundException('Certification not found');
+    }
+
+    return certification.subjects;
+  }
 
 }

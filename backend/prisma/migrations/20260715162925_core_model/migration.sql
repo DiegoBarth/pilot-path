@@ -25,6 +25,7 @@ CREATE TABLE "certifications" (
 CREATE TABLE "subjects" (
     "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
     "description" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -106,6 +107,9 @@ CREATE INDEX "study_sessions_certification_subject_id_idx" ON "study_sessions"("
 
 -- CreateIndex
 CREATE INDEX "study_sessions_started_at_idx" ON "study_sessions"("started_at");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "subjects_slug_key" ON "subjects"("slug");
 
 -- AddForeignKey
 ALTER TABLE "certification_subjects" ADD CONSTRAINT "certification_subjects_certification_id_fkey" FOREIGN KEY ("certification_id") REFERENCES "certifications"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

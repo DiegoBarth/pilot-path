@@ -13,134 +13,150 @@ import {
 import { CreateCertificationDto } from './dto/create-certification.dto';
 import { UpdateCertificationDto } from './dto/update-certification.dto';
 import { CertificationResponseDto } from './dto/certification-response.dto';
+import { CertificationSubjectResponseDto } from './dto/certification-subject-response.dto';
 
-export class CertificationsSwagger {
+export const CertificationsSwagger = {
 
-  static tags() {
-    return applyDecorators(
-      ApiTags('Certifications')
-    );
-  }
+  findAll: applyDecorators(
+    ApiTags('Certifications'),
 
-  static findAll() {
-    return applyDecorators(
-      ApiOperation({
-        summary: 'List certifications',
-        description: 'Returns all active aviation certifications available in PilotPath.'
-      }),
+    ApiOperation({
+      summary: 'List certifications',
+      description: 'Returns all active aviation certifications available in PilotPath.'
+    }),
 
-      ApiOkResponse({
-        type: CertificationResponseDto,
-        description: 'List of available certifications returned successfully.',
-        isArray: true
-      })
-    );
-  }
+    ApiOkResponse({
+      type: CertificationResponseDto,
+      description: 'List of available certifications returned successfully.',
+      isArray: true
+    })
+  ),
 
-  static findOne() {
-    return applyDecorators(
-      ApiOperation({
-        summary: 'Get certification details',
-        description: 'Returns detailed information about a specific certification.'
-      }),
+  findOne: applyDecorators(
+    ApiTags('Certifications'),
 
-      ApiParam({
-        name: 'id',
-        description: 'Certification UUID',
-        example: '93c00914-8d73-414b-a59b-090a4a2aed48'
-      }),
+    ApiOperation({
+      summary: 'Get certification details',
+      description: 'Returns detailed information about a specific certification.'
+    }),
 
-      ApiOkResponse({
-        type: CertificationResponseDto,
-        description: 'Certification found successfully.'
-      }),
+    ApiParam({
+      name: 'id',
+      description: 'Certification UUID',
+      example: '93c00914-8d73-414b-a59b-090a4a2aed48'
+    }),
 
-      ApiNotFoundResponse({
-        description: 'Certification not found.'
-      }),
-    );
-  }
+    ApiOkResponse({
+      type: CertificationResponseDto,
+      description: 'Certification found successfully.'
+    }),
 
-  static create() {
-    return applyDecorators(
+    ApiNotFoundResponse({
+      description: 'Certification not found.'
+    }),
+  ),
 
-      ApiOperation({
-        summary: 'Create certification',
-        description: 'Creates a new aviation certification.'
-      }),
+  create: applyDecorators(
+    ApiTags('Certifications'),
 
-      ApiBody({
-        type: CreateCertificationDto,
-        examples: {
-          example: {
-            summary: 'Private Pilot License',
-            value: {
-              name: 'Private Pilot License',
-              slug: 'private-pilot-license',
-              description: 'Initial pilot certification allowing private operations.',
-              isActive: true
-            }
+    ApiOperation({
+      summary: 'Create certification',
+      description: 'Creates a new aviation certification.'
+    }),
+
+    ApiBody({
+      type: CreateCertificationDto,
+      examples: {
+        example: {
+          summary: 'Private Pilot License',
+          value: {
+            name: 'Private Pilot License',
+            slug: 'private-pilot-license',
+            description: 'Initial pilot certification allowing private operations.',
+            isActive: true
           }
         }
-      }),
+      }
+    }),
 
-      ApiCreatedResponse({
-        type: CertificationResponseDto,
-        description: 'Certification created successfully.'
-      }),
+    ApiCreatedResponse({
+      type: CertificationResponseDto,
+      description: 'Certification created successfully.'
+    }),
 
-      ApiConflictResponse({
-        description: 'Certification already exists.'
-      }),
+    ApiConflictResponse({
+      description: 'Certification already exists.'
+    }),
 
-      ApiUnauthorizedResponse({
-        description: 'Unauthorized.'
-      })
+    ApiUnauthorizedResponse({
+      description: 'Unauthorized.'
+    })
 
-    );
-  }
+  ),
 
-  static update() {
-    return applyDecorators(
+  update: applyDecorators(
+    ApiTags('Certifications'),
 
-      ApiOperation({
-        summary: 'Update certification',
-        description: 'Updates an existing certification.'
-      }),
+    ApiOperation({
+      summary: 'Update certification',
+      description: 'Updates an existing certification.'
+    }),
 
-      ApiParam({
-        name: 'id',
-        description: 'Certification UUID',
-        example: '93c00914-8d73-414b-a59b-090a4a2aed48'
-      }),
+    ApiParam({
+      name: 'id',
+      description: 'Certification UUID',
+      example: '93c00914-8d73-414b-a59b-090a4a2aed48'
+    }),
 
-      ApiBody({
-        type: UpdateCertificationDto,
-        examples: {
-          example: {
-            summary: 'Update certification',
-            value: {
-              description: 'Updated certification description.',
-              isActive: true
-            }
+    ApiBody({
+      type: UpdateCertificationDto,
+      examples: {
+        example: {
+          summary: 'Update certification',
+          value: {
+            description: 'Updated certification description.',
+            isActive: true
           }
         }
-      }),
+      }
+    }),
 
-      ApiOkResponse({
-        type: CertificationResponseDto,
-        description: 'Certification updated successfully.'
-      }),
+    ApiOkResponse({
+      type: CertificationResponseDto,
+      description: 'Certification updated successfully.'
+    }),
 
-      ApiNotFoundResponse({
-        description: 'Certification not found.'
-      }),
+    ApiNotFoundResponse({
+      description: 'Certification not found.'
+    }),
 
-      ApiUnauthorizedResponse({
-        description: 'Unauthorized.'
-      })
+    ApiUnauthorizedResponse({
+      description: 'Unauthorized.'
+    })
 
-    );
-  }
+  ),
+
+  findSubjects: applyDecorators(
+    ApiTags('Certifications'),
+
+    ApiOperation({
+      summary: 'Get certification curriculum',
+      description: 'Returns the curriculum of a certification, including subject order and requirement information.'
+    }),
+
+    ApiOkResponse({
+      type: CertificationSubjectResponseDto,
+      description: 'Certification subjects retrieved successfully.',
+      isArray: true
+    }),
+
+    ApiNotFoundResponse({
+      description: 'Certification not found.'
+    }),
+
+    ApiUnauthorizedResponse({
+      description: 'Unauthorized.'
+    }),
+  )
 
 }
