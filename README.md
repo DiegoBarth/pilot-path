@@ -130,7 +130,7 @@ Project documentation is available in the `docs` directory.
 
 ## 🚧 Project Status
 
-**Current Version:** `v0.2.0`
+**Current Version:** `v0.2.2`
 
 ### Completed
 
@@ -149,6 +149,8 @@ Project documentation is available in the `docs` directory.
 - Swagger/OpenAPI documentation
 - Certification management
 - Aviation certification catalog
+- Certification management
+- User enrollments
 
 ### In Progress
 

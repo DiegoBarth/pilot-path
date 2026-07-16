@@ -1,7 +1,18 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse
+} from '@nestjs/swagger';
 import { CreateCertificationDto } from './dto/create-certification.dto';
 import { UpdateCertificationDto } from './dto/update-certification.dto';
+import { CertificationResponseDto } from './dto/certification-response.dto';
 
 export class CertificationsSwagger {
 
@@ -18,9 +29,10 @@ export class CertificationsSwagger {
         description: 'Returns all active aviation certifications available in PilotPath.'
       }),
 
-      ApiResponse({
-        status: 200,
-        description: 'List of available certifications returned successfully.'
+      ApiOkResponse({
+        type: CertificationResponseDto,
+        description: 'List of available certifications returned successfully.',
+        isArray: true
       })
     );
   }
@@ -38,15 +50,14 @@ export class CertificationsSwagger {
         example: '93c00914-8d73-414b-a59b-090a4a2aed48'
       }),
 
-      ApiResponse({
-        status: 200,
+      ApiOkResponse({
+        type: CertificationResponseDto,
         description: 'Certification found successfully.'
       }),
 
-      ApiResponse({
-        status: 404,
+      ApiNotFoundResponse({
         description: 'Certification not found.'
-      })
+      }),
     );
   }
 
@@ -73,20 +84,19 @@ export class CertificationsSwagger {
         }
       }),
 
-      ApiResponse({
-        status: 201,
+      ApiCreatedResponse({
+        type: CertificationResponseDto,
         description: 'Certification created successfully.'
       }),
 
-      ApiResponse({
-        status: 401,
-        description: 'Unauthorized.'
-      }),
-
-      ApiResponse({
-        status: 409,
+      ApiConflictResponse({
         description: 'Certification already exists.'
       }),
+
+      ApiUnauthorizedResponse({
+        description: 'Unauthorized.'
+      })
+
     );
   }
 
@@ -117,20 +127,19 @@ export class CertificationsSwagger {
         }
       }),
 
-      ApiResponse({
-        status: 200,
+      ApiOkResponse({
+        type: CertificationResponseDto,
         description: 'Certification updated successfully.'
       }),
 
-      ApiResponse({
-        status: 401,
-        description: 'Unauthorized.'
+      ApiNotFoundResponse({
+        description: 'Certification not found.'
       }),
 
-      ApiResponse({
-        status: 404,
-        description: 'Certification not found.'
+      ApiUnauthorizedResponse({
+        description: 'Unauthorized.'
       })
+
     );
   }
 

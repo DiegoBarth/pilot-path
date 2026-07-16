@@ -175,15 +175,20 @@ PilotPath exposes a REST API using JSON over HTTP.
 ### Main Endpoints
 
 ```http
-POST   /api/v1/auth/register
-POST   /api/v1/auth/login
-
 GET    /api/v1/health
 
-GET    /api/v1/subjects
-POST   /api/v1/study-sessions
+POST   /api/v1/auth/register
+POST   /api/v1/auth/login
+GET    /api/v1/auth/me
 
-GET    /api/v1/dashboard
+GET    /api/v1/certifications
+POST   /api/v1/certifications
+GET    /api/v1/certifications/:id
+PATCH  /api/v1/certifications/:id
+POST   /api/v1/certifications/:id/enroll
+
+GET    /api/v1/enrollments
+GET    /api/v1/enrollments/:id
 ```
 
 The API is documented through OpenAPI (Swagger) and generated automatically from NestJS decorators.

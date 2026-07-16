@@ -5,12 +5,14 @@ import { CreateCertificationDto } from './dto/create-certification.dto';
 import { UpdateCertificationDto } from './dto/update-certification.dto';
 import { ApplySwagger } from '../common/decorators/apply-swagger.decorator';
 import { CertificationsSwagger } from './certifications.swagger';
+import { EnrollmentsSwagger } from '../enrollments/enrollments.swagger';
+import { AuthUser } from '../auth/decorators/auth-user.decorator';
 
 @Controller('certifications')
 @CertificationsSwagger.tags()
 export class CertificationsController {
 
-  constructor(private readonly service: CertificationsService) {}
+  constructor(private readonly service: CertificationsService) { }
 
   @Get()
   @ApplySwagger(CertificationsSwagger.findAll())
@@ -38,4 +40,10 @@ export class CertificationsController {
     return this.service.update(id, dto);
   }
 
+  @Post(':id/enroll')
+  @Auth()
+  @ApplySwagger(EnrollmentsSwagger.enroll)
+  enroll(@Param('id') certificationId: string, @AuthUser('id') userId: string) {
+    return this.service.enroll(userId, certificationId);
+  }
 }

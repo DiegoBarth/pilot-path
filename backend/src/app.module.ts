@@ -4,6 +4,7 @@ import { DatabaseModule } from './database/database.module';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { CertificationsModule } from './certifications/certifications.module';
+import { EnrollmentsModule } from './enrollments/enrollments.module';
 import appConfig from './config/app.config';
 import authConfig from './config/auth.config';
 
@@ -20,7 +21,8 @@ import authConfig from './config/auth.config';
     DatabaseModule,
     HealthModule,
     AuthModule,
-    CertificationsModule
+    CertificationsModule,
+    EnrollmentsModule
   ],
 })
 export class AppModule { }

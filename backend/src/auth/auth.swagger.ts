@@ -5,16 +5,17 @@ import {
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
   ApiOperation,
-  ApiResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 
-
 export const AuthSwagger = {
-
   register: applyDecorators(
     ApiTags('Authentication'),
 
@@ -24,17 +25,14 @@ export const AuthSwagger = {
 
     ApiBody({type: RegisterDto}),
 
-    ApiResponse({
-      status: 201,
+    ApiCreatedResponse({
       description: 'User successfully registered',
     }),
 
-    ApiResponse({
-      status: 409,
+    ApiConflictResponse({
       description: 'Email already registered',
-    }),
+    })
   ),
-
 
   login: applyDecorators(
     ApiTags('Authentication'),
@@ -45,17 +43,14 @@ export const AuthSwagger = {
 
     ApiBody({type: LoginDto}),
 
-    ApiResponse({
-      status: 200,
-      description: 'Returns JWT token',
+    ApiOkResponse({
+      description: 'Returns JWT token'
     }),
 
-    ApiResponse({
-      status: 401,
-      description: 'Invalid credentials',
-    }),
+    ApiUnauthorizedResponse({
+      description: 'Invalid credentials'
+    })
   ),
-
 
   me: applyDecorators(
     ApiTags('Authentication'),
@@ -66,15 +61,13 @@ export const AuthSwagger = {
 
     ApiBearerAuth('JWT-auth'),
 
-    ApiResponse({
-      status: 200,
+    ApiOkResponse({
       description: 'Authenticated user',
     }),
 
-    ApiResponse({
-      status: 401,
+    ApiUnauthorizedResponse({
       description: 'Unauthorized',
-    }),
-  ),
+    })
+  )
 
 };

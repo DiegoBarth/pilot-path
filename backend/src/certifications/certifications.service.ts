@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { CreateCertificationDto } from './dto/create-certification.dto';
 import { UpdateCertificationDto } from './dto/update-certification.dto';
@@ -47,5 +47,35 @@ export class CertificationsService {
       data: dto
     });
   }
+
+async enroll(userId: string, certificationId: string) {
+  const certification = await this.prisma.certification.findUnique({
+      where: {
+        id: certificationId
+      }
+    });
+
+  if (!certification) {
+    throw new NotFoundException('Certification not found');
+  }
+
+  try {
+    return await this.prisma.enrollment.create({
+      data: {
+        userId,
+        certificationId
+      },
+      include: {
+        certification: true
+      }
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      throw new ConflictException('User is already enrolled in this certification');
+    }
+
+    throw error;
+  }
+}
 
 }
