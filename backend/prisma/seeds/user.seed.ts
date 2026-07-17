@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 export async function seedUsers(prisma: PrismaClient) {
@@ -22,6 +22,7 @@ export async function seedUsers(prisma: PrismaClient) {
       name: 'PilotPath Admin',
       email: 'admin@pilotpath.com',
       password,
+      role: UserRole.ADMIN
     },
 
   });

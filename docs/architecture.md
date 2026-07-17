@@ -110,6 +110,7 @@ Protected endpoints use the `@Auth()` decorator, which applies JWT validation an
 - CertificationSubject
 - Enrollment
 - StudySession
+- Flashcard
 
 ### Planned Entities
 
@@ -169,10 +170,13 @@ erDiagram
 
     Subject ||--o{ CertificationSubject : belongs_to
 
+    Subject ||--o{ Flashcard : contains
+
     Enrollment ||--o{ StudySession : records
 
     CertificationSubject ||--o{ StudySession : references
 ```
+
 Study sessions are linked to both an enrollment and a certification subject, ensuring every recorded study activity belongs to a specific certification and subject while allowing accurate progress tracking.
 
 The PilotPath domain is centered around aviation certifications.
@@ -216,6 +220,11 @@ GET    /api/v1/study-history
 POST   /api/v1/study-sessions
 GET    /api/v1/study-sessions
 GET    /api/v1/study-sessions/:id
+
+POST   /api/v1/flashcards
+GET    /api/v1/flashcards
+GET    /api/v1/flashcards/:id
+
 ```
 
 The API is documented through OpenAPI (Swagger) and generated automatically from NestJS decorators.

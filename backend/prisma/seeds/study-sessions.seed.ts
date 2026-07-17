@@ -13,18 +13,17 @@ export async function seedStudySessions(prisma: PrismaClient) {
     throw new Error('Enrollment not found.');
   }
 
-  const certificationSubjects =
-    await prisma.certificationSubject.findMany({
-      where: {
-        certificationId: enrollment.certificationId
-      },
-      include: {
-        subject: true
-      },
-      orderBy: {
-        displayOrder: 'asc'
-      }
-    });
+  const certificationSubjects = await prisma.certificationSubject.findMany({
+    where: {
+      certificationId: enrollment.certificationId
+    },
+    include: {
+      subject: true
+    },
+    orderBy: {
+      displayOrder: 'asc'
+    }
+  });
 
   const bySlug = Object.fromEntries(
     certificationSubjects.map((item) => [

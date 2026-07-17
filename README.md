@@ -24,13 +24,13 @@ PilotPath is a platform built to accompany a pilot throughout their entire journ
 - Study sessions
 - Paginated study history
 - Study activity filtering
-- 
+
 ### 🛫 Aviation Knowledge
 
 - Subjects
-- Question bank (planned)
-- Flashcards (planned)
-- Mock exams (planned)
+- Question bank
+- Flashcards
+- Mock exams
 
 ### 📊 Analytics (Planned)
 
@@ -45,7 +45,7 @@ PilotPath is a platform built to accompany a pilot throughout their entire journ
 - User login
 - JWT authentication
 - Protected API routes
-- Role-based authorization foundation
+- Role-based authorization (ADMIN / USER)
 
 ---
 
@@ -132,7 +132,7 @@ Project documentation is available in the `docs` directory.
 
 ## 🚧 Project Status
 
-**Current Version:** `v0.3.0`
+**Current Version:** `v0.4.1`
 
 ### Completed
 
@@ -159,7 +159,8 @@ Project documentation is available in the `docs` directory.
 - Paginated API responses
 - Reusable pagination infrastructure
 - Study activity filtering
-- 
+- Flashcard management
+
 ### In Progress
 
 - Study history

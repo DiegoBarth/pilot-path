@@ -8,6 +8,7 @@ import { EnrollmentsModule } from './enrollments/enrollments.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { StudySessionsModule } from './study-sessions/study-sessions.module';
 import { StudyHistoryModule } from './study-history/study-history.module';
+import { FlashcardsModule } from './flashcards/flashcards.module';
 import appConfig from './config/app.config';
 import authConfig from './config/auth.config';
 
@@ -28,7 +29,8 @@ import authConfig from './config/auth.config';
     EnrollmentsModule,
     SubjectsModule,
     StudySessionsModule,
-    StudyHistoryModule
+    StudyHistoryModule,
+    FlashcardsModule
   ],
 })
 export class AppModule { }

@@ -23,7 +23,9 @@ Database connection is configured through environment variables.
 
 Example:
 
+```env
 DATABASE_URL=postgresql://user:password@localhost:5432/pilotpath
+```
 
 ## Naming Convention
 
@@ -46,6 +48,7 @@ Current entities:
 - CertificationSubject
 - Enrollment
 - StudySession
+- Flashcard
 
 Additional entities will be introduced incrementally as new features are implemented.
 
@@ -60,7 +63,7 @@ Whenever the database schema changes:
 5. Regenerate the Prisma Client.
 6. Update the seed if necessary.
 
-Common commands:
+## Common Commands
 
 ```bash
 npx prisma validate
@@ -68,4 +71,14 @@ npx prisma format
 npx prisma migrate dev --name <migration-name>
 npx prisma generate
 npx prisma db seed
+```
+
+## Reset Development Database (Only if Necessary)
+
+Use the following command **only when you need to completely recreate the local development database**, such as after migration conflicts or inconsistent local data.
+
+> **Warning:** This command deletes all data, reapplies every migration, and executes the project seed.
+
+```bash
+npx prisma migrate reset
 ```
