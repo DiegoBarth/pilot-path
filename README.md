@@ -160,10 +160,16 @@ Project documentation is available in the `docs` directory.
 - Reusable pagination infrastructure
 - Study activity filtering
 - Flashcard management
+- Flashcard creation and subject association
+- User flashcard progress tracking
+- Flashcard review history
+- Spaced repetition foundation
+- Next review date calculation
 
 ### In Progress
 
-- Study history
+- Question Bank
+- Mock Exams
   
 ---
 

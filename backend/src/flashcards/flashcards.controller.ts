@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 import { FlashcardsService } from './flashcards.service';
 import { CreateFlashcardDto } from './dto/create-flashcard.dto';
 import { FlashcardsSwagger } from './flashcards.swagger';
@@ -27,7 +27,7 @@ export class FlashcardsController {
   @Auth()
   @Get(':id')
   @FlashcardsSwagger.findOne
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.flashcardsService.findOne(id);
   }
 

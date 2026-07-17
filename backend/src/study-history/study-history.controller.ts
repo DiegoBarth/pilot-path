@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, ParseUUIDPipe, Query } from '@nestjs/common';
 
 import { ApplySwagger } from '../common/decorators/apply-swagger.decorator';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
@@ -16,7 +16,7 @@ export class StudyHistoryController {
 
   @Get()
   @ApplySwagger(StudyHistorySwagger.findAll)
-  findAll(@AuthUser('id') userId: string, @Query() query: StudyHistoryQueryDto) {
+  findAll(@AuthUser('id', ParseUUIDPipe) userId: string, @Query() query: StudyHistoryQueryDto) {
     return this.studyHistoryService.findAll(userId, query);
   }
   

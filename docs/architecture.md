@@ -111,11 +111,12 @@ Protected endpoints use the `@Auth()` decorator, which applies JWT validation an
 - Enrollment
 - StudySession
 - Flashcard
-
+- UserFlashcard
+- FlashcardReview
+  
 ### Planned Entities
 
 - Question
-- Flashcard
 - MockExam
 - Achievement
 - Dashboard Statistics
@@ -170,11 +171,17 @@ erDiagram
 
     Subject ||--o{ CertificationSubject : belongs_to
 
-    Subject ||--o{ Flashcard : contains
-
     Enrollment ||--o{ StudySession : records
 
     CertificationSubject ||--o{ StudySession : references
+
+    Subject ||--o{ Flashcard : contains
+
+    User ||--o{ UserFlashcard : owns
+
+    Flashcard ||--o{ UserFlashcard : tracks
+
+    UserFlashcard ||--o{ FlashcardReview : records
 ```
 
 Study sessions are linked to both an enrollment and a certification subject, ensuring every recorded study activity belongs to a specific certification and subject while allowing accurate progress tracking.
@@ -186,6 +193,21 @@ A user may enroll in multiple certifications throughout their career.
 Each certification contains one or more subjects, and every study session is associated with both an enrollment and a certification subject, allowing accurate progress tracking across different certifications.
 
 Certifications represent aviation milestones that users can pursue throughout their pilot career.
+
+---
+
+## Learning Domains
+
+The platform is organized around aviation learning domains.
+
+Current learning domains include:
+
+- Study Management
+- Flashcard Learning
+- Question Bank (planned)
+- Mock Exams (planned)
+
+Each domain contains its own business rules, entities, and application modules.
 
 ---
 
@@ -224,6 +246,9 @@ GET    /api/v1/study-sessions/:id
 POST   /api/v1/flashcards
 GET    /api/v1/flashcards
 GET    /api/v1/flashcards/:id
+
+GET    /api/v1/flashcards/reviews
+POST   /api/v1/flashcards/:id/review
 
 ```
 

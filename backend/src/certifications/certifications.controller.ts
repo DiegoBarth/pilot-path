@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { CertificationsService } from './certifications.service';
 import { CreateCertificationDto } from './dto/create-certification.dto';
@@ -21,7 +21,7 @@ export class CertificationsController {
 
   @Get(':id')
   @ApplySwagger(CertificationsSwagger.findOne)
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.service.findOne(id);
   }
 
@@ -35,7 +35,7 @@ export class CertificationsController {
   @Auth()
   @Patch(':id')
   @ApplySwagger(CertificationsSwagger.update)
-  update(@Param('id') id: string, @Body() dto: UpdateCertificationDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateCertificationDto) {
     return this.service.update(id, dto);
   }
 
@@ -49,7 +49,7 @@ export class CertificationsController {
   @Auth()
   @Get(':id/subjects')
   @ApplySwagger(CertificationsSwagger.findSubjects)
-  findSubjects(@Param('id') id: string) {
+  findSubjects(@Param('id', ParseUUIDPipe) id: string) {
     return this.service.findSubjects(id);
   }
 }

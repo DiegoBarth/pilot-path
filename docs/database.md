@@ -49,7 +49,9 @@ Current entities:
 - Enrollment
 - StudySession
 - Flashcard
-
+- UserFlashcard
+- FlashcardReview
+  
 Additional entities will be introduced incrementally as new features are implemented.
 
 ## Development Workflow

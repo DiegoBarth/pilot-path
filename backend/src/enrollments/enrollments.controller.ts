@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { EnrollmentsService } from './enrollments.service';
@@ -13,7 +13,7 @@ export class EnrollmentsController {
   @Post('certifications/:id/enroll')
   @Auth()
   @ApplySwagger(EnrollmentsSwagger.enroll)
-  enroll(@Param('id') certificationId: string, @AuthUser('id') userId: string) {
+  enroll(@Param('id', ParseUUIDPipe) certificationId: string, @AuthUser('id') userId: string) {
     return this.service.enroll(userId, certificationId);
   }
 
@@ -27,7 +27,7 @@ export class EnrollmentsController {
   @Get('enrollments/:id')
   @Auth()
   @ApplySwagger(EnrollmentsSwagger.findOne)
-  findOne(@Param('id') id: string, @AuthUser('id') userId: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string, @AuthUser('id') userId: string) {
     return this.service.findOne(userId, id);
   }
 

@@ -7,23 +7,21 @@ import { SubjectsSwagger } from './subjects.swagger';
 
 @Controller('subjects')
 export class SubjectsController {
-  constructor(
-    private readonly subjectsService: SubjectsService,
-  ) {}
 
-  @Post()
+  constructor(private readonly subjectsService: SubjectsService) { }
+
   @Auth()
+  @Post()
   @ApplySwagger(SubjectsSwagger.create)
-  create(
-    @Body() dto: CreateSubjectDto,
-  ) {
+  create(@Body() dto: CreateSubjectDto) {
     return this.subjectsService.create(dto);
   }
 
-  @Get()
   @Auth()
+  @Get()
   @ApplySwagger(SubjectsSwagger.findAll)
   findAll() {
     return this.subjectsService.findAll();
   }
+  
 }
