@@ -43,7 +43,9 @@ REST API for PilotPath, a platform designed to support pilots throughout their e
     )
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    autoTagControllers: false
+  });
 
   SwaggerModule.setup(
     'docs',
