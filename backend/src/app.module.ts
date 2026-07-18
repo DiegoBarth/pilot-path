@@ -10,6 +10,7 @@ import { StudySessionsModule } from './study-sessions/study-sessions.module';
 import { StudyHistoryModule } from './study-history/study-history.module';
 import { FlashcardsModule } from './flashcards/flashcards.module';
 import { FlashcardReviewsModule } from './flashcard-reviews/flashcard-reviews.module';
+import { QuestionsModule } from './questions/questions.module';
 import appConfig from './config/app.config';
 import authConfig from './config/auth.config';
 
@@ -33,6 +34,8 @@ import authConfig from './config/auth.config';
     StudyHistoryModule,
     FlashcardReviewsModule,
     FlashcardsModule,
+    QuestionsModule
   ],
 })
+
 export class AppModule { }

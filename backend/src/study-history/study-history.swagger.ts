@@ -1,11 +1,13 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiQuery, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { StudySessionResponseDto } from '../study-sessions/dto/study-session-response.dto';
 import { ApiPaginatedResponse } from '../common/swagger/paginated-response.swagger';
 
 export const StudyHistorySwagger = {
 
   findAll: applyDecorators(
+    ApiTags('Study History'),
+
     ApiOperation({
       summary: 'Get study history',
       description: 'Returns paginated study sessions from the authenticated user with optional filters.'

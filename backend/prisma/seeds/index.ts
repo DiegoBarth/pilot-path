@@ -7,6 +7,7 @@ import { seedStudySessions } from './study-sessions.seed';
 import { seedFlashcards } from './flashcards.seed';
 import { seedEnrollments } from './enrollments.seed';
 import { seedFlashcardReviews } from './flashcard-reviews.seed';
+import { seedQuestions } from './questions.seed';
 
 export async function runSeeds(prisma: PrismaClient) {
   await seedCertifications(prisma);
@@ -17,4 +18,5 @@ export async function runSeeds(prisma: PrismaClient) {
   await seedStudySessions(prisma);
   await seedFlashcards(prisma);
   await seedFlashcardReviews(prisma);
+  await seedQuestions(prisma);
 }

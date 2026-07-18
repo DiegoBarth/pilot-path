@@ -43,7 +43,7 @@
 ## v0.4 - Learning
 
 - [x] Flashcards
-- [ ] Question Bank
+- [x] Question Bank
 - [ ] Mock Exams
 
 ---

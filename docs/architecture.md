@@ -113,10 +113,11 @@ Protected endpoints use the `@Auth()` decorator, which applies JWT validation an
 - Flashcard
 - UserFlashcard
 - FlashcardReview
-  
+- Question
+- QuestionAlternative  
+
 ### Planned Entities
 
-- Question
 - MockExam
 - Achievement
 - Dashboard Statistics
@@ -176,6 +177,10 @@ erDiagram
     CertificationSubject ||--o{ StudySession : references
 
     Subject ||--o{ Flashcard : contains
+
+    Subject ||--o{ Question : contains
+
+    Question ||--o{ QuestionAlternative : contains
 
     User ||--o{ UserFlashcard : owns
 
@@ -250,6 +255,9 @@ GET    /api/v1/flashcards/:id
 GET    /api/v1/flashcards/reviews
 POST   /api/v1/flashcards/:id/review
 
+POST   /api/v1/questions
+GET    /api/v1/questions
+GET    /api/v1/questions/:id
 ```
 
 The API is documented through OpenAPI (Swagger) and generated automatically from NestJS decorators.
