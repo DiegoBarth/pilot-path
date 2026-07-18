@@ -53,6 +53,7 @@ Current entities:
 - FlashcardReview
 - Question
 - QuestionAlternative
+- UserQuestion
   
 Additional entities will be introduced incrementally as new features are implemented.
 

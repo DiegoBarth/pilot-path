@@ -29,6 +29,7 @@ PilotPath is a platform built to accompany a pilot throughout their entire journ
 
 - Subjects
 - Question bank
+- Question practice
 - Flashcards
 - Mock exams
 
@@ -165,11 +166,18 @@ Project documentation is available in the `docs` directory.
 - Flashcard review history
 - Spaced repetition foundation
 - Next review date calculation
-
+- Question bank
+- Question creation and subject association
+- Question alternatives management
+- Question answering flow
+- Answer history tracking
+- Response time tracking
+- Question performance foundation
+  
 ### In Progress
 
-- Question Bank
 - Mock Exams
+- User performance dashboard
   
 ---
 

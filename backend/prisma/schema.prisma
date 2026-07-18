@@ -59,6 +59,7 @@ model User {
 
   enrollments Enrollment[]
   flashcards  UserFlashcard[]
+  questions   UserQuestion[]
 
   @@map("users")
 }
@@ -253,6 +254,7 @@ model Question {
   subject Subject @relation(fields: [subjectId], references: [id])
 
   alternatives QuestionAlternative[]
+  attempts UserQuestion[]
 
   @@index([subjectId])
   @@map("questions")
@@ -273,7 +275,33 @@ model QuestionAlternative {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answers  UserQuestion[]
 
   @@index([questionId])
   @@map("question_alternatives")
+}
+
+model UserQuestion {
+  id String @id @default(uuid()) @db.Uuid
+
+  userId     String @map("user_id") @db.Uuid
+  questionId String @map("question_id") @db.Uuid
+
+  selectedAlternativeId String @map("selected_alternative_id") @db.Uuid
+
+  isCorrect Boolean @map("is_correct")
+
+  responseTime Int @map("response_time")
+  
+  answeredAt DateTime @default(now()) @map("answered_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  question Question @relation(fields: [questionId], references: [id])
+
+  selectedAlternative QuestionAlternative @relation(fields: [selectedAlternativeId], references: [id])
+
+  @@index([userId])
+  @@index([questionId])
+  @@map("user_questions")
 }

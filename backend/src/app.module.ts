@@ -11,6 +11,7 @@ import { StudyHistoryModule } from './study-history/study-history.module';
 import { FlashcardsModule } from './flashcards/flashcards.module';
 import { FlashcardReviewsModule } from './flashcard-reviews/flashcard-reviews.module';
 import { QuestionsModule } from './questions/questions.module';
+import { QuestionPracticeModule } from './question-practice/question-practice.module';
 import appConfig from './config/app.config';
 import authConfig from './config/auth.config';
 
@@ -34,7 +35,8 @@ import authConfig from './config/auth.config';
     StudyHistoryModule,
     FlashcardReviewsModule,
     FlashcardsModule,
-    QuestionsModule
+    QuestionPracticeModule,
+    QuestionsModule,
   ],
 })
 

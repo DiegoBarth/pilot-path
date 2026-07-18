@@ -187,6 +187,12 @@ erDiagram
     Flashcard ||--o{ UserFlashcard : tracks
 
     UserFlashcard ||--o{ FlashcardReview : records
+
+    User ||--o{ UserQuestion : answers
+
+    Question ||--o{ UserQuestion : receives
+
+    QuestionAlternative ||--o{ UserQuestion : selected
 ```
 
 Study sessions are linked to both an enrollment and a certification subject, ensuring every recorded study activity belongs to a specific certification and subject while allowing accurate progress tracking.
@@ -198,6 +204,12 @@ A user may enroll in multiple certifications throughout their career.
 Each certification contains one or more subjects, and every study session is associated with both an enrollment and a certification subject, allowing accurate progress tracking across different certifications.
 
 Certifications represent aviation milestones that users can pursue throughout their pilot career.
+
+Question practice extends the certification preparation domain by allowing users to answer aviation questions and track their performance.
+
+Questions belong to specific subjects and contain multiple alternatives with a defined correct answer.
+
+Each user answer is stored as a UserQuestion record, allowing future features such as performance statistics, weak subject detection, and adaptive study recommendations.
 
 ---
 
@@ -258,6 +270,9 @@ POST   /api/v1/flashcards/:id/review
 POST   /api/v1/questions
 GET    /api/v1/questions
 GET    /api/v1/questions/:id
+
+POST   /api/v1/question-practice/:id/answer
+GET    /api/v1/question-practice/history
 ```
 
 The API is documented through OpenAPI (Swagger) and generated automatically from NestJS decorators.
