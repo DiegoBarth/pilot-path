@@ -60,6 +60,7 @@ model User {
   enrollments Enrollment[]
   flashcards  UserFlashcard[]
   questions   UserQuestion[]
+  mockExams   MockExam[]
 
   @@map("users")
 }
@@ -98,6 +99,7 @@ model Subject {
   certifications CertificationSubject[]
   flashcards     Flashcard[]
   questions      Question[]
+  mockExams      MockExam[]
 
   @@map("subjects")
 }
@@ -235,38 +237,33 @@ model FlashcardReview {
 }
 
 model Question {
-  id String @id @default(uuid()) @db.Uuid
-
+  id        String @id @default(uuid()) @db.Uuid
   subjectId String @map("subject_id") @db.Uuid
 
-  statement String @db.Text
-
+  statement   String  @db.Text
   explanation String? @db.Text
 
   difficulty QuestionDifficulty
-
-  isActive Boolean @default(true) @map("is_active")
+  isActive   Boolean            @default(true) @map("is_active")
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  subject Subject @relation(fields: [subjectId], references: [id])
-
-  alternatives QuestionAlternative[]
-  attempts UserQuestion[]
+  subject           Subject               @relation(fields: [subjectId], references: [id])
+  alternatives      QuestionAlternative[]
+  attempts          UserQuestion[]
+  mockExamQuestions MockExamQuestion[]
 
   @@index([subjectId])
   @@map("questions")
 }
 
 model QuestionAlternative {
-  id String @id @default(uuid()) @db.Uuid
-
+  id         String @id @default(uuid()) @db.Uuid
   questionId String @map("question_id") @db.Uuid
 
-  letter String
-
+  letter  String
   content String @db.Text
 
   isCorrect Boolean @map("is_correct")
@@ -274,8 +271,9 @@ model QuestionAlternative {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  answers  UserQuestion[]
+  question          Question           @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answers           UserQuestion[]
+  mockExamQuestions MockExamQuestion[]
 
   @@index([questionId])
   @@map("question_alternatives")
@@ -292,7 +290,7 @@ model UserQuestion {
   isCorrect Boolean @map("is_correct")
 
   responseTime Int @map("response_time")
-  
+
   answeredAt DateTime @default(now()) @map("answered_at")
 
   user User @relation(fields: [userId], references: [id])
@@ -304,4 +302,53 @@ model UserQuestion {
   @@index([userId])
   @@index([questionId])
   @@map("user_questions")
+}
+
+model MockExam {
+  id        String  @id @default(uuid()) @db.Uuid
+  userId    String  @map("user_id") @db.Uuid
+  subjectId String? @map("subject_id") @db.Uuid
+
+  score          Int     @default(0)
+  totalQuestions Int     @map("total_questions")
+  correctAnswers Int     @default(0) @map("correct_answers")
+  passingScore   Int     @default(70) @map("passing_score")
+  passed         Boolean @default(false)
+
+  duration   Int?      @map("duration")
+  startedAt  DateTime  @default(now()) @map("started_at")
+  finishedAt DateTime? @map("finished_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+
+  user      User               @relation(fields: [userId], references: [id])
+  subject   Subject?           @relation(fields: [subjectId], references: [id])
+  questions MockExamQuestion[]
+
+  @@index([userId])
+  @@index([subjectId])
+  @@map("mock_exams")
+}
+
+model MockExamQuestion {
+  id                    String  @id @default(uuid()) @db.Uuid
+  mockExamId            String  @map("mock_exam_id") @db.Uuid
+  questionId            String  @map("question_id") @db.Uuid
+  selectedAlternativeId String? @map("selected_alternative_id") @db.Uuid
+
+  displayOrder Int      @map("display_order")
+  isCorrect    Boolean? @map("is_correct")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  mockExam            MockExam             @relation(fields: [mockExamId], references: [id], onDelete: Cascade)
+  question            Question             @relation(fields: [questionId], references: [id])
+  selectedAlternative QuestionAlternative? @relation(fields: [selectedAlternativeId], references: [id])
+
+  @@unique([mockExamId, questionId])
+  @@index([mockExamId])
+  @@index([questionId])
+  @@map("mock_exam_questions")
 }

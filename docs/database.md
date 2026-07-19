@@ -54,9 +54,9 @@ Current entities:
 - Question
 - QuestionAlternative
 - UserQuestion
+- MockExam
+- MockExamQuestion
   
-Additional entities will be introduced incrementally as new features are implemented.
-
 ## Development Workflow
 
 Whenever the database schema changes:

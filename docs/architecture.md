@@ -114,11 +114,13 @@ Protected endpoints use the `@Auth()` decorator, which applies JWT validation an
 - UserFlashcard
 - FlashcardReview
 - Question
-- QuestionAlternative  
+- QuestionAlternative
+- UserQuestion
+- MockExam
+- MockExamQuestion
 
 ### Planned Entities
 
-- MockExam
 - Achievement
 - Dashboard Statistics
 - Flight Logbook
@@ -163,36 +165,45 @@ These components provide consistency across paginated endpoints and reduce dupli
 
 ```mermaid
 erDiagram
+  User ||--o{ Enrollment : enrolls
 
-    User ||--o{ Enrollment : enrolls
+  Certification ||--o{ Enrollment : contains
 
-    Certification ||--o{ Enrollment : contains
+  Certification ||--o{ CertificationSubject : includes
 
-    Certification ||--o{ CertificationSubject : includes
+  Subject ||--o{ CertificationSubject : belongs_to
 
-    Subject ||--o{ CertificationSubject : belongs_to
+  Enrollment ||--o{ StudySession : records
 
-    Enrollment ||--o{ StudySession : records
+  CertificationSubject ||--o{ StudySession : references
 
-    CertificationSubject ||--o{ StudySession : references
+  Subject ||--o{ Flashcard : contains
 
-    Subject ||--o{ Flashcard : contains
+  Subject ||--o{ Question : contains
 
-    Subject ||--o{ Question : contains
+  Question ||--o{ QuestionAlternative : contains
 
-    Question ||--o{ QuestionAlternative : contains
+  User ||--o{ UserFlashcard : owns
 
-    User ||--o{ UserFlashcard : owns
+  Flashcard ||--o{ UserFlashcard : tracks
 
-    Flashcard ||--o{ UserFlashcard : tracks
+  UserFlashcard ||--o{ FlashcardReview : records
 
-    UserFlashcard ||--o{ FlashcardReview : records
+  User ||--o{ UserQuestion : answers
 
-    User ||--o{ UserQuestion : answers
+  Question ||--o{ UserQuestion : receives
 
-    Question ||--o{ UserQuestion : receives
+  QuestionAlternative ||--o{ UserQuestion : selected
 
-    QuestionAlternative ||--o{ UserQuestion : selected
+  User ||--o{ MockExam : takes
+
+  Subject ||--o{ MockExam : contains
+
+  MockExam ||--o{ MockExamQuestion : includes
+
+  Question ||--o{ MockExamQuestion : appears_in
+
+  QuestionAlternative ||--o{ MockExamQuestion : selected
 ```
 
 Study sessions are linked to both an enrollment and a certification subject, ensuring every recorded study activity belongs to a specific certification and subject while allowing accurate progress tracking.
@@ -211,6 +222,14 @@ Questions belong to specific subjects and contain multiple alternatives with a d
 
 Each user answer is stored as a UserQuestion record, allowing future features such as performance statistics, weak subject detection, and adaptive study recommendations.
 
+Mock exams extend the question practice domain by allowing users to simulate aviation certification exams.
+
+A mock exam is generated from a randomized set of active questions belonging to a subject.
+
+Each selected question is stored through MockExamQuestion, preserving the exam structure, question order, selected alternative and correctness result.
+
+Exam completion calculates the final score, number of correct answers and pass/fail status, creating the foundation for future analytics and performance tracking.
+
 ---
 
 ## Learning Domains
@@ -221,8 +240,9 @@ Current learning domains include:
 
 - Study Management
 - Flashcard Learning
-- Question Bank (planned)
-- Mock Exams (planned)
+- Question Bank
+- Question Practice
+- Mock Exams
 
 Each domain contains its own business rules, entities, and application modules.
 
@@ -273,6 +293,11 @@ GET    /api/v1/questions/:id
 
 POST   /api/v1/question-practice/:id/answer
 GET    /api/v1/question-practice/history
+
+POST   /api/v1/mock-exams
+GET    /api/v1/mock-exams
+GET    /api/v1/mock-exams/:id
+POST   /api/v1/mock-exams/:id/finish
 ```
 
 The API is documented through OpenAPI (Swagger) and generated automatically from NestJS decorators.

@@ -133,7 +133,7 @@ Project documentation is available in the `docs` directory.
 
 ## 🚧 Project Status
 
-**Current Version:** `v0.4.2`
+**Current Version:** `v0.5.0`
 
 ### Completed
 
@@ -173,11 +173,16 @@ Project documentation is available in the `docs` directory.
 - Answer history tracking
 - Response time tracking
 - Question performance foundation
+- Mock exam generation
+- Random question selection
+- Mock exam completion flow
+- Score calculation
+- Pass/fail evaluation
+- Mock exam history
   
 ### In Progress
 
-- Mock Exams
-- User performance dashboard
+- Analytics
   
 ---
 

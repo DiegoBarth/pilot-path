@@ -44,7 +44,7 @@
 
 - [x] Flashcards
 - [x] Question Bank
-- [ ] Mock Exams
+- [x] Mock Exams
 
 ---
 
