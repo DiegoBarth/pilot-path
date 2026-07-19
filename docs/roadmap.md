@@ -40,22 +40,71 @@
 
 ---
 
-## v0.4 - Learning
+## v0.4 - Learning System
 
 - [x] Flashcards
 - [x] Question Bank
+- [x] Question Practice
 - [x] Mock Exams
 
 ---
 
-## v0.5 - Dashboard
+## v0.5 - Learning Analytics
 
-- [ ] Statistics
-- [ ] Charts
-- [ ] Achievements
+- [ ] Learning Statistics Foundation
+- [ ] Flashcard Performance Statistics
+- [ ] Question Practice Statistics
+- [ ] Mock Exam Statistics
+- [ ] Subject Performance Analytics
+- [ ] Learning Analytics Dashboard
 
 ---
 
-## v1.0
+## v0.6 - Frontend Application
+
+- [ ] Next.js Application Setup
+- [ ] Frontend Architecture Implementation
+- [ ] API Client Layer
+- [ ] Authentication Flow
+- [ ] Protected Routes
+- [ ] Dashboard Interface
+- [ ] Certification Interface
+- [ ] Flashcard Interface
+- [ ] Mock Exam Interface
+- [ ] Learning Statistics Interface
+
+---
+
+## v0.7 - User Experience
+
+- [ ] Responsive Design
+- [ ] Loading States
+- [ ] Empty States
+- [ ] Error Handling
+- [ ] Accessibility Improvements
+- [ ] UI Refinements
+
+---
+
+## v0.8 - Gamification
+
+- [ ] Achievements
+- [ ] Learning Streaks
+- [ ] User Progress Badges
+- [ ] Study Goals
+
+---
+
+## v1.0 - Public Release
 
 First public release.
+
+Features:
+
+- Complete certification study workflow
+- Flashcards
+- Question practice
+- Mock exams
+- Learning analytics
+- User dashboard
+- Responsive web application
