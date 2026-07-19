@@ -133,7 +133,7 @@ Project documentation is available in the `docs` directory.
 
 ## 🚧 Project Status
 
-**Current Version:** `v0.5.0`
+**Current Version:** `v0.5.1`
 
 ### Completed
 

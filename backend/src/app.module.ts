@@ -13,6 +13,7 @@ import { FlashcardReviewsModule } from './flashcard-reviews/flashcard-reviews.mo
 import { QuestionsModule } from './questions/questions.module';
 import { QuestionPracticeModule } from './question-practice/question-practice.module';
 import { MockExamsModule } from './mock-exams/mock-exams.module';
+import { LearningModule } from './learning/learning.module';
 import appConfig from './config/app.config';
 import authConfig from './config/auth.config';
 
@@ -38,7 +39,8 @@ import authConfig from './config/auth.config';
     FlashcardsModule,
     QuestionPracticeModule,
     QuestionsModule,
-    MockExamsModule
+    MockExamsModule,
+    LearningModule
   ],
 })
 

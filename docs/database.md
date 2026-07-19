@@ -56,6 +56,8 @@ Current entities:
 - UserQuestion
 - MockExam
 - MockExamQuestion
+
+Analytics features are generated dynamically from existing learning activity data, including flashcards, questions and mock exams. No dedicated analytics tables are currently required.
   
 ## Development Workflow
 

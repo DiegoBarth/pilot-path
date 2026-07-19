@@ -243,6 +243,7 @@ Current learning domains include:
 - Question Bank
 - Question Practice
 - Mock Exams
+- Learning Analytics
 
 Each domain contains its own business rules, entities, and application modules.
 
@@ -298,6 +299,8 @@ POST   /api/v1/mock-exams
 GET    /api/v1/mock-exams
 GET    /api/v1/mock-exams/:id
 POST   /api/v1/mock-exams/:id/finish
+
+GET    /api/v1/learning/statistics
 ```
 
 The API is documented through OpenAPI (Swagger) and generated automatically from NestJS decorators.

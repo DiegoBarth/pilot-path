@@ -201,7 +201,7 @@ Domain-specific components.
 
 ### Dashboard Feature
 
-Responsible for the main hub and user progress overview.
+The dashboard consumes Learning Analytics APIs to display user progress, performance indicators and learning trends.
 
 * **Components:** Progress summary, quick access actions, and study activity timeline.
 * *On-screen messages:* "Painel", "Continuar Última Sessão", "Quiz Rápido", "Minhas Certificações".
@@ -234,6 +234,21 @@ Timer is calculated from:
 
 The frontend must persist unfinished exams and restore the session when reopened. This behavior depends on backend persistence through `MockExam` status fields and frontend session recovery logic.
 * *On-screen messages:* "Tempo Restante: [MM:SS]", "Anterior", "Próxima", "Finalizar Simulado", "Pontuação Final", "Aprovado / Reprovado".
+
+### Analytics Feature
+
+Responsible for displaying learning performance insights.
+
+Includes:
+
+- Flashcard accuracy
+- Question accuracy
+- Mock exam performance
+- Subject performance
+- Weak subjects
+- Performance trends
+
+Data is provided by the backend Learning Statistics API.
 
 ---
 
