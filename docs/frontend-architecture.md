@@ -137,15 +137,19 @@ Feature modules must consume the centralized API client instead of creating inde
 
 ## 5. Authentication Flow
 
-Authentication uses JWT tokens.
+Authentication is managed through a global AuthProvider.
 
-**Flow:**
+Current implementation includes:
 
-1. User logs in.
-2. Backend returns JWT token.
-3. Frontend manages authentication state. *(Note: The specific storage mechanism—e.g., httpOnly cookie, localStorage, Next middleware—will be defined via a future ADR).*
-4. API client automatically attaches Authorization header.
-5. Protected routes validate authentication state.
+- Login
+- Registration
+- JWT storage
+- Authentication Context
+- Protected route guard
+- Session persistence through localStorage
+- Automatic session restoration after page reload
+
+Future iterations will introduce refresh tokens and backend session validation.
 
 **Protected areas:**
 

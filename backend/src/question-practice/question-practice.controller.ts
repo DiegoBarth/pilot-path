@@ -14,7 +14,6 @@ export class QuestionPracticeController {
   @Get('history')
   @QuestionPracticeSwagger.history
   async history(@AuthUser() user: any) {
-    console.log('user', user);
     return this.service.findHistory(user.id);
   }
 

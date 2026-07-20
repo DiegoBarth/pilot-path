@@ -10,23 +10,36 @@ interface ApiRequestOptions extends RequestInit {
   token?: string;
 }
 
-export async function apiClient<T>(endpoint: string, options: ApiRequestOptions = {}): Promise<T> {
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-      ...(options.token && {
-        Authorization: `Bearer ${options.token}`
-      })
-    }
-  });
-  console.log(response);
+export async function apiClient<T>(
+  endpoint: string,
+  options: ApiRequestOptions = {},
+): Promise<T> {
+
+  const response = await fetch(
+    `${API_URL}${endpoint}`,
+    {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...options.headers,
+        ...(options.token && {
+          Authorization:
+            `Bearer ${options.token}`,
+        }),
+      },
+    },
+  );
+
+
   if (!response.ok) {
-    const error = await response.json();
+
+    const error =
+      await response.json();
 
     throw error as ApiError;
   }
 
+
   return response.json();
+
 }
