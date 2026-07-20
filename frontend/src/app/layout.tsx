@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Geist } from "next/font/google";
-import { Providers } from "@/providers";
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+import { Providers } from "../providers";
 
 export const metadata: Metadata = {
   title: "PilotPath",
@@ -16,12 +10,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className={geist.variable}>
+      <body>
         <Providers>
           {children}
         </Providers>

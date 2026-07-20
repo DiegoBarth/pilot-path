@@ -114,6 +114,25 @@ features/
 
 ```
 
+## API Client Layer
+
+The frontend uses a centralized API client located at:
+
+src/lib/api/
+
+├── client.ts
+└── endpoints.ts
+
+The API client is responsible for:
+
+- Backend communication
+- Base URL configuration
+- Authentication headers
+- Error normalization
+- Response handling
+
+Feature modules must consume the centralized API client instead of creating independent HTTP clients.
+
 ---
 
 ## 5. Authentication Flow
