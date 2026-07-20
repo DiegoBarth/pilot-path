@@ -52,7 +52,7 @@
 ## v0.5 - Learning Analytics
 
 - [x] Learning Statistics Foundation
-- [ ] Flashcard Performance Statistics
+- [x] Flashcard Performance Statistics
 - [ ] Question Practice Statistics
 - [ ] Mock Exam Statistics
 - [ ] Subject Performance Analytics

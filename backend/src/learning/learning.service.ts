@@ -4,6 +4,7 @@ import { WeakSubjectDto } from "./dto/weak-subject.dto";
 import { PrismaService } from "../database/prisma.service";
 import { LearningStatisticsDto } from "./dto/learning-statistics.dto";
 import { PerformanceTrendDto } from "./dto/performance-trend.dto";
+import { FlashcardPerformanceDto } from "./dto/flashcard-performance.dto";
 
 @Injectable()
 export class LearningStatisticsService {
@@ -200,6 +201,60 @@ export class LearningStatisticsService {
       period: exam.finishedAt!.toISOString().slice(0, 7),
       accuracy: exam.score
     }));
+  }
+
+  async getFlashcardStatistics(userId: string): Promise<FlashcardPerformanceDto> {
+    const reviews = await this.prisma.flashcardReview.findMany({
+      where: {
+        userFlashcard: {
+          userId
+        }
+      },
+      orderBy: {
+        reviewedAt: 'asc'
+      },
+      select: {
+        isCorrect: true,
+        reviewedAt: true
+      }
+    });
+
+    const totalReviews = reviews.length;
+
+    const correctAnswers = reviews.filter((review) => review.isCorrect).length;
+
+    const wrongAnswers = totalReviews - correctAnswers;
+
+    const accuracy = totalReviews === 0 ? 0 : Number(((correctAnswers / totalReviews) * 100).toFixed(2));
+
+    const history = new Map<
+      string,
+      {
+        period: string;
+        reviews: number;
+      }
+    >();
+
+    for (const review of reviews) {
+      const period = review.reviewedAt.toISOString().slice(0, 7);
+
+      if (!history.has(period)) {
+        history.set(period, {
+          period,
+          reviews: 0
+        });
+      }
+
+      history.get(period)!.reviews++;
+    }
+
+    return {
+      totalReviews,
+      correctAnswers,
+      wrongAnswers,
+      accuracy,
+      reviewHistory: [...history.values()]
+    };
   }
 
 }

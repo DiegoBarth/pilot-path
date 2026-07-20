@@ -301,6 +301,7 @@ GET    /api/v1/mock-exams/:id
 POST   /api/v1/mock-exams/:id/finish
 
 GET    /api/v1/learning/statistics
+GET    /api/v1/learning/statistics/flashcards
 ```
 
 The API is documented through OpenAPI (Swagger) and generated automatically from NestJS decorators.

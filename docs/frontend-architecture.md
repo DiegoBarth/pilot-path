@@ -250,6 +250,20 @@ Includes:
 
 Data is provided by the backend Learning Statistics API.
 
+Flashcard statistics are retrieved through:
+
+```http
+GET /api/v1/learning/statistics/flashcards
+```
+
+The endpoint provides:
+
+- Total reviews
+- Correct answers
+- Wrong answers
+- Accuracy percentage
+- Monthly review history
+
 ---
 
 ## 10. UI States
