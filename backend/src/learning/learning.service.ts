@@ -8,6 +8,7 @@ import { FlashcardPerformanceDto } from "./dto/flashcard-performance.dto";
 import { DifficultyPerformanceDto } from "./dto/difficulty-performance.dto";
 import { QuestionDifficulty } from "@prisma/client";
 import { QuestionPerformanceDto } from "./dto/question-performance.dto";
+import { MockExamPerformanceDto } from "./dto/mock-exam-performance.dto";
 
 @Injectable()
 export class LearningStatisticsService {
@@ -333,6 +334,89 @@ export class LearningStatisticsService {
       wrongAnswers,
       accuracy,
       performanceByDifficulty
+    };
+  }
+
+  async getMockExamStatistics(userId: string): Promise<MockExamPerformanceDto> {
+    const exams = await this.prisma.mockExam.findMany({
+      where: {
+        userId,
+        deletedAt: null,
+        finishedAt: {
+          not: null
+        }
+      },
+      orderBy: {
+        finishedAt: 'asc'
+      },
+      select: {
+        score: true,
+        passed: true,
+        finishedAt: true
+      }
+    });
+
+    const completedExams = exams.length;
+
+    if (completedExams === 0) {
+      return {
+        completedExams: 0,
+        averageScore: 0,
+        approvalRate: 0,
+        bestResult: 0,
+        worstResult: 0,
+        scoreHistory: []
+      };
+    }
+
+    const totalScore = exams.reduce((sum, exam) => sum + exam.score, 0);
+
+    const averageScore = Number((totalScore / completedExams).toFixed(2));
+
+    const approvedExams = exams.filter((exam) => exam.passed).length;
+
+    const approvalRate = Number(((approvedExams / completedExams) * 100).toFixed(2));
+
+    const bestResult = Math.max(...exams.map((exam) => exam.score));
+
+    const worstResult = Math.min(...exams.map((exam) => exam.score));
+
+    const history = new Map<
+      string,
+      {
+        totalScore: number;
+        totalExams: number;
+      }
+    >();
+
+    for (const exam of exams) {
+      const period = exam.finishedAt!.toISOString().substring(0, 7);
+
+      if (!history.has(period)) {
+        history.set(period, {
+          totalScore: 0,
+          totalExams: 0
+        });
+      }
+
+      const item = history.get(period)!;
+
+      item.totalScore += exam.score;
+      item.totalExams++;
+    }
+
+    const scoreHistory = [...history.entries()].map(([period, value]) => ({
+      period,
+      averageScore: Number((value.totalScore / value.totalExams).toFixed(2))
+    }));
+
+    return {
+      completedExams,
+      averageScore,
+      approvalRate,
+      bestResult,
+      worstResult,
+      scoreHistory
     };
   }
 

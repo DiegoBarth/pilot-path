@@ -5,6 +5,7 @@ import { ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@
 import { LearningStatisticsDto } from './dto/learning-statistics.dto';
 import { FlashcardPerformanceDto } from './dto/flashcard-performance.dto';
 import { QuestionPerformanceDto } from './dto/question-performance.dto';
+import { MockExamPerformanceDto } from './dto/mock-exam-performance.dto';
 
 export const LearningStatisticsSwagger = {
 
@@ -60,6 +61,24 @@ export const LearningStatisticsSwagger = {
     ApiUnauthorizedResponse({
       description: 'Unauthorized.'
     }),
-  )
+  ),
+
+  mockExams: applyDecorators(
+    ApiTags('Learning Statistics'),
+
+    ApiOperation({
+      summary: 'Get mock exam performance statistics',
+      description: 'Returns mock exam performance statistics for the authenticated user.'
+    }),
+
+    ApiOkResponse({
+      type: MockExamPerformanceDto,
+      description: 'Mock exam performance statistics successfully retrieved.'
+    }),
+
+    ApiUnauthorizedResponse({
+      description: 'Unauthorized.'
+    }),
+  ),
 
 };

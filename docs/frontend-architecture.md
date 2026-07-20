@@ -278,6 +278,21 @@ The endpoint provides:
 - Overall accuracy
 - Performance grouped by difficulty level
 
+Mock exam performance statistics are retrieved through:
+
+```http
+GET /api/v1/learning/statistics/mock-exams
+```
+
+The endpoint provides:
+
+- Completed exams
+- Average score
+- Approval rate
+- Best result
+- Worst result
+- Score history over time
+
 ---
 
 ## 10. UI States

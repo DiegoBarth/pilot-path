@@ -31,4 +31,11 @@ export class LearningStatisticsController {
     return this.service.getQuestionStatistics(userId);
   }
 
+  @Auth()
+  @Get('learning/statistics/mock-exams')
+  @ApplySwagger(LearningStatisticsSwagger.mockExams)
+  mockExams(@AuthUser('id') userId: string) {
+    return this.service.getMockExamStatistics(userId);
+  }
+
 }
