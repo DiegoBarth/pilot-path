@@ -1,66 +1,82 @@
-import { Check, Clock, ShieldCheck, Zap } from "lucide-react";
+import {
+  CheckCircle2,
+  ClipboardList,
+  Clock,
+  PlaneLanding,
+  ShieldCheck,
+  type LucideIcon,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { ProgressRing } from "@/components/shared/ProgressRing";
+import { AttitudeIndicator } from "@/components/shared/AttitudeIndicator";
 
-export function ProgressCircle({ percent }: { percent: number }) {
-  const radius = 70;
-  const stroke = 6; // Gráfico mais fino
-  const normalizedRadius = radius - stroke * 2;
-  const circumference = normalizedRadius * 2 * Math.PI;
-  const strokeDashoffset = circumference - (percent / 100) * circumference;
+interface ProgressCircleProps {
+  percent: number;
+}
 
-  // Ícones representativos ao redor do círculo
-  const statusIcons = [
-    { icon: Clock, style: "top-[-10px] left-[50%] translate-x-[-50%]" },
-    { icon: Zap, style: "right-[-10px] top-[50%] translate-y-[-50%]" },
-    { icon: ShieldCheck, style: "bottom-[-10px] left-[50%] translate-x-[-50%]" },
-    { icon: Check, style: "left-[-10px] top-[50%] translate-y-[-50%]" },
-  ];
+const RING_SIZE = 190;
+
+const ORBIT_NODES: {
+  angle: number;
+  icon: LucideIcon;
+  tone: "amber" | "teal";
+}[] = [
+  { angle: 305, icon: Clock, tone: "amber" },
+  { angle: 255, icon: CheckCircle2, tone: "amber" },
+  { angle: 210, icon: ClipboardList, tone: "amber" },
+  { angle: 55, icon: CheckCircle2, tone: "teal" },
+  { angle: 102, icon: ShieldCheck, tone: "teal" },
+  { angle: 155, icon: PlaneLanding, tone: "teal" },
+];
+
+const glowByTone = {
+  amber: "border-amber-400/50 bg-[#1E2834] text-amber-400 shadow-[0_0_14px_rgba(245,158,11,0.5)]",
+  teal: "border-teal-400/50 bg-[#1E2834] text-teal-400 shadow-[0_0_14px_rgba(45,212,191,0.45)]",
+};
+
+export function ProgressCircle({ percent }: ProgressCircleProps) {
+  const box = RING_SIZE + 56;
 
   return (
-    <div className="flex w-full items-center justify-start rounded-xl border border-slate-800 bg-slate-900/50 p-8">
-      <div className="relative flex h-44 w-44 items-center justify-center">
-        {/* Gráfico SVG */}
-        <svg height={radius * 2} width={radius * 2} className="rotate-[-90deg]">
-          <circle stroke="#1e293b" strokeWidth={stroke} fill="transparent" r={normalizedRadius} cx={radius} cy={radius} />
-          <circle
-            stroke="#f59e0b"
-            strokeWidth={stroke}
-            strokeDasharray={circumference + ' ' + circumference}
-            style={{ strokeDashoffset }}
-            strokeLinecap="round"
-            fill="transparent"
-            r={normalizedRadius}
-            cx={radius}
-            cy={radius}
-            className="transition-all duration-700 ease-out"
-          />
-        </svg>
-
-        {/* Marcadores ao redor do círculo */}
-        {statusIcons.map((item, i) => (
-          <div key={i} className={cn("absolute flex h-8 w-8 items-center justify-center rounded-full border border-slate-700 bg-slate-800", item.style)}>
-            <item.icon className="h-4 w-4 text-emerald-500" />
-          </div>
-        ))}
-
-        {/* Centro do Progresso */}
-        <div className="absolute flex flex-col items-center">
-          <span className="text-4xl font-bold text-slate-50">{percent}%</span>
-          <span className="text-[10px] uppercase tracking-widest text-slate-400">Complete</span>
+    <div className="relative flex h-full min-h-[260px] w-full items-center overflow-hidden rounded-2xl border border-white/5 bg-[#1E2834] p-6">
+      <div className="pointer-events-none absolute inset-y-2 right-2 flex w-[48%] items-center justify-center opacity-75">
+        <div className="h-full max-h-[240px] w-full max-w-[240px]">
+          <AttitudeIndicator />
         </div>
       </div>
 
-      {/* Texto descritivo à direita */}
-      <div className="ml-12">
-        <h3 className="text-xl font-semibold text-slate-50">Private Pilot Certification</h3>
-        <p className="mt-2 text-sm text-slate-400 max-w-xs">
-          Acompanhe o progresso detalhado de cada módulo do seu curso PPL diretamente pelo cockpit.
-        </p>
+      <div className="relative z-10 shrink-0" style={{ height: box, width: box }}>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <ProgressRing
+            percent={percent}
+            size={RING_SIZE}
+            strokeWidth={12}
+            label="Complete"
+            trackColor="#1a2235"
+          />
+        </div>
+
+        {ORBIT_NODES.map((node, index) => {
+          const angle = (node.angle * Math.PI) / 180;
+          const orbitR = RING_SIZE / 2 + 15;
+          const cx = box / 2 + orbitR * Math.sin(angle);
+          const cy = box / 2 - orbitR * Math.cos(angle);
+          const Icon = node.icon;
+
+          return (
+            <div
+              key={index}
+              style={{ left: cx, top: cy }}
+              className={cn(
+                "absolute flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border",
+                glowByTone[node.tone]
+              )}
+            >
+              <Icon className="h-3.5 w-3.5" />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
-}
-
-// Utilitário para facilitar as classes dinâmicas
-function cn(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
 }

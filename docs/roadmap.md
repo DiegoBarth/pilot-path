@@ -68,7 +68,7 @@
 - [x] Authentication Flow
 - [x] Protected Routes
 - [x] Dashboard Interface
-- [ ] Certification Interface
+- [x] Certification Interface
 - [ ] Flashcard Interface
 - [ ] Mock Exam Interface
 - [ ] Learning Statistics Interface

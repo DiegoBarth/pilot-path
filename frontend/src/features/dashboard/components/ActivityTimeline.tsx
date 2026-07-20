@@ -1,13 +1,16 @@
 "use client";
 
-import {
-  Target,
-  BookOpen,
-} from "lucide-react";
+export type ActivityType =
+  | "READING"
+  | "EXERCISES"
+  | "FLASHCARDS"
+  | "VIDEO"
+  | "SIMULATOR"
+  | "OTHER";
 
 interface Activity {
   id: string;
-  type: "FLASHCARD" | "MOCK_EXAM";
+  type: ActivityType;
   title: string;
   description: string;
   date: string;
@@ -17,16 +20,25 @@ interface ActivityTimelineProps {
   activities: Activity[];
 }
 
+const ACTIVITY_DOT_COLORS: Record<ActivityType, string> = {
+  READING: "bg-sky-500",
+  EXERCISES: "bg-[#EDAA3F]",
+  FLASHCARDS: "bg-emerald-500",
+  VIDEO: "bg-violet-500",
+  SIMULATOR: "bg-pink-500",
+  OTHER: "bg-slate-500",
+};
+
 export function ActivityTimeline({
   activities,
 }: ActivityTimelineProps) {
 
   return (
-    <div className="col-span-1 flex flex-col rounded-xl border border-slate-800 bg-slate-900/50 lg:col-span-3">
+    <div className="flex h-full flex-col rounded-2xl border border-white/5 bg-[#1E2834]">
 
-      <div className="border-b border-slate-800 p-6">
-        <h2 className="text-lg font-semibold text-slate-50">
-          Atividade Recente
+      <div className="border-b border-white/5 p-6">
+        <h2 className="text-lg font-semibold text-white">
+          Linha do Tempo de Estudos
         </h2>
       </div>
 
@@ -40,83 +52,29 @@ export function ActivityTimeline({
             </p>
           ) : (
 
-            <div className="space-y-6">
+            <ol className="relative space-y-6 border-l border-slate-800 pl-6">
 
               {
                 activities.map((activity) => (
+                  <li key={activity.id} className="relative">
 
-                  <div
-                    key={activity.id}
-                    className="flex gap-4"
-                  >
+                    <span
+                      className={`absolute -left-[29px] top-1 h-3 w-3 rounded-full ring-4 ring-slate-900 ${ACTIVITY_DOT_COLORS[activity.type]}`}
+                    />
 
-                    <div
-                      className="
-                        mt-0.5
-                        flex
-                        h-8
-                        w-8
-                        shrink-0
-                        items-center
-                        justify-center
-                        rounded-full
-                        bg-slate-800
-                      "
-                    >
+                    <p className="text-sm font-medium text-slate-200">
+                      {activity.title}
+                    </p>
 
-                      {
-                        activity.type === "FLASHCARD" ? (
-                          <Target
-                            className="
-                              h-4
-                              w-4
-                              text-amber-500
-                            "
-                          />
-                        ) : (
-                          <BookOpen
-                            className="
-                              h-4
-                              w-4
-                              text-emerald-500
-                            "
-                          />
-                        )
-                      }
+                    <p className="text-xs text-slate-500">
+                      {activity.description} • {activity.date}
+                    </p>
 
-                    </div>
-
-
-                    <div className="flex-1 space-y-1">
-
-                      <p
-                        className="
-                          text-sm
-                          font-medium
-                          text-slate-200
-                        "
-                      >
-                        {activity.title}
-                      </p>
-
-
-                      <p
-                        className="
-                          text-xs
-                          text-slate-500
-                        "
-                      >
-                        {activity.description} • {activity.date}
-                      </p>
-
-                    </div>
-
-                  </div>
-
+                  </li>
                 ))
               }
 
-            </div>
+            </ol>
 
           )
         }

@@ -5,6 +5,9 @@ import type {
   QuestionPerformance,
   MockExamPerformance,
   SubjectAnalyticsResponse,
+  EnrollmentSummary,
+  RecentStudySession,
+  PaginatedResult,
 } from "../types";
 
 export function getLearningStatistics() {
@@ -34,5 +37,17 @@ export function getMockExamStatistics() {
 export function getSubjectAnalytics() {
   return apiClient<SubjectAnalyticsResponse>(
     "/learning/statistics/subjects",
+  );
+}
+
+export function getEnrollments() {
+  return apiClient<EnrollmentSummary[]>(
+    "/enrollments",
+  );
+}
+
+export function getRecentStudyHistory(limit = 5) {
+  return apiClient<PaginatedResult<RecentStudySession>>(
+    `/study-history?limit=${limit}`,
   );
 }

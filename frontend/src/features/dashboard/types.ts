@@ -86,3 +86,47 @@ export interface SubjectAnalyticsResponse {
   subjects: SubjectAnalytics[];
   weakSubjects: WeakSubject[];
 }
+
+export type EnrollmentStatus = "ACTIVE" | "COMPLETED" | "PAUSED" | "DROPPED";
+
+export interface EnrollmentSummary {
+  id: string;
+  certificationId: string;
+  status: EnrollmentStatus;
+  certification: {
+    id: string;
+    name: string;
+  };
+}
+
+export type StudyActivityType =
+  | "READING"
+  | "EXERCISES"
+  | "FLASHCARDS"
+  | "VIDEO"
+  | "SIMULATOR"
+  | "OTHER";
+
+export interface RecentStudySession {
+  id: string;
+  startedAt: string;
+  studyType: StudyActivityType;
+  certification: {
+    id: string;
+    name: string;
+  };
+  subject: {
+    id: string;
+    name: string;
+  };
+}
+
+export interface PaginatedResult<T> {
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+}

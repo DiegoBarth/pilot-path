@@ -1,91 +1,106 @@
-import { Metadata } from "next";
+"use client";
+
+import { useParams } from "next/navigation";
+import { BookOpen, CheckCircle2 } from "lucide-react";
 
 import { CertificationHeader } from "@/features/certifications/components/CertificationHeader";
 import { ProgressCircle } from "@/features/certifications/components/ProgressCircle";
-import { QuickAccessMini } from "@/features/certifications/components/QuickAccessMini";
 import { CurriculumGrid } from "@/features/certifications/components/CurriculumGrid";
+import { useCertification } from "@/features/certifications/hooks/useCertification";
+import { QuickAccessPanel } from "@/components/shared/QuickAccessPanel";
 
-
-export const metadata: Metadata = {
-  title: "Certification | PilotPath",
+const STATUS_LABELS: Record<string, string> = {
+  ACTIVE: "Em Andamento",
+  COMPLETED: "Concluído",
+  PAUSED: "Pausado",
+  DROPPED: "Abandonado",
 };
 
-
 export default function CertificationDetailsPage() {
+  const { id } = useParams<{ id: string }>();
 
-  const certification = {
-    name: "Private Pilot License (PPL)",
-    description:
-      "Programa de formação para obtenção da licença de piloto privado.",
-  };
+  const {
+    certification,
+    subjects,
+    studiedSubjectIds,
+    sessionsCountBySubjectId,
+    progress,
+    enrollment,
+  } = useCertification(id);
 
+  if (certification.isLoading || subjects.isLoading) {
+    return <div className="p-8 text-slate-400">Carregando certificação...</div>;
+  }
 
-  const progress = 42;
+  if (certification.isError || !certification.data) {
+    return (
+      <div className="p-8 text-slate-400">
+        Não foi possível carregar esta certificação. Tentar novamente.
+      </div>
+    );
+  }
 
+  const status = enrollment ? STATUS_LABELS[enrollment.status] : "Não Iniciado";
+  const subjectList = subjects.data ?? [];
+  const totalSubjects = subjectList.length;
+  const studiedSubjects = studiedSubjectIds.size;
 
   return (
-
-    <div className="min-h-screen bg-slate-950 p-8">
-
+    <div className="px-6 pb-10 pt-3 md:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
-
-
         <CertificationHeader
-          certification={certification}
+          certification={certification.data}
           progress={progress}
+          status={status}
         />
 
-
-        <div className="
-          grid
-          gap-6
-          lg:grid-cols-3
-        ">
-
-
-          <div className="lg:col-span-2">
-
-            <h2 className="mb-4 text-lg font-semibold text-slate-200">
-              Certification Progress Overview
-            </h2>
-
-
-            <ProgressCircle
-              percent={progress}
-            />
-
+        {/* Top row: títulos alinhados + cards com a mesma altura */}
+        <div className="grid items-stretch gap-6 lg:grid-cols-3">
+          <div className="flex flex-col gap-3 lg:col-span-2">
+            <div className="min-h-[52px]">
+              <h2 className="text-lg font-semibold text-white">
+                Visão Geral do Progresso
+              </h2>
+              <p className="mt-1 text-sm text-slate-400">
+                Acompanhe o progresso detalhado de cada matéria do seu currículo.
+              </p>
+            </div>
+            <div className="min-h-[280px] flex-1">
+              <ProgressCircle percent={progress} />
+            </div>
           </div>
 
-
-
-          <QuickAccessMini />
-
-
+          <div className="flex flex-col gap-3">
+            <div className="min-h-[52px]">
+              <h2 className="text-lg font-semibold text-white">Acesso Rápido</h2>
+              <p className="mt-1 text-sm text-slate-400">Instrumentos e resumo</p>
+            </div>
+            <div className="min-h-[280px] flex-1">
+              <QuickAccessPanel
+                stats={[
+                  { icon: BookOpen, value: totalSubjects, label: "Matérias" },
+                  { icon: CheckCircle2, value: studiedSubjects, label: "Estudadas" },
+                ]}
+              />
+            </div>
+          </div>
         </div>
 
-
-
         <section>
-
-          <h2 className="mb-2 text-lg font-semibold text-slate-200">
-            Certification Curriculum
+          <h2 className="text-lg font-semibold text-white">
+            Currículo da Certificação
           </h2>
-
-
-          <p className="mb-5 text-sm text-slate-400">
+          <p className="mt-1 mb-5 text-sm text-slate-400">
             Continue seus estudos acompanhando o progresso das matérias.
           </p>
 
-
-          <CurriculumGrid />
-
-
+          <CurriculumGrid
+            subjects={subjects.data ?? []}
+            studiedSubjectIds={studiedSubjectIds}
+            sessionsCountBySubjectId={sessionsCountBySubjectId}
+          />
         </section>
-
-
       </div>
-
     </div>
-
   );
 }

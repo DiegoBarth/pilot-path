@@ -6,7 +6,7 @@ interface CertificationCardProps {
     id: string;
     name: string;
     description: string;
-    progress: number;
+    progress?: number;
     status: string;
   };
 }
@@ -20,13 +20,13 @@ export function CertificationCard({
     <Link
       href={`/certifications/${certification.id}`}
       className="
-        rounded-xl
+        rounded-2xl
         border
-        border-slate-800
-        bg-slate-900/50
+        border-white/5
+        bg-[#1E2834]
         p-6
         transition
-        hover:border-amber-500/50
+        hover:border-amber-500/40
       "
     >
 
@@ -40,42 +40,44 @@ export function CertificationCard({
       </p>
 
 
-      <div className="mt-6">
+      {typeof certification.progress === "number" && (
+        <div className="mt-6">
 
-        <div className="flex justify-between text-sm">
-          <span className="text-slate-500">
-            Progress
-          </span>
+          <div className="flex justify-between text-sm">
+            <span className="text-slate-500">
+              Progresso
+            </span>
 
-          <span className="text-amber-400">
-            {certification.progress}%
-          </span>
+            <span className="text-amber-400">
+              {certification.progress}%
+            </span>
+          </div>
+
+
+          <div className="mt-2 h-2 rounded-full bg-slate-800">
+
+            <div
+              className="h-full rounded-full bg-[#EDAA3F]"
+              style={{
+                width: `${certification.progress}%`,
+              }}
+            />
+
+          </div>
+
         </div>
-
-
-        <div className="mt-2 h-2 rounded-full bg-slate-800">
-
-          <div
-            className="h-full rounded-full bg-amber-500"
-            style={{
-              width: `${certification.progress}%`,
-            }}
-          />
-
-        </div>
-
-      </div>
+      )}
 
 
       <div className="mt-5">
 
         <span className="
           rounded-full
-          bg-emerald-500/10
+          bg-teal-500/10
           px-3
           py-1
           text-xs
-          text-emerald-400
+          text-teal-400
         ">
           {certification.status}
         </span>

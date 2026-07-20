@@ -6,18 +6,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { compare } from 'bcrypt';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-
-  constructor(private readonly reflector: Reflector) { }
+  constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.get<string[]>(
-      'roles',
-      context.getHandler(),
-    );
+    const roles = this.reflector.get<string[]>('roles', context.getHandler());
 
     if (!roles || roles.length === 0) {
       return true;
@@ -31,9 +26,7 @@ export class RolesGuard implements CanActivate {
     }
 
     if (!roles.includes(user.role)) {
-      throw new ForbiddenException(
-        'You do not have permission to perform this action.'
-      );
+      throw new ForbiddenException('You do not have permission to perform this action.');
     }
 
     return true;

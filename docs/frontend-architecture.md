@@ -120,8 +120,7 @@ The frontend uses a centralized API client located at:
 
 src/lib/api/
 
-├── client.ts
-└── endpoints.ts
+└── client.ts
 
 The API client is responsible for:
 
@@ -131,7 +130,7 @@ The API client is responsible for:
 - Error normalization
 - Response handling
 
-Feature modules must consume the centralized API client instead of creating independent HTTP clients.
+Each feature owns its own `api/*.api.ts` file (e.g. `features/certifications/api/certifications.api.ts`), which calls `apiClient` with the relative endpoint path. Feature modules must consume the centralized `apiClient` instead of creating independent HTTP clients.
 
 ---
 

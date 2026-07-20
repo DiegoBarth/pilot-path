@@ -135,8 +135,11 @@ pilot-path/
 ├── docs/
 │   ├── architecture.md
 │   ├── frontend-architecture.md
+│   ├── database.md
+│   ├── setup.md
 │   ├── roadmap.md
-│   └── adr.md
+│   ├── decisions.md
+│   └── features/
 │
 ├── docker-compose.yml
 ├── README.md
@@ -195,7 +198,9 @@ npm run build
 
 # 🚧 Project Status
 
-**Current Version:** `v0.6.6`
+**Roadmap Milestone:** `v0.6 - Frontend Application` (see [docs/roadmap.md](docs/roadmap.md))
+
+**Package Versions:** backend `v0.5.5` · frontend `v0.1.0`
 
 ## Completed
 
@@ -257,14 +262,17 @@ npm run build
 * Authentication persistence
 * Authentication context
 * Session restoration
+* Application layout (sidebar + protected shell)
+* Dashboard interface (learning statistics, certifications overview, recent activity)
+* Certification list and detail interface
 
 ---
 
 ## In Progress
 
-* Application layout
-* Dashboard
-* Learning analytics visualization
+* Flashcard review interface
+* Mock exam interface
+* Learning analytics dashboard visualization
 
 ---
 

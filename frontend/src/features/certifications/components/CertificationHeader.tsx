@@ -3,43 +3,32 @@ interface CertificationHeaderProps {
     name: string;
     description?: string;
   };
-
   progress: number;
+  status: string;
 }
 
-export function CertificationHeader({ certification, progress }: CertificationHeaderProps) {
+const STATUS_STYLES: Record<string, string> = {
+  "Em Andamento": "border-amber-500/40 bg-[#EDAA3F]/10 text-amber-400",
+  "Concluído": "border-teal-500/40 bg-teal-500/10 text-teal-400",
+  "Pausado": "border-slate-500/40 bg-slate-500/10 text-slate-400",
+  "Abandonado": "border-red-500/40 bg-red-500/10 text-red-400",
+  "Não Iniciado": "border-slate-500/40 bg-slate-500/10 text-slate-400",
+};
+
+export function CertificationHeader({ certification, status }: CertificationHeaderProps) {
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900 p-6">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold text-slate-50">
-          {certification.name}
-        </h1>
-        {certification.description && (
-          <p className="max-w-3xl text-slate-400">
-            {certification.description}
-          </p>
-        )}
-      </div>
+    <div className="flex flex-wrap items-center gap-3">
+      <h1 className="text-3xl font-bold tracking-tight text-white md:text-4xl">
+        {certification.name}
+      </h1>
 
-      <div className="mt-6 flex items-center gap-8">
-        <div>
-          <p className="text-xs uppercase text-slate-500">
-            Progress
-          </p>
-          <p className="text-2xl font-bold text-amber-400">
-            {progress}%
-          </p>
-        </div>
-
-        <div>
-          <p className="text-xs uppercase text-slate-500">
-            Status
-          </p>
-          <p className="text-sm font-medium text-emerald-400">
-            In Progress
-          </p>
-        </div>
-      </div>
+      <span
+        className={`rounded-full border px-3 py-1 text-xs font-medium ${
+          STATUS_STYLES[status] ?? STATUS_STYLES["Não Iniciado"]
+        }`}
+      >
+        {status}
+      </span>
     </div>
   );
 }

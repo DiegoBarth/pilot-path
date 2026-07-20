@@ -376,11 +376,10 @@ Structure:
 lib/
 
 api/
- ├── client.ts
- └── endpoints.ts
+ └── client.ts
 ```
 
-Feature modules consume the centralized client instead of creating independent HTTP configurations.
+Each feature owns its own `api/*.api.ts` file, calling `apiClient` with the relative endpoint path. Feature modules consume the centralized client instead of creating independent HTTP configurations.
 
 Pros:
 

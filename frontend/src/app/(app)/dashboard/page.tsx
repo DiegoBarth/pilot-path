@@ -1,18 +1,31 @@
 "use client";
 
-import { ProgressSummaryCard } from "@/features/dashboard/components/ProgressSummaryCard";
+import { BookOpen, CalendarClock } from "lucide-react";
+
+import { OverallProgressCard } from "@/features/dashboard/components/OverallProgressCard";
 import { QuickAccessGrid } from "@/features/dashboard/components/QuickAccessGrid";
+import { ProgressSummaryCard } from "@/features/dashboard/components/ProgressSummaryCard";
 import { ActivityTimeline } from "@/features/dashboard/components/ActivityTimeline";
+import { WeakSubjectsPanel } from "@/features/dashboard/components/WeakSubjectsPanel";
+import { QuickAccessPanel } from "@/components/shared/QuickAccessPanel";
 import { useAuthContext } from "@/providers/auth-provider";
 import { useDashboard } from "@/features/dashboard/hooks/useDashboard";
+import { formatRelativeDate } from "@/lib/utils";
+
+const ENROLLMENT_STATUS_LABELS: Record<string, string> = {
+  ACTIVE: "Em Andamento",
+  COMPLETED: "Concluído",
+  PAUSED: "Pausado",
+  DROPPED: "Abandonado",
+};
 
 export default function DashboardPage() {
   const { user } = useAuthContext();
-  const { statistics, subjects } = useDashboard();
+  const { statistics, subjects, enrollments, recentActivity } = useDashboard();
 
-  if (statistics.isLoading || subjects.isLoading) {
+  if (statistics.isLoading || subjects.isLoading || enrollments.isLoading || recentActivity.isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 p-8 text-slate-400">
+      <div className="p-8 text-slate-400">
         Carregando dashboard...
       </div>
     );
@@ -22,74 +35,85 @@ export default function DashboardPage() {
 
   const userName = user?.name ?? "Piloto";
 
+  const activeEnrollments = (enrollments.data ?? []).slice(0, 3);
+
+  const activities = (recentActivity.data?.data ?? []).map((session) => ({
+    id: session.id,
+    type: session.studyType,
+    title: session.subject.name,
+    description: session.certification.name,
+    date: formatRelativeDate(session.startedAt),
+  }));
+
+  const overallProgress =
+    ((data?.flashcardAccuracy ?? 0) + (data?.questionAccuracy ?? 0) + (data?.mockExamPerformance ?? 0)) / 3;
+
   return (
-    <div className="flex min-h-screen flex-col bg-slate-950 p-6 md:p-8">
-      {/* Header & Quick Actions */}
-      <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-50">
-            Olá, {userName}
-          </h1>
-          <p className="mt-1 text-sm text-slate-400">
-            Acompanhe seu progresso e retome seus estudos.
-          </p>
-        </div>
-        <QuickAccessGrid />
+    <div className="flex flex-col gap-8 px-6 pb-6 pt-2 md:px-8 md:pb-8">
+
+      {/* Header */}
+      <div>
+        <h1 className="text-4xl font-bold tracking-tight text-slate-50">
+          Resumo do Cockpit, {userName}
+        </h1>
+        <p className="mt-1 text-sm text-slate-400">
+          Acompanhe seu progresso e retome seus estudos.
+        </p>
       </div>
 
-      {/* Analytics Summary Component */}
-      <ProgressSummaryCard data={data} />
+      {/* Hero: Progresso geral, ações rápidas e acesso rápido */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        <OverallProgressCard percent={overallProgress} />
 
-      {/* Main Content Grid */}
-      <div className="grid gap-6 lg:grid-cols-7">
+        <QuickAccessGrid />
 
-        {/* Certifications Overview (mantido inline ou extraível para a feature de certificações futuramente) */}
-        <div className="col-span-1 flex flex-col rounded-xl border border-slate-800 bg-slate-900/50 lg:col-span-4">
-          <div className="border-b border-slate-800 p-6">
-            <h2 className="text-lg font-semibold text-slate-50">Minhas Certificações</h2>
-          </div>
-          <div className="flex flex-1 flex-col justify-center p-6 space-y-6">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="font-medium text-slate-200">Piloto Privado - Avião (PPA)</span>
-                <span className="text-slate-400">65%</span>
-              </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-slate-800">
-                <div className="h-full bg-amber-500" style={{ width: "65%" }} />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="font-medium text-slate-200">Piloto Comercial (PCA)</span>
-                <span className="text-slate-400">12%</span>
-              </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-slate-800">
-                <div className="h-full bg-amber-500" style={{ width: "12%" }} />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Activity Timeline Component */}
-        <ActivityTimeline
-          activities={[
-            {
-              id: "1",
-              type: "FLASHCARD",
-              title: "Revisão de Flashcards",
-              description: "Regulamentos de Tráfego Aéreo",
-              date: "Há 2 horas"
-            },
-            {
-              id: "2",
-              type: "MOCK_EXAM",
-              title: "Simulado Finalizado",
-              description: "Meteorologia (Aprovado: 85%)",
-              date: "Ontem"
-            }
+        <QuickAccessPanel
+          stats={[
+            { icon: BookOpen, value: activeEnrollments.length, label: "Certificações" },
+            { icon: CalendarClock, value: recentActivity.data?.meta.total ?? 0, label: "Sessões" },
           ]}
         />
+      </div>
+
+      {/* Precisão por área */}
+      <ProgressSummaryCard data={data} />
+
+      {/* Linha do tempo e insights */}
+      <div className="grid gap-6 lg:grid-cols-3">
+
+        <div className="lg:col-span-2">
+          <ActivityTimeline activities={activities} />
+        </div>
+
+        <div className="flex flex-col gap-6">
+
+          <div className="flex flex-col rounded-2xl border border-white/5 bg-[#1E2834]">
+            <div className="border-b border-white/5 p-6">
+              <h2 className="text-lg font-semibold text-white">Minhas Certificações</h2>
+            </div>
+            <div className="flex flex-1 flex-col justify-center gap-4 p-6">
+              {activeEnrollments.length === 0 ? (
+                <p className="text-sm text-slate-500">
+                  Você ainda não está inscrito em nenhuma certificação.
+                </p>
+              ) : (
+                activeEnrollments.map((enrollment) => (
+                  <div key={enrollment.id} className="flex items-center justify-between text-sm">
+                    <span className="font-medium text-slate-200">
+                      {enrollment.certification.name}
+                    </span>
+                    <span className="rounded-full bg-teal-500/10 px-3 py-1 text-xs text-teal-400">
+                      {ENROLLMENT_STATUS_LABELS[enrollment.status] ?? enrollment.status}
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          <WeakSubjectsPanel weakSubjects={subjects.data?.weakSubjects ?? []} />
+
+        </div>
 
       </div>
     </div>

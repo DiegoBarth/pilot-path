@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getLearningStatistics,
   getSubjectAnalytics,
+  getEnrollments,
+  getRecentStudyHistory,
 } from "../api/dashboard.api";
 
 
@@ -28,8 +30,28 @@ export function useDashboard() {
   });
 
 
+  const enrollments = useQuery({
+    queryKey: [
+      "enrollments",
+    ],
+    queryFn:
+      getEnrollments,
+  });
+
+
+  const recentActivity = useQuery({
+    queryKey: [
+      "recent-study-history",
+    ],
+    queryFn: () =>
+      getRecentStudyHistory(5),
+  });
+
+
   return {
     statistics,
     subjects,
+    enrollments,
+    recentActivity,
   };
 }

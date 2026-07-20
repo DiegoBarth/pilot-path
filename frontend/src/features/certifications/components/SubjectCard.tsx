@@ -1,64 +1,85 @@
-import { LucideIcon } from "lucide-react";
+import { MoreVertical, type LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface SubjectCardProps {
   subject: {
+    id: string;
     title: string;
     icon: LucideIcon;
-    progress: number;
-    lessonsCompleted: number;
-    totalLessons: number;
+    started: boolean;
+    sessionsCount: number;
   };
+  isCurrent?: boolean;
 }
 
-export function SubjectCard({ subject }: SubjectCardProps) {
+export function SubjectCard({ subject, isCurrent = false }: SubjectCardProps) {
   const Icon = subject.icon;
-
-  const isStarted = subject.progress > 0;
+  const progress = subject.started ? 100 : 0;
 
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-5 transition-all hover:border-slate-700">
-
+    <div
+      className={cn(
+        "flex flex-col rounded-2xl border border-white/5 bg-[#1E2834] p-5 transition-colors",
+        isCurrent && "border-sky-500/50 bg-[#152035] shadow-[0_0_0_1px_rgba(56,189,248,0.12)]"
+      )}
+    >
       <div className="mb-4 flex items-center justify-between">
-        <Icon className="h-6 w-6 text-slate-400" />
+        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-500/10 text-teal-400">
+          <Icon className="h-5 w-5" />
+        </span>
 
-        {isStarted && (
-          <span className="rounded-full bg-emerald-500/10 px-2 py-1 text-xs text-emerald-400">
-            In Progress
-          </span>
-        )}
+        <button
+          type="button"
+          aria-label="Mais opções"
+          className="rounded-md p-1 text-slate-500 transition hover:bg-white/5 hover:text-slate-300"
+        >
+          <MoreVertical className="h-4 w-4" />
+        </button>
       </div>
 
-      <h3 className="mb-4 font-semibold text-slate-50">
+      <h3 className="mb-2 text-base font-semibold text-white">
         {subject.title}
       </h3>
 
-      <div className="mb-3">
-        <div className="h-1.5 w-full rounded-full bg-slate-800">
+      {subject.started && (
+        <p className="mb-3 text-xs font-medium text-teal-400">
+          Em Andamento
+        </p>
+      )}
+
+      {!subject.started && <div className="mb-3 h-4" />}
+
+      <div className="mt-auto">
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#1a2235]">
           <div
-            className="h-full rounded-full bg-amber-500 transition-all"
-            style={{
-              width: `${subject.progress}%`,
-            }}
+            className="h-full rounded-full bg-[#EDAA3F] transition-all"
+            style={{ width: `${progress}%` }}
           />
         </div>
 
         <div className="mt-2 flex justify-between text-xs text-slate-500">
+          <span>{progress}% concluído</span>
           <span>
-            {subject.progress}% complete
-          </span>
-
-          <span>
-            {subject.lessonsCompleted}/{subject.totalLessons}
+            {subject.sessionsCount}{" "}
+            {subject.sessionsCount === 1 ? "sessão" : "sessões"}
           </span>
         </div>
+
+        <button
+          className={cn(
+            "mt-4 w-full rounded-xl py-2.5 text-sm font-medium transition",
+            isCurrent
+              ? "bg-sky-500 text-white hover:bg-sky-400"
+              : "bg-[#468ADD] text-slate-200 hover:bg-[#222b42]"
+          )}
+        >
+          {subject.started
+            ? "Continuar Estudo"
+            : isCurrent
+              ? "Iniciar Tópico"
+              : "Iniciar Tópico"}
+        </button>
       </div>
-
-      <button
-        className="mt-3 w-full rounded-lg bg-blue-600 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
-      >
-        {subject.progress > 0 ? "Continue Study" : "Start Topic"}
-      </button>
-
     </div>
   );
 }
