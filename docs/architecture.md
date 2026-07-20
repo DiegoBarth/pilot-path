@@ -247,6 +247,8 @@ Current learning domains include:
 
 Each domain contains its own business rules, entities, and application modules.
 
+Learning Analytics provides aggregated insights from flashcards, question practice and mock exams, including accuracy calculations, subject performance and learning trends.
+
 ---
 
 ## API
@@ -302,8 +304,9 @@ POST   /api/v1/mock-exams/:id/finish
 
 GET    /api/v1/learning/statistics
 GET    /api/v1/learning/statistics/flashcards
-GET    /api/v1/learning/statistics/questions
 GET    /api/v1/learning/statistics/mock-exams
+GET    /api/v1/learning/statistics/questions
+GET    /api/v1/learning/statistics/subjects
 ```
 
 The API is documented through OpenAPI (Swagger) and generated automatically from NestJS decorators.

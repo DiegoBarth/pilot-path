@@ -55,7 +55,7 @@
 - [x] Flashcard Performance Statistics
 - [x] Question Practice Statistics
 - [x] Mock Exam Statistics
-- [ ] Subject Performance Analytics
+- [x] Subject Performance Analytics
 - [ ] Learning Analytics Dashboard
 
 ---

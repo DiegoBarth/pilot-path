@@ -38,4 +38,11 @@ export class LearningStatisticsController {
     return this.service.getMockExamStatistics(userId);
   }
 
+  @Auth()
+  @Get('learning/statistics/subjects')
+  @ApplySwagger(LearningStatisticsSwagger.subjects)
+  subjects(@AuthUser('id') userId: string) {
+    return this.service.getSubjectAnalytics(userId);
+  }
+
 }

@@ -64,7 +64,8 @@ frontend/
 │   ├── certifications/
 │   ├── flashcards/
 │   ├── questions/
-│   └── mock-exams/
+│   ├── mock-exams/
+│   └── analytics/
 │
 ├── hooks/
 │
@@ -201,7 +202,7 @@ Domain-specific components.
 
 ### Dashboard Feature
 
-The dashboard consumes Learning Analytics APIs to display user progress, performance indicators and learning trends.
+The dashboard will consume Learning Analytics APIs to display user progress, performance indicators and learning trends.
 
 * **Components:** Progress summary, quick access actions, and study activity timeline.
 * *On-screen messages:* "Painel", "Continuar Última Sessão", "Quiz Rápido", "Minhas Certificações".
@@ -231,24 +232,38 @@ Timer is calculated from:
 * configured `duration`
 * current time
 
-
 The frontend must persist unfinished exams and restore the session when reopened. This behavior depends on backend persistence through `MockExam` status fields and frontend session recovery logic.
 * *On-screen messages:* "Tempo Restante: [MM:SS]", "Anterior", "Próxima", "Finalizar Simulado", "Pontuação Final", "Aprovado / Reprovado".
 
-### Analytics Feature
+### Questions Feature
 
-Responsible for displaying learning performance insights.
+Responsible for question practice and knowledge evaluation.
 
 Includes:
 
-- Flashcard accuracy
-- Question accuracy
+- Question listing
+- Answer submission
+- Practice history
+- Performance tracking
+
+*On-screen messages:* "Responder", "Próxima Questão", "Ver Explicação".
+
+### Analytics Feature
+
+The main learning overview is retrieved through:
+
+```http
+GET /api/v1/learning/statistics
+```
+
+The endpoint provides:
+
+- Overall flashcard accuracy
+- Overall question accuracy
 - Mock exam performance
-- Subject performance
+- Subject performance summary
 - Weak subjects
 - Performance trends
-
-Data is provided by the backend Learning Statistics API.
 
 Flashcard statistics are retrieved through:
 
@@ -292,6 +307,20 @@ The endpoint provides:
 - Best result
 - Worst result
 - Score history over time
+
+Subject performance statistics are retrieved through:
+
+```http
+GET /api/v1/learning/statistics/subjects
+```
+
+The endpoint provides:
+
+- Accuracy per subject
+- Questions answered per subject
+- Flashcard performance per subject
+- Overall subject accuracy
+- Weak subject ranking
 
 ---
 
@@ -370,8 +399,8 @@ The frontend follows:
 
 ### Planned
 
-* Dashboard
-* Certification progress
-* Flashcard review
+* Dashboard implementation
+* Certification progress UI
+* Flashcard review interface
 * Mock exam interface
-* Analytics dashboard
+* Analytics dashboard visualization

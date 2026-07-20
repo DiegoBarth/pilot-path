@@ -6,6 +6,7 @@ import { LearningStatisticsDto } from './dto/learning-statistics.dto';
 import { FlashcardPerformanceDto } from './dto/flashcard-performance.dto';
 import { QuestionPerformanceDto } from './dto/question-performance.dto';
 import { MockExamPerformanceDto } from './dto/mock-exam-performance.dto';
+import { SubjectAnalyticsResponseDto } from './dto/subject-analytics-response.dto';
 
 export const LearningStatisticsSwagger = {
 
@@ -80,5 +81,23 @@ export const LearningStatisticsSwagger = {
       description: 'Unauthorized.'
     }),
   ),
+
+  subjects: applyDecorators(
+    ApiTags('Learning Statistics'),
+
+    ApiOperation({
+      summary: 'Get subject performance analytics',
+      description: 'Returns learning performance analytics grouped by aviation subject for the authenticated user.'
+    }),
+
+    ApiOkResponse({
+      type: SubjectAnalyticsResponseDto,
+      description: 'Subject performance analytics successfully retrieved.'
+    }),
+
+    ApiUnauthorizedResponse({
+      description: 'Unauthorized.'
+    }),
+  )
 
 };
