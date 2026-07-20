@@ -2,7 +2,9 @@
 
 > Your journey to becoming a pilot.
 
-PilotPath is a platform built to accompany a pilot throughout their entire journey, from the first certification to their professional career. It combines study management, operational tools, performance tracking, and aviation resources in a single ecosystem.
+PilotPath is a platform built to accompany pilots throughout their entire journey, from the first aviation certification to their professional career.
+
+The platform combines study management, aviation knowledge, performance tracking and future operational tools into a single ecosystem.
 
 ---
 
@@ -14,9 +16,9 @@ PilotPath is a platform built to accompany a pilot throughout their entire journ
 
 ---
 
-## 🚀 Features
+# 🚀 Features
 
-### 📚 Study Management
+## 📚 Study Management
 
 - Certification enrollments
 - Certification curriculum
@@ -25,61 +27,74 @@ PilotPath is a platform built to accompany a pilot throughout their entire journ
 - Paginated study history
 - Study activity filtering
 
-### 🛫 Aviation Knowledge
+---
 
-- Subjects
+## 🛫 Aviation Knowledge
+
+- Aviation subjects
 - Question bank
 - Question practice
 - Flashcards
 - Mock exams
 
-### 📊 Analytics (Planned)
+---
 
-- Dashboard
-- Performance statistics
-- Progress tracking
-- Achievements
+## 📊 Learning Analytics
 
-### 🔐 Authentication
+- Learning statistics aggregation
+- Flashcard performance analysis
+- Question performance analysis
+- Mock exam analytics
+- Subject performance analysis
+- Weak subject detection
+- Performance trends
+
+---
+
+## 🔐 Authentication
 
 - User registration
 - User login
 - JWT authentication
 - Protected API routes
-- Role-based authorization (ADMIN / USER)
 
 ---
 
-## 🛠 Tech Stack
+# 🛠 Tech Stack
 
-### Frontend
+## Frontend
 
-- Next.js
+- Next.js (App Router)
 - React
 - TypeScript
 - Tailwind CSS
 - shadcn/ui
+- Base UI
+- Lucide Icons
 - TanStack Query
+- React Hook Form
+- Zod
 
-### Backend
+## Backend
 
 - NestJS
 - TypeScript
 - Prisma ORM
 - REST API
+- Swagger/OpenAPI
 
-### Database
+## Database
 
 - PostgreSQL
 
-### Infrastructure
+## Infrastructure
 
 - Docker (optional)
 - GitHub Actions (planned)
 
 ---
 
-## 🏗 Architecture
+# 🏗 Architecture
 
 ```text
                 User
@@ -98,19 +113,31 @@ PilotPath is a platform built to accompany a pilot throughout their entire journ
                   │
                   ▼
             PostgreSQL
-```
+````
+
+The frontend follows a feature-based architecture using Next.js App Router.
+
+The backend follows a modular architecture using NestJS modules.
 
 ---
 
-## 📁 Project Structure
+# 📁 Project Structure
 
 ```text
 pilot-path/
 │
 ├── backend/
+│   └── NestJS application
+│
 ├── frontend/
+│   └── Next.js application
+│
 ├── docs/
-├── .github/
+│   ├── architecture.md
+│   ├── frontend-architecture.md
+│   ├── roadmap.md
+│   └── adr.md
+│
 ├── docker-compose.yml
 ├── README.md
 └── .gitignore
@@ -118,74 +145,124 @@ pilot-path/
 
 ---
 
-## 📖 Documentation
+# 📖 Documentation
 
 Project documentation is available in the `docs` directory.
 
-- Architecture
-- Development Setup
-- Roadmap
-- Architecture Decision Records (ADR)
-- Database Migrations
-- Database Seeding
+Includes:
+
+* System Architecture
+* Frontend Architecture
+* Development Setup
+* Roadmap
+* Architecture Decision Records (ADR)
+* Database Migrations
+* Database Seeding
 
 ---
 
-## 🚧 Project Status
+# 🚀 Development
 
-**Current Version:** `v0.5.5`
+## Backend
 
-### Completed
+```bash
+cd backend
 
-- NestJS backend
-- Next.js frontend
-- PostgreSQL connectivity
-- Prisma ORM integration
-- Initial database schema
-- First database migration
-- Initial project documentation
-- Core database modeling
-- JWT authentication
-- User registration and login
-- Password hashing
-- Protected API routes
-- Swagger/OpenAPI documentation
-- Certification management
-- Aviation certification catalog
-- User enrollments
-- Subject management
-- Certification curriculum
-- Study session tracking
-- Study history endpoint
-- Paginated API responses
-- Reusable pagination infrastructure
-- Study activity filtering
-- Flashcard management
-- Flashcard creation and subject association
-- User flashcard progress tracking
-- Flashcard review history
-- Spaced repetition foundation
-- Next review date calculation
-- Question bank
-- Question creation and subject association
-- Question alternatives management
-- Question answering flow
-- Answer history tracking
-- Response time tracking
-- Question performance foundation
-- Mock exam generation
-- Random question selection
-- Mock exam completion flow
-- Score calculation
-- Pass/fail evaluation
-- Mock exam history
-  
-### In Progress
+npm install
 
-- Analytics
-  
+npm run start:dev
+```
+
+## Frontend
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+Useful commands:
+
+```bash
+npm run lint
+
+npm run build
+```
+
 ---
 
-## 📄 License
+# 🚧 Project Status
+
+**Current Version:** `v0.6.2`
+
+## Completed
+
+### Backend Foundation
+
+* NestJS backend setup
+* PostgreSQL connectivity
+* Prisma ORM integration
+* Database schema
+* Database migrations
+* Core domain modeling
+
+### Authentication
+
+* User registration
+* Login
+* JWT authentication
+* Password hashing
+* Protected API routes
+* Swagger authentication
+
+### Learning Platform
+
+* Certifications
+* Subjects
+* Enrollments
+* Study sessions
+* Study history
+* Flashcards
+* Flashcard reviews
+* Question bank
+* Question practice
+* Mock exams
+
+### Learning Analytics
+
+* Learning statistics API
+* Flashcard performance statistics
+* Question performance statistics
+* Mock exam statistics
+* Subject performance analytics
+
+### Frontend Foundation
+
+* Next.js App Router setup
+* TypeScript configuration
+* Tailwind CSS setup
+* shadcn/ui integration
+* Base UI configuration
+* Lucide Icons integration
+* Feature-based folder structure
+* ESLint configuration
+* Prettier configuration
+* Provider architecture
+
+---
+
+## In Progress
+
+* Frontend feature implementation
+* Authentication UI
+* Application layout
+* Dashboard
+* Learning analytics visualization
+
+---
+
+# 📄 License
 
 MIT

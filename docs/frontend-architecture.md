@@ -21,6 +21,7 @@ The application follows a feature-based architecture focused on scalability, mai
 * Tailwind CSS
 * shadcn/ui
 * Lucide Icons
+* shadcn/ui using Base UI primitives
 * **Aesthetic Concept:** "Night Flight" (High-contrast dark mode simulating an aircraft glass cockpit).
 
 ### State & Data
@@ -41,6 +42,12 @@ The application follows a feature-based architecture focused on scalability, mai
 * Vitest
 * Playwright (planned)
 
+### Fonts
+
+- Geist Font
+
+Provided through Next.js font optimization.
+
 ---
 
 ## 3. Project Structure
@@ -50,35 +57,30 @@ The frontend follows a feature-based organization to prevent components from bec
 ```text
 frontend/
 │
-├── app/
-│   ├── (auth)/
-│   ├── (dashboard)/
-│   └── layout.tsx
+├── src/
+│   │
+│   ├── app/
+│   │
+│   ├── components/
+│   │   ├── ui/
+│   │   └── shared/
+│   │
+│   ├── features/
+│   │
+│   ├── hooks/
+│   │
+│   ├── lib/
+│   │   ├── api/
+│   │   └── utils/
+│   │
+│   ├── providers/
+│   │
+│   └── types/
 │
-├── components/
-│   ├── ui/
-│   └── shared/
-│
-├── features/
-│   ├── auth/
-│   ├── certifications/
-│   ├── flashcards/
-│   ├── questions/
-│   ├── mock-exams/
-│   └── analytics/
-│
-├── hooks/
-│
-├── lib/
-│   ├── api/
-│   │    ├── client.ts
-│   │    └── endpoints.ts
-│   ├── auth/
-│   └── utils/
-│
-├── types/
-│
-└── providers/
+├── public/
+├── components.json
+├── package.json
+└── tsconfig.json
 
 ```
 
@@ -393,9 +395,14 @@ The frontend follows:
 
 ### Completed
 
-* Project setup
-* Authentication screens
-* API integration foundation
+* Next.js project setup
+* TypeScript configuration
+* Tailwind CSS configuration
+* shadcn/ui setup
+* Base project structure
+* ESLint configuration
+* Prettier configuration
+* Provider structure
 
 ### Planned
 

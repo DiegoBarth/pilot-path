@@ -45,7 +45,14 @@ The application follows a modern full-stack architecture with a clear separation
 - Passport
 - JWT
 - REST API
-
+- Next.js (App Router)
+- React
+- Tailwind CSS
+- shadcn/ui
+- Base UI
+- Lucide Icons
+- TanStack Query
+  
 ### Responsibilities
 
 - Business logic

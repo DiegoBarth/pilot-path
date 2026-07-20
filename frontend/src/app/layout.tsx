@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Geist } from "next/font/google";
+import { Providers } from "@/providers";
+
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "PilotPath",
@@ -14,8 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-full flex flex-col antialiased">
-        {children}
+      <body className={geist.variable}>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

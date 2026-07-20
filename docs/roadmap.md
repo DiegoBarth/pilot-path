@@ -62,8 +62,8 @@
 
 ## v0.6 - Frontend Application
 
-- [ ] Next.js Application Setup
-- [ ] Frontend Architecture Implementation
+- [x] Next.js Application Setup
+- [x] Frontend Architecture Implementation
 - [ ] API Client Layer
 - [ ] Authentication Flow
 - [ ] Protected Routes
