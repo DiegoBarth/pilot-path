@@ -264,6 +264,20 @@ The endpoint provides:
 - Accuracy percentage
 - Monthly review history
 
+Question performance statistics are retrieved through:
+
+```http
+GET /api/v1/learning/statistics/questions
+```
+
+The endpoint provides:
+
+- Total answered questions
+- Correct answers
+- Wrong answers
+- Overall accuracy
+- Performance grouped by difficulty level
+
 ---
 
 ## 10. UI States

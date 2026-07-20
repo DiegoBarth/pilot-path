@@ -4,6 +4,7 @@ import { applyDecorators } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { LearningStatisticsDto } from './dto/learning-statistics.dto';
 import { FlashcardPerformanceDto } from './dto/flashcard-performance.dto';
+import { QuestionPerformanceDto } from './dto/question-performance.dto';
 
 export const LearningStatisticsSwagger = {
 
@@ -36,6 +37,24 @@ export const LearningStatisticsSwagger = {
     ApiOkResponse({
       type: FlashcardPerformanceDto,
       description: 'Flashcard performance statistics successfully retrieved.'
+    }),
+
+    ApiUnauthorizedResponse({
+      description: 'Unauthorized.'
+    }),
+  ),
+
+  questions: applyDecorators(
+    ApiTags('Learning Statistics'),
+
+    ApiOperation({
+      summary: 'Get question performance statistics',
+      description: 'Returns question bank performance statistics for the authenticated user.'
+    }),
+
+    ApiOkResponse({
+      type: QuestionPerformanceDto,
+      description: 'Question performance statistics successfully retrieved.'
     }),
 
     ApiUnauthorizedResponse({

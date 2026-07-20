@@ -53,7 +53,7 @@
 
 - [x] Learning Statistics Foundation
 - [x] Flashcard Performance Statistics
-- [ ] Question Practice Statistics
+- [x] Question Practice Statistics
 - [ ] Mock Exam Statistics
 - [ ] Subject Performance Analytics
 - [ ] Learning Analytics Dashboard

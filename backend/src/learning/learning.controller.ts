@@ -24,4 +24,11 @@ export class LearningStatisticsController {
     return this.service.getFlashcardStatistics(userId);
   }
 
+  @Auth()
+  @Get('learning/statistics/questions')
+  @ApplySwagger(LearningStatisticsSwagger.questions)
+  questions(@AuthUser('id') userId: string) {
+    return this.service.getQuestionStatistics(userId);
+  }
+
 }

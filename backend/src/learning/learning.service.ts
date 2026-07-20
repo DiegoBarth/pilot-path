@@ -5,6 +5,9 @@ import { PrismaService } from "../database/prisma.service";
 import { LearningStatisticsDto } from "./dto/learning-statistics.dto";
 import { PerformanceTrendDto } from "./dto/performance-trend.dto";
 import { FlashcardPerformanceDto } from "./dto/flashcard-performance.dto";
+import { DifficultyPerformanceDto } from "./dto/difficulty-performance.dto";
+import { QuestionDifficulty } from "@prisma/client";
+import { QuestionPerformanceDto } from "./dto/question-performance.dto";
 
 @Injectable()
 export class LearningStatisticsService {
@@ -254,6 +257,82 @@ export class LearningStatisticsService {
       wrongAnswers,
       accuracy,
       reviewHistory: [...history.values()]
+    };
+  }
+
+  async getQuestionStatistics(userId: string): Promise<QuestionPerformanceDto> {
+    const answers = await this.prisma.userQuestion.findMany({
+      where: {
+        userId
+      },
+      select: {
+        isCorrect: true,
+        question: {
+          select: {
+            difficulty: true
+          }
+        }
+      }
+    });
+
+    const totalAnswers = answers.length;
+
+    const correctAnswers = answers.filter((answer) => answer.isCorrect).length;
+
+    const wrongAnswers = totalAnswers - correctAnswers;
+
+    const accuracy = totalAnswers === 0
+      ? 0
+      : Number(((correctAnswers / totalAnswers) * 100).toFixed(2));
+
+    const difficultyMap = new Map<
+      QuestionDifficulty,
+      {
+        difficulty: QuestionDifficulty;
+        totalAnswers: number;
+        correctAnswers: number;
+      }
+    >();
+
+    for (const answer of answers) {
+      const difficulty = answer.question.difficulty;
+
+      if (!difficultyMap.has(difficulty)) {
+        difficultyMap.set(difficulty, {
+          difficulty,
+          totalAnswers: 0,
+          correctAnswers: 0
+        });
+      }
+
+      const item = difficultyMap.get(difficulty)!;
+
+      item.totalAnswers++;
+
+      if (answer.isCorrect) {
+        item.correctAnswers++;
+      }
+    }
+
+    const performanceByDifficulty: DifficultyPerformanceDto[] =
+      [...difficultyMap.values()].map((item) => ({
+        difficulty: item.difficulty,
+        totalAnswers: item.totalAnswers,
+        correctAnswers: item.correctAnswers,
+        accuracy: Number(
+          (
+            (item.correctAnswers / item.totalAnswers) *
+            100
+          ).toFixed(2),
+        )
+      }));
+
+    return {
+      totalAnswers,
+      correctAnswers,
+      wrongAnswers,
+      accuracy,
+      performanceByDifficulty
     };
   }
 
