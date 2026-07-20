@@ -66,8 +66,8 @@
 - [x] Frontend Architecture Implementation
 - [x] API Client Layer
 - [x] Authentication Flow
-- [ ] Protected Routes
-- [ ] Dashboard Interface
+- [x] Protected Routes
+- [x] Dashboard Interface
 - [ ] Certification Interface
 - [ ] Flashcard Interface
 - [ ] Mock Exam Interface

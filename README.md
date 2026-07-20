@@ -195,7 +195,7 @@ npm run build
 
 # 🚧 Project Status
 
-**Current Version:** `v0.6.4`
+**Current Version:** `v0.6.6`
 
 ## Completed
 

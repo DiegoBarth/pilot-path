@@ -3,17 +3,21 @@ import { ApiError } from "@/types/api-error";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 if (!API_URL) {
-  throw new Error('NEXT_PUBLIC_API_URL is not defined');
+  throw new Error("NEXT_PUBLIC_API_URL is not defined");
 }
 
-interface ApiRequestOptions extends RequestInit {
-  token?: string;
-}
+interface ApiRequestOptions extends RequestInit {}
 
 export async function apiClient<T>(
   endpoint: string,
   options: ApiRequestOptions = {},
 ): Promise<T> {
+
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("access_token")
+      : null;
+
 
   const response = await fetch(
     `${API_URL}${endpoint}`,
@@ -22,9 +26,10 @@ export async function apiClient<T>(
       headers: {
         "Content-Type": "application/json",
         ...options.headers,
-        ...(options.token && {
+
+        ...(token && {
           Authorization:
-            `Bearer ${options.token}`,
+            `Bearer ${token}`,
         }),
       },
     },
@@ -41,5 +46,4 @@ export async function apiClient<T>(
 
 
   return response.json();
-
 }
