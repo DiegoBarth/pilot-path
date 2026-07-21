@@ -44,7 +44,7 @@ export function useDashboard() {
       "recent-study-history",
     ],
     queryFn: () =>
-      getRecentStudyHistory(5),
+      getRecentStudyHistory(6),
   });
 
 

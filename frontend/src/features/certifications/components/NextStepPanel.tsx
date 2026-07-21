@@ -4,6 +4,12 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { Calendar, Clock, Play } from "lucide-react";
 import { cn, formatRelativeDate } from "@/lib/utils";
+import {
+  formatExamCountdown,
+  formatStudyTime,
+  getDaysUntilExam,
+  getSessionDurationMinutes,
+} from "@/lib/study-utils";
 import type { CertificationSubject, StudySession } from "../types";
 
 interface NextStepPanelProps {
@@ -12,62 +18,6 @@ interface NextStepPanelProps {
   studiedSubjectIds: Set<string>;
   studySessions: StudySession[];
   targetExamDate?: string;
-}
-
-function getSessionDurationMinutes(session: StudySession) {
-  if (!session.endedAt) {
-    return 0;
-  }
-
-  const startedAt = new Date(session.startedAt).getTime();
-  const endedAt = new Date(session.endedAt).getTime();
-
-  if (Number.isNaN(startedAt) || Number.isNaN(endedAt)) {
-    return 0;
-  }
-
-  return Math.max(0, Math.round((endedAt - startedAt) / 1000 / 60));
-}
-
-function formatStudyTime(totalMinutes: number) {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-
-  if (hours > 0 && minutes > 0) {
-    return `${hours}h ${minutes}min`;
-  }
-
-  if (hours > 0) {
-    return `${hours}h`;
-  }
-
-  return `${minutes}min`;
-}
-
-function getDaysUntilExam(targetExamDate: string) {
-  const target = new Date(targetExamDate);
-  target.setHours(0, 0, 0, 0);
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  return Math.ceil((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-}
-
-function formatExamCountdown(days: number) {
-  if (days < 0) {
-    return "Prova já realizada";
-  }
-
-  if (days === 0) {
-    return "Prova hoje";
-  }
-
-  if (days === 1) {
-    return "Prova: 1 dia restante";
-  }
-
-  return `Prova: ${days} dias restantes`;
 }
 
 export function NextStepPanel({
