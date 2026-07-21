@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { Lock, MoreVertical, type LucideIcon } from "lucide-react";
+import { Lock, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SubjectCardProps {
   subject: {
     id: string;
     title: string;
-    icon: LucideIcon;
     started: boolean;
     sessionsCount: number;
   };
@@ -21,8 +20,6 @@ export function SubjectCard({
   isCurrent = false,
   isEnrolled
 }: SubjectCardProps) {
-  const Icon = subject.icon;
-
   const progress = subject.started ? 100 : 0;
 
   const studyHref = `/study/subject/${subject.id}` + `?certificationId=${certificationId}`;
@@ -37,24 +34,6 @@ export function SubjectCard({
         "opacity-80",
       )}
     >
-      <div className="mb-4 flex items-center justify-between">
-        <span
-          className={cn(
-            "flex h-9 w-9 items-center justify-center rounded-lg",
-            isEnrolled ? "bg-teal-500/10 text-teal-400" : "bg-slate-500/10 text-slate-500",
-          )}
-        >
-          <Icon className="h-5 w-5" />
-        </span>
-
-        <button
-          type="button"
-          aria-label="Mais opções"
-          className="rounded-md p-1 text-slate-500 transition hover:bg-white/5 hover:text-slate-300"
-        >
-          <MoreVertical className="h-4 w-4" />
-        </button>
-      </div>
 
       <h3 className="mb-2 text-base font-semibold text-white">
         {subject.title}
@@ -70,7 +49,9 @@ export function SubjectCard({
           Em Andamento
         </p>
       ) : (
-        <div className="mb-3 h-4" />
+        <p className="mb-3 text-xs font-medium text-slate-400">
+          Não iniciado
+        </p>
       )}
 
       <div className="mt-auto">

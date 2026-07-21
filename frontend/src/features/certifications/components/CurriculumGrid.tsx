@@ -1,14 +1,5 @@
-import { BookOpen, Cloud, Compass, LucideIcon, Plane, Scale } from "lucide-react";
 import { SubjectCard } from "./SubjectCard";
 import type { CertificationSubject } from "../types";
-
-const SUBJECT_ICONS: LucideIcon[] = [
-  Plane,
-  Cloud,
-  Scale,
-  Compass,
-  BookOpen
-];
 
 interface CurriculumGridProps {
   subjects: CertificationSubject[];
@@ -45,7 +36,6 @@ export function CurriculumGrid({
           subject={{
             id: certificationSubject.subject.id,
             title: certificationSubject.subject.name,
-            icon: SUBJECT_ICONS[index % SUBJECT_ICONS.length],
             started: studiedSubjectIds.has(
               certificationSubject.subject.id,
             ),

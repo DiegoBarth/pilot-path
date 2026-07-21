@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import { BookOpen, Play, Layers, ArrowLeft, Clock } from "lucide-react";
+import { BookOpen, Play, Layers, Clock } from "lucide-react";
 import { useSubjectStudy } from "@/features/study/hooks/useSubjectStudy";
+import { useSubjectStudyBreadcrumbs } from "@/hooks/use-breadcrumb-trails";
 
 const STUDY_TYPE_LABELS: Record<
   string,
@@ -40,6 +40,8 @@ export default function SubjectStudyPage() {
     certificationId
   });
 
+  useSubjectStudyBreadcrumbs({ subject, certificationId });
+
   if (isLoading) {
     return (
       <div className="p-8 text-slate-400">
@@ -69,18 +71,7 @@ export default function SubjectStudyPage() {
       <div className="mx-auto max-w-7xl space-y-8">
 
         <div className="border-b border-slate-800 pb-6">
-
-          {certificationId && (
-            <Link
-              href={`/certifications/${certificationId}`}
-              className="mb-4 inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-amber-500"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Voltar para o currículo
-            </Link>
-          )}
-
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-white">
+          <h1 className="text-3xl font-bold tracking-tight text-white">
             {subject.name}
           </h1>
 
