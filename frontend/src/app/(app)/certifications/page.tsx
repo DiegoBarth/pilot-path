@@ -11,9 +11,9 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default function CertificationsPage() {
-  const { certifications, enrollments } = useCertifications();
+  const { certifications } = useCertifications();
 
-  if (certifications.isLoading || enrollments.isLoading) {
+  if (certifications.isLoading) {
     return (
       <div className="p-8 text-slate-400">
         Carregando certificações...
@@ -29,18 +29,12 @@ export default function CertificationsPage() {
     );
   }
 
-  const enrollmentByCertificationId = new Map(
-    (enrollments.data ?? []).map((enrollment) => [enrollment.certificationId, enrollment]),
-  );
-
   const items = (certifications.data ?? []).map((certification) => {
-    const enrollment = enrollmentByCertificationId.get(certification.id);
-
     return {
       id: certification.id,
       name: certification.name,
       description: certification.description ?? "",
-      status: enrollment ? STATUS_LABELS[enrollment.status] : "Não Iniciado",
+      status: certification.enrollments.length ? STATUS_LABELS[certification.enrollments[0].status] : "Não Iniciado",
     };
   });
 

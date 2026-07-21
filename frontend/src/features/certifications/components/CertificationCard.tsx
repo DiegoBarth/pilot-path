@@ -10,10 +10,16 @@ interface CertificationCardProps {
   };
 }
 
+const STATUS_STYLES: Record<string, string> = {
+  "Em Andamento": "border-amber-500/40 bg-[#EDAA3F]/10 text-amber-400",
+  "Concluído": "border-teal-500/40 bg-teal-500/10 text-teal-400",
+  "Pausado": "border-slate-500/40 bg-slate-500/10 text-slate-400",
+  "Abandonado": "border-red-500/40 bg-red-500/10 text-red-400",
+  "Não Iniciado": "border-slate-500/40 bg-slate-500/10 text-slate-400"
+};
+
 export function CertificationCard({ certification }: CertificationCardProps) {
-  const statusStyles = certification.status === "Não Iniciado"
-    ? "bg-[#468ADD]/10 text-[#468ADD]"
-    : "bg-teal-500/10 text-teal-400";
+  const statusStyle = STATUS_STYLES[certification.status] ?? STATUS_STYLES["Não Iniciado"];
 
   return (
     <Link
@@ -62,11 +68,14 @@ export function CertificationCard({ certification }: CertificationCardProps) {
       <div className="mt-5">
         <span
           className={`
+            inline-flex
             rounded-full
+            border
             px-3
             py-1
             text-xs
-            ${statusStyles}
+            font-medium
+            ${statusStyle}
           `}
         >
           {certification.status}

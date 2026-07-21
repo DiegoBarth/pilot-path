@@ -8,6 +8,7 @@ export interface Certification {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  enrollments: Enrollment[];
 }
 
 export interface Enrollment {

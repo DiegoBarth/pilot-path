@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { EnrollmentStatus, Prisma } from '@prisma/client';
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { CreateCertificationDto } from './dto/create-certification.dto';
@@ -6,24 +6,64 @@ import { UpdateCertificationDto } from './dto/update-certification.dto';
 
 @Injectable()
 export class CertificationsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
-  async findAll() {
-    return this.prisma.certification.findMany({
+  async findAll(userId: string) {
+    const certifications = await this.prisma.certification.findMany({
       where: {
         isActive: true,
       },
-      orderBy: {
-        name: 'asc',
-      },
+      include: {
+        enrollments: {
+          where: {
+            userId,
+          }
+        }
+      }
+    });
+
+    return certifications.sort((a, b) => {
+      const aStatus = a.enrollments[0]?.status;
+      const bStatus = b.enrollments[0]?.status;
+
+      const getPriority = (status?: EnrollmentStatus) => {
+        switch (status) {
+          case EnrollmentStatus.ACTIVE:
+            return 1;
+
+          case undefined:
+            return 2;
+
+          case EnrollmentStatus.COMPLETED:
+            return 3;
+
+          case EnrollmentStatus.PAUSED:
+            return 4;
+
+          case EnrollmentStatus.DROPPED:
+            return 5;
+
+          default:
+            return 6;
+        }
+      };
+
+      return getPriority(aStatus) - getPriority(bStatus);
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, userId: string) {
     return this.prisma.certification.findUnique({
       where: {
-        id,
+        id
       },
+      include: {
+        enrollments: {
+          where: {
+            userId
+          }
+        }
+      }
     });
   }
 

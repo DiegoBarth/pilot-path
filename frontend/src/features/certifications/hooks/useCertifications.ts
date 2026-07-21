@@ -14,18 +14,7 @@ export function useCertifications() {
       getCertifications,
   });
 
-
-  const enrollments = useQuery({
-    queryKey: [
-      "enrollments",
-    ],
-    queryFn:
-      getEnrollments,
-  });
-
-
   return {
-    certifications,
-    enrollments,
+    certifications
   };
 }

@@ -5,6 +5,7 @@ import { CreateCertificationDto } from './dto/create-certification.dto';
 import { UpdateCertificationDto } from './dto/update-certification.dto';
 import { ApplySwagger } from '../common/decorators/apply-swagger.decorator';
 import { CertificationsSwagger } from './certifications.swagger';
+import { AuthUser } from '../auth/decorators/auth-user.decorator';
 
 @Controller('certifications')
 export class CertificationsController {
@@ -12,14 +13,14 @@ export class CertificationsController {
 
   @Get()
   @ApplySwagger(CertificationsSwagger.findAll)
-  findAll() {
-    return this.service.findAll();
+  findAll(@AuthUser('id') userId: string) {
+    return this.service.findAll(userId);
   }
 
   @Get(':id')
   @ApplySwagger(CertificationsSwagger.findOne)
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.service.findOne(id);
+  findOne(@Param('id', ParseUUIDPipe) id: string, @AuthUser('id') userId: string) {
+    return this.service.findOne(id, userId);
   }
 
   @Auth()

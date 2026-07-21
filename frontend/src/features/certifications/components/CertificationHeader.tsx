@@ -7,7 +7,8 @@ interface CertificationHeaderProps {
   progress: number;
   status: string;
   onEnroll?: () => void;
-  isEnrolling?: boolean;
+  onCancel?: () => void;
+  isUpdating?: boolean;
 }
 
 const STATUS_STYLES: Record<string, string> = {
@@ -22,9 +23,11 @@ export function CertificationHeader({
   certification,
   status,
   onEnroll,
-  isEnrolling,
+  onCancel,
+  isUpdating,
 }: CertificationHeaderProps) {
-  const isNotStarted = status === "Não Iniciado";
+  const isNotStarted = status === "Não Iniciado" || status === 'Abandonado';
+  const isInProgress = status === "Em Andamento";
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
@@ -44,14 +47,29 @@ export function CertificationHeader({
         <button
           type="button"
           onClick={onEnroll}
-          disabled={isEnrolling}
+          disabled={isUpdating}
           className="
             cursor-pointer rounded-lg bg-amber-500 px-5 py-3
             text-sm font-semibold text-slate-950 transition
             hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50
           "
         >
-          {isEnrolling ? "Iniciando..." : "Iniciar certificação"}
+          {isUpdating ? "Iniciando..." : "Iniciar certificação"}
+        </button>
+      )}
+
+      {isInProgress && (
+        <button
+          type="button"
+          onClick={onCancel}
+          disabled={isUpdating}
+          className="
+            cursor-pointer rounded-lg bg-amber-500 px-5 py-3
+            text-sm font-semibold text-slate-950 transition
+            hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50
+          "
+        >
+          {isUpdating ? "Cancelando..." : "Cancelar certificação"}
         </button>
       )}
     </div>

@@ -39,6 +39,14 @@ export function enrollInCertification(certificationId: string) {
     },
   );
 }
+export function cancelCertificationEnrollment(enrollmentId: string) {
+  return apiClient<Enrollment>(
+    `/enrollments/${enrollmentId}/cancel`,
+    {
+      method: "PATCH",
+    },
+  );
+}
 
 export function getCertificationStudySessions(certificationId: string) {
   return apiClient<PaginatedResult<StudySession>>(

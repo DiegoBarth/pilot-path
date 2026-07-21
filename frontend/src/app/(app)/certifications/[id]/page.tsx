@@ -21,18 +21,29 @@ export default function CertificationDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const enrollCertification = useEnrollCertification();
 
-  const handleEnroll = () => {
-    enrollCertification.mutate(id);
-  };
-
   const {
     certification,
     subjects,
     studiedSubjectIds,
     sessionsCountBySubjectId,
     progress,
+    cancelEnrollment,
     enrollment
   } = useCertification(id);
+
+  const isActiveEnrollment = ['ACTIVE', 'COMPLETED'].includes(enrollment?.status ?? '');
+
+  const handleEnroll = () => {
+    enrollCertification.mutate(id);
+  };
+
+  const handleCancel = () => {
+    if (!enrollment) {
+      return;
+    }
+
+    cancelEnrollment.mutate(enrollment.id);
+  };
 
   if (certification.isLoading || subjects.isLoading) {
     return (
@@ -51,9 +62,7 @@ export default function CertificationDetailsPage() {
     );
   }
 
-  const status = enrollment
-    ? STATUS_LABELS[enrollment.status]
-    : "Não Iniciado";
+  const status = enrollment ? STATUS_LABELS[enrollment.status] : "Não Iniciado";
 
   const subjectList = subjects.data ?? [];
 
@@ -78,55 +87,58 @@ export default function CertificationDetailsPage() {
           progress={progress}
           status={status}
           onEnroll={handleEnroll}
-          isEnrolling={enrollCertification.isPending}
+          onCancel={handleCancel}
+          isUpdating={enrollCertification.isPending || cancelEnrollment.isPending}
         />
 
-        <div className="grid items-stretch gap-6 lg:grid-cols-3">
-          <div className="flex flex-col gap-3 lg:col-span-2">
-            <div className="min-h-[52px]">
-              <h2 className="text-lg font-semibold text-white">
-                Visão Geral do Progresso
-              </h2>
+        {isActiveEnrollment && (
+          <div className="grid items-stretch gap-6 lg:grid-cols-3">
+            <div className="flex flex-col gap-3 lg:col-span-2">
+              <div className="min-h-[52px]">
+                <h2 className="text-lg font-semibold text-white">
+                  Visão Geral do Progresso
+                </h2>
 
-              <p className="mt-1 text-sm text-slate-400">
-                Acompanhe o progresso detalhado de cada matéria do seu currículo.
-              </p>
-            </div>
+                <p className="mt-1 text-sm text-slate-400">
+                  Acompanhe o progresso detalhado de cada matéria do seu currículo.
+                </p>
+              </div>
 
-            <ProgressCircle
-              percent={progress}
-            />
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <div className="min-h-[52px]">
-              <h2 className="text-lg font-semibold text-white">
-                Acesso Rápido
-              </h2>
-
-              <p className="mt-1 text-sm text-slate-400">
-                Instrumentos e resumo
-              </p>
-            </div>
-
-            <div className="min-h-[280px] flex-1">
-              <QuickAccessPanel
-                stats={[
-                  {
-                    icon: BookOpen,
-                    value: totalSubjects,
-                    label: "Matérias",
-                  },
-                  {
-                    icon: CheckCircle2,
-                    value: studiedSubjects,
-                    label: "Estudadas",
-                  },
-                ]}
+              <ProgressCircle
+                percent={progress}
               />
             </div>
+
+            <div className="flex flex-col gap-3">
+              <div className="min-h-[52px]">
+                <h2 className="text-lg font-semibold text-white">
+                  Acesso Rápido
+                </h2>
+
+                <p className="mt-1 text-sm text-slate-400">
+                  Instrumentos e resumo
+                </p>
+              </div>
+
+              <div className="min-h-[280px] flex-1">
+                <QuickAccessPanel
+                  stats={[
+                    {
+                      icon: BookOpen,
+                      value: totalSubjects,
+                      label: "Matérias"
+                    },
+                    {
+                      icon: CheckCircle2,
+                      value: studiedSubjects,
+                      label: "Estudadas"
+                    }
+                  ]}
+                />
+              </div>
+            </div>
           </div>
-        </div>
+        )}
 
         <section>
           <h2 className="text-lg font-semibold text-white">
@@ -134,14 +146,17 @@ export default function CertificationDetailsPage() {
           </h2>
 
           <p className="mt-1 mb-5 text-sm text-slate-400">
-            Continue seus estudos acompanhando o progresso das matérias.
+            {isActiveEnrollment
+              ? "Continue seus estudos acompanhando o progresso das matérias."
+              : "Conheça as matérias que fazem parte desta certificação."
+            }
           </p>
 
           <CurriculumGrid
             subjects={subjectList}
             studiedSubjectIds={studiedSubjectIds}
             sessionsCountBySubjectId={sessionsCountBySubjectId}
-            isEnrolled={Boolean(enrollment)}
+            isEnrolled={Boolean(isActiveEnrollment)}
           />
         </section>
 

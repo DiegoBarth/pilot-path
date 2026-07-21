@@ -1,31 +1,69 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { EnrollmentStatus, Prisma } from '@prisma/client';
 import { PrismaService } from '../database/prisma.service';
+import { UpdateEnrollmentDto } from './dto/update-enrollment.dto';
 
 @Injectable()
 export class EnrollmentsService {
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async enroll(userId: string, certificationId: string) {
-    try {
-      return await this.prisma.enrollment.create({
-        data: {
+    const existingEnrollment = await this.prisma.enrollment.findUnique({
+      where: {
+        userId_certificationId: {
           userId,
           certificationId
-        },
-
-        include: {
-          certification: true
         }
-      });
-    } catch(error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
-        throw new ConflictException('User is already enrolled in this certification');
+      },
+      include: {
+        certification: true
+      },
+    });
+
+    if (existingEnrollment) {
+      if (
+        existingEnrollment.status === EnrollmentStatus.PAUSED ||
+        existingEnrollment.status === EnrollmentStatus.DROPPED
+      ) {
+        return this.prisma.enrollment.update({
+          where: {
+            id: existingEnrollment.id
+          },
+          data: {
+            status: EnrollmentStatus.ACTIVE,
+            completedAt: null
+          },
+          include: {
+            certification: true
+          }
+        });
       }
 
-      throw error;
+      throw new ConflictException('User is already enrolled in this certification');
     }
+
+    return this.prisma.enrollment.create({
+      data: {
+        userId,
+        certificationId,
+        status: EnrollmentStatus.ACTIVE
+      },
+      include: {
+        certification: true
+      },
+    });
+  }
+
+  async cancel(id: string) {
+    return this.prisma.enrollment.update({
+      where: {
+        id
+      },
+      data: {
+        status: EnrollmentStatus.DROPPED
+      },
+    });
   }
 
   async findAllByUser(userId: string) {
@@ -47,15 +85,15 @@ export class EnrollmentsService {
 
   async findOne(userId: string, id: string) {
     const enrollment = await this.prisma.enrollment.findFirst({
-        where: {
-          id,
-          userId
-        },
+      where: {
+        id,
+        userId
+      },
 
-        include: {
-          certification: true
-        }
-      });
+      include: {
+        certification: true
+      }
+    });
 
     if (!enrollment) {
       throw new NotFoundException('Enrollment not found');

@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { cancelCertificationEnrollment } from "../api/certifications.api";
 
 import {
   getCertification,
@@ -17,11 +18,9 @@ export function useCertification(id: string) {
       "certification",
       id,
     ],
-    queryFn: () =>
-      getCertification(id),
+    queryFn: () => getCertification(id),
     enabled: Boolean(id),
   });
-
 
   const subjects = useQuery({
     queryKey: [
@@ -96,6 +95,19 @@ export function useCertification(id: string) {
   );
 
 
+  const queryClient = useQueryClient();
+
+  const cancelEnrollment = useMutation({
+    mutationFn: cancelCertificationEnrollment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "enrollments"
+        ]
+      });
+    }
+  });
+
   return {
     certification,
     subjects,
@@ -104,5 +116,6 @@ export function useCertification(id: string) {
     sessionsCountBySubjectId,
     progress,
     enrollment,
+    cancelEnrollment
   };
 }
