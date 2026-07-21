@@ -31,16 +31,16 @@ export class CertificationsService {
           case EnrollmentStatus.ACTIVE:
             return 1;
 
-          case undefined:
+          case EnrollmentStatus.PAUSED:
             return 2;
 
-          case EnrollmentStatus.COMPLETED:
+          case undefined:
             return 3;
 
-          case EnrollmentStatus.PAUSED:
+          case EnrollmentStatus.DROPPED:
             return 4;
 
-          case EnrollmentStatus.DROPPED:
+          case EnrollmentStatus.COMPLETED:
             return 5;
 
           default:

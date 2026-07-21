@@ -14,7 +14,7 @@ interface CertificationHeaderProps {
 const STATUS_STYLES: Record<string, string> = {
   "Em Andamento": "border-amber-500/40 bg-[#EDAA3F]/10 text-amber-400",
   "Concluído": "border-teal-500/40 bg-teal-500/10 text-teal-400",
-  "Pausado": "border-slate-500/40 bg-slate-500/10 text-slate-400",
+  "Pausado": "border-sky-500/40 bg-sky-500/10 text-sky-400",
   "Abandonado": "border-red-500/40 bg-red-500/10 text-red-400",
   "Não Iniciado": "border-slate-500/40 bg-slate-500/10 text-slate-400",
 };
