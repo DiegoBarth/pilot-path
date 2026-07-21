@@ -1,12 +1,4 @@
-import {
-  BookOpen,
-  Cloud,
-  Compass,
-  LucideIcon,
-  Plane,
-  Scale,
-} from "lucide-react";
-
+import { BookOpen, Cloud, Compass, LucideIcon, Plane, Scale } from "lucide-react";
 import { SubjectCard } from "./SubjectCard";
 import type { CertificationSubject } from "../types";
 
@@ -15,21 +7,22 @@ const SUBJECT_ICONS: LucideIcon[] = [
   Cloud,
   Scale,
   Compass,
-  BookOpen,
+  BookOpen
 ];
 
 interface CurriculumGridProps {
   subjects: CertificationSubject[];
   studiedSubjectIds: Set<string>;
   sessionsCountBySubjectId: Map<string, number>;
+  isEnrolled: boolean;
 }
 
 export function CurriculumGrid({
   subjects,
   studiedSubjectIds,
   sessionsCountBySubjectId,
+  isEnrolled
 }: CurriculumGridProps) {
-
   if (subjects.length === 0) {
     return (
       <p className="text-sm text-slate-500">
@@ -47,14 +40,18 @@ export function CurriculumGrid({
       {subjects.map((certificationSubject, index) => (
         <SubjectCard
           key={certificationSubject.id}
-          isCurrent={certificationSubject.subject.id === currentSubjectId}
+          isCurrent={isEnrolled && certificationSubject.subject.id === currentSubjectId}
+          isEnrolled={isEnrolled}
           subject={{
             id: certificationSubject.subject.id,
             title: certificationSubject.subject.name,
             icon: SUBJECT_ICONS[index % SUBJECT_ICONS.length],
-            started: studiedSubjectIds.has(certificationSubject.subject.id),
+            started: studiedSubjectIds.has(
+              certificationSubject.subject.id,
+            ),
             sessionsCount: sessionsCountBySubjectId.get(certificationSubject.subject.id) ?? 0,
           }}
+          certificationId={certificationSubject.certificationId}
         />
       ))}
     </div>

@@ -1,11 +1,4 @@
-import {
-  CheckCircle2,
-  ClipboardList,
-  Clock,
-  PlaneLanding,
-  ShieldCheck,
-  type LucideIcon,
-} from "lucide-react";
+import { CheckCircle2, ClipboardList, Clock, PlaneLanding, ShieldCheck, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ProgressRing } from "@/components/shared/ProgressRing";
 import { AttitudeIndicator } from "@/components/shared/AttitudeIndicator";
@@ -21,13 +14,13 @@ const ORBIT_NODES: {
   icon: LucideIcon;
   tone: "amber" | "teal";
 }[] = [
-  { angle: 305, icon: Clock, tone: "amber" },
-  { angle: 255, icon: CheckCircle2, tone: "amber" },
-  { angle: 210, icon: ClipboardList, tone: "amber" },
-  { angle: 55, icon: CheckCircle2, tone: "teal" },
-  { angle: 102, icon: ShieldCheck, tone: "teal" },
-  { angle: 155, icon: PlaneLanding, tone: "teal" },
-];
+    { angle: 305, icon: Clock, tone: "amber" },
+    { angle: 255, icon: CheckCircle2, tone: "amber" },
+    { angle: 210, icon: ClipboardList, tone: "amber" },
+    { angle: 55, icon: CheckCircle2, tone: "teal" },
+    { angle: 102, icon: ShieldCheck, tone: "teal" },
+    { angle: 155, icon: PlaneLanding, tone: "teal" },
+  ];
 
 const glowByTone = {
   amber: "border-amber-400/50 bg-[#1E2834] text-amber-400 shadow-[0_0_14px_rgba(245,158,11,0.5)]",
@@ -39,12 +32,6 @@ export function ProgressCircle({ percent }: ProgressCircleProps) {
 
   return (
     <div className="relative flex h-full min-h-[260px] w-full items-center overflow-hidden rounded-2xl border border-white/5 bg-[#1E2834] p-6">
-      <div className="pointer-events-none absolute inset-y-2 right-2 flex w-[48%] items-center justify-center opacity-75">
-        <div className="h-full max-h-[240px] w-full max-w-[240px]">
-          <AttitudeIndicator />
-        </div>
-      </div>
-
       <div className="relative z-10 shrink-0" style={{ height: box, width: box }}>
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <ProgressRing
@@ -76,6 +63,12 @@ export function ProgressCircle({ percent }: ProgressCircleProps) {
             </div>
           );
         })}
+      </div>
+
+      <div className="pointer-events-none absolute" style={{ right: '-65px', transform: 'rotate(-25deg) scale(2)', filter: 'opacity(0.3)' }}>
+        <div className="h-full max-h-[240px] w-full max-w-[240px]">
+          <AttitudeIndicator />
+        </div>
       </div>
     </div>
   );
