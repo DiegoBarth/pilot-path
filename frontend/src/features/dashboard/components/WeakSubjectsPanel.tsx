@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Panel, PanelBody, PanelHeader } from "@/components/ui/panel";
+import { EmptyState } from "@/components/shared/EmptyState";
 import { cn, formatAccuracy } from "@/lib/utils";
 import type { WeakSubject } from "../types";
 
@@ -16,9 +17,7 @@ export function WeakSubjectsPanel({ weakSubjects }: WeakSubjectsPanelProps) {
 
       <PanelBody className="flex flex-1 flex-col gap-1">
         {weakSubjects.length === 0 ? (
-          <p className="px-3 py-4 text-sm text-slate-500">
-            Nenhum ponto de atenção identificado até agora.
-          </p>
+          <EmptyState message="Nenhum ponto de atenção identificado até agora." />
         ) : (
           weakSubjects.slice(0, 4).map((subject) => (
             <div

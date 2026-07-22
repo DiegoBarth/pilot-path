@@ -23,15 +23,15 @@ const ORBIT_NODES: {
   ];
 
 const glowByTone = {
-  amber: "border-amber-400/50 bg-[#1E2834] text-amber-400 shadow-[0_0_14px_rgba(245,158,11,0.5)]",
-  teal: "border-teal-400/50 bg-[#1E2834] text-teal-400 shadow-[0_0_14px_rgba(45,212,191,0.45)]",
+  amber: "border-amber-400/50 bg-card text-amber-400 shadow-[0_0_14px_rgba(245,158,11,0.5)]",
+  teal: "border-teal-400/50 bg-card text-teal-400 shadow-[0_0_14px_rgba(45,212,191,0.45)]",
 };
 
 export function ProgressCircle({ percent }: ProgressCircleProps) {
   const box = RING_SIZE + 56;
 
   return (
-    <div className="relative flex h-full min-h-[260px] w-full items-center overflow-hidden rounded-2xl border border-white/5 bg-[#1E2834] p-6">
+    <div className="relative flex h-full min-h-[260px] w-full items-center overflow-hidden rounded-2xl border border-white/5 bg-card p-6">
       <div className="relative z-10 shrink-0" style={{ height: box, width: box }}>
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <ProgressRing
@@ -39,7 +39,7 @@ export function ProgressCircle({ percent }: ProgressCircleProps) {
             size={RING_SIZE}
             strokeWidth={12}
             label="Complete"
-            trackColor="#1a2235"
+            trackColor="var(--muted)"
           />
         </div>
 

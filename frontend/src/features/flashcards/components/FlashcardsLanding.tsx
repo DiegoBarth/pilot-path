@@ -1,3 +1,4 @@
+import { PageHeader } from "@/components/shared/PageHeader";
 import { FlashcardsFilterPanel } from "./FlashcardsFilterPanel";
 import { FlashcardsOverviewCards } from "./FlashcardsOverviewCards";
 import type { EnrollmentSummary } from "@/features/dashboard/types";
@@ -33,15 +34,10 @@ export function FlashcardsLanding({
 }: FlashcardsLandingProps) {
   return (
     <>
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-white md:text-4xl">
-          Flashcards
-        </h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
-          Revise conceitos importantes, teste sua memória e acompanhe seu
-          desempenho ao longo dos estudos.
-        </p>
-      </div>
+      <PageHeader
+        title="Flashcards"
+        description="Revise conceitos importantes, teste sua memória e acompanhe seu desempenho ao longo dos estudos."
+      />
 
       <FlashcardsOverviewCards overview={overview} />
 

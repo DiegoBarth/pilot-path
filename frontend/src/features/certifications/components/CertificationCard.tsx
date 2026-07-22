@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LabeledProgressBar } from "@/components/ui/progress-bar";
 import { EnrollmentStatusBadge } from "@/features/enrollments/components/EnrollmentStatusBadge";
 import type { EnrollmentDisplayStatus } from "@/domain/enrollment";
 
@@ -26,17 +27,11 @@ export function CertificationCard({ certification }: CertificationCardProps) {
 
       {typeof certification.progress === "number" && (
         <div className="mt-6">
-          <div className="flex justify-between text-sm">
-            <span className="text-slate-500">Progresso</span>
-            <span className="text-amber-400">{certification.progress}%</span>
-          </div>
-
-          <div className="mt-2 h-2 rounded-full bg-slate-800">
-            <div
-              className="h-full rounded-full bg-primary"
-              style={{ width: `${certification.progress}%` }}
-            />
-          </div>
+          <LabeledProgressBar
+            label="Progresso"
+            value={certification.progress}
+            valueLabel={`${certification.progress}%`}
+          />
         </div>
       )}
 

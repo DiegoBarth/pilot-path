@@ -89,8 +89,9 @@ export function RegisterForm() {
 
       <Button
         type="submit"
+        variant="default"
         disabled={registerUser.isPending}
-        className="w-full bg-[#EDAA3F] text-slate-950 hover:bg-amber-400 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-slate-950 font-semibold mt-2"
+        className="mt-2 w-full font-semibold"
       >
         {
           registerUser.isPending

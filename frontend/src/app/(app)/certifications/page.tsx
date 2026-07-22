@@ -1,6 +1,7 @@
 "use client";
 
 import { PageContainer } from "@/components/shared/PageContainer";
+import { EmptyState } from "@/components/shared/EmptyState";
 import { PageError } from "@/components/shared/PageError";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { PageLoading } from "@/components/shared/PageLoading";
@@ -29,7 +30,7 @@ export default function CertificationsPage() {
       />
 
       {items.length === 0 ? (
-        <p className="text-slate-500">Nenhuma certificação disponível no momento.</p>
+        <EmptyState message="Nenhuma certificação disponível no momento." className="px-0" />
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {items.map((certification) => (

@@ -2,6 +2,7 @@
 
 import { useAuthContext } from "@/providers/auth-provider";
 import { PageContainer } from "@/components/shared/PageContainer";
+import { PageHeader } from "@/components/shared/PageHeader";
 import { PageLoading } from "@/components/shared/PageLoading";
 import { DashboardHero } from "@/features/dashboard/components/DashboardHero";
 import { AccuracyStrip } from "@/features/dashboard/components/AccuracyStrip";
@@ -36,14 +37,10 @@ export default function DashboardPage() {
 
   return (
     <PageContainer variant="compact" className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-50 md:text-3xl">
-          Olá, {user?.name ?? "Piloto"}
-        </h1>
-        <p className="mt-1 text-sm text-slate-400">
-          Acompanhe seu progresso e retome seus estudos.
-        </p>
-      </div>
+      <PageHeader
+        title={`Olá, ${user?.name ?? "Piloto"}`}
+        description="Acompanhe seu progresso e retome seus estudos."
+      />
 
       <DashboardHero
         lastSession={lastSession}

@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckCircle2, Layers } from "lucide-react";
+import { ProgressBar } from "@/components/ui/progress-bar";
 import { FlashcardsBackLink } from "./FlashcardsBackLink";
 
 interface ReviewHeaderProps {
@@ -60,17 +61,16 @@ export function ReviewHeader({
         </div>
       </div>
 
-      <div className="h-1.5 overflow-hidden rounded-full bg-slate-800">
-        <div
-          className="h-full rounded-full bg-amber-500 transition-all duration-300"
-          style={{
-            width:
-              sessionTotal > 0
-                ? `${(Math.min(sessionReviewed + 1, sessionTotal) / sessionTotal) * 100}%`
-                : "0%",
-          }}
-        />
-      </div>
+      <ProgressBar
+        value={
+          sessionTotal > 0
+            ? (Math.min(sessionReviewed + 1, sessionTotal) / sessionTotal) * 100
+            : 0
+        }
+        size="sm"
+        trackClassName="bg-slate-800"
+        indicatorClassName="bg-amber-500"
+      />
     </div>
   );
 }

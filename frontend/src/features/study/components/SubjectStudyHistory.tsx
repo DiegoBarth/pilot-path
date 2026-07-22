@@ -1,4 +1,5 @@
 import { getStudyActivityLabel } from "../constants/study-activity";
+import { EmptyState } from "@/components/shared/EmptyState";
 import { Panel, PanelBody } from "@/components/ui/panel";
 import { formatDate } from "@/lib/utils";
 import { getSessionDurationMinutes } from "@/lib/study-utils";
@@ -15,9 +16,7 @@ export function SubjectStudyHistory({ sessions }: SubjectStudyHistoryProps) {
         <h3 className="text-sm font-semibold text-white">Histórico de Estudos</h3>
 
         {sessions.length === 0 ? (
-          <p className="mt-4 text-sm text-slate-500">
-            Você ainda não possui sessões de estudo nesta matéria.
-          </p>
+          <EmptyState message="Você ainda não possui sessões de estudo nesta matéria." className="mt-4 px-0" />
         ) : (
           <div className="mt-4 space-y-4">
             {sessions.slice(0, 5).map((session) => (

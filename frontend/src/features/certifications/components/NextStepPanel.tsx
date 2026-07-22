@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { Calendar, Clock, Play } from "lucide-react";
+import { ActionCard } from "@/components/ui/action-card";
+import { buttonVariants } from "@/components/ui/button";
 import { cn, formatRelativeDate } from "@/lib/utils";
 import {
   formatExamCountdown,
@@ -73,7 +75,7 @@ export function NextStepPanel({
     : undefined;
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-white/5 bg-[#1E2834] p-5">
+    <ActionCard>
       <div className="flex-1">
         {continueSubject ? (
           <>
@@ -92,11 +94,11 @@ export function NextStepPanel({
           <Link
             href={studyHref}
             className={cn(
-              "mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold transition",
-              "bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 hover:from-amber-300 hover:to-orange-400",
+              buttonVariants({ variant: "cta", size: "lg" }),
+              "mt-5 w-full rounded-xl",
             )}
           >
-            <Play className="h-4 w-4" />
+            <Play />
             Continuar estudo
           </Link>
         )}
@@ -118,6 +120,6 @@ export function NextStepPanel({
           </span>
         </div>
       </div>
-    </div>
+    </ActionCard>
   );
 }

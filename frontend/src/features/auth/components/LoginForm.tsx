@@ -113,8 +113,9 @@ export function LoginForm() {
 
       <Button
         type="submit"
+        variant="default"
         disabled={login.isPending}
-        className="w-full bg-[#EDAA3F] text-slate-950 hover:bg-amber-400 font-semibold"
+        className="w-full font-semibold"
       >
         {
           login.isPending

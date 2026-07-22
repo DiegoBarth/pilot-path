@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Lock, type LucideIcon } from "lucide-react";
+import { Lock } from "lucide-react";
+import { ProgressBar } from "@/components/ui/progress-bar";
 import { cn } from "@/lib/utils";
 
 interface SubjectCardProps {
@@ -18,26 +19,21 @@ export function SubjectCard({
   subject,
   certificationId,
   isCurrent = false,
-  isEnrolled
+  isEnrolled,
 }: SubjectCardProps) {
   const progress = subject.started ? 100 : 0;
-
-  const studyHref = `/study/subject/${subject.id}` + `?certificationId=${certificationId}`;
+  const studyHref = `/study/subject/${subject.id}?certificationId=${certificationId}`;
 
   return (
     <div
       className={cn(
-        "flex flex-col rounded-2xl border border-white/5 bg-[#1E2834] p-5 transition-colors",
+        "flex flex-col rounded-2xl border border-white/5 bg-card p-5 transition-colors",
         isCurrent &&
-        "border-sky-500/50 bg-[#152035] shadow-[0_0_0_1px_rgba(56,189,248,0.12)]",
-        !isEnrolled &&
-        "opacity-80",
+          "border-sky-500/50 bg-surface-input shadow-[0_0_0_1px_rgba(56,189,248,0.12)]",
+        !isEnrolled && "opacity-80",
       )}
     >
-
-      <h3 className="mb-2 text-base font-semibold text-white">
-        {subject.title}
-      </h3>
+      <h3 className="mb-2 text-base font-semibold text-white">{subject.title}</h3>
 
       {!isEnrolled ? (
         <div className="mb-3 flex items-center gap-2 text-xs font-medium text-slate-500">
@@ -45,30 +41,16 @@ export function SubjectCard({
           Inscreva-se para começar
         </div>
       ) : subject.started ? (
-        <p className="mb-3 text-xs font-medium text-teal-400">
-          Em Andamento
-        </p>
+        <p className="mb-3 text-xs font-medium text-teal-400">Em andamento</p>
       ) : (
-        <p className="mb-3 text-xs font-medium text-slate-400">
-          Não iniciado
-        </p>
+        <p className="mb-3 text-xs font-medium text-slate-400">Não iniciado</p>
       )}
 
       <div className="mt-auto">
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#1a2235]">
-          <div
-            className="h-full rounded-full bg-[#EDAA3F] transition-all"
-            style={{
-              width: `${progress}%`,
-            }}
-          />
-        </div>
+        <ProgressBar value={progress} size="sm" />
 
         <div className="mt-2 flex justify-between text-xs text-slate-500">
-          <span>
-            {progress}% concluído
-          </span>
-
+          <span>{progress}% concluído</span>
           <span>
             {subject.sessionsCount}{" "}
             {subject.sessionsCount === 1 ? "sessão" : "sessões"}
@@ -80,10 +62,12 @@ export function SubjectCard({
             href={studyHref}
             className={cn(
               "mt-4 flex w-full items-center justify-center rounded-xl py-2.5 text-center text-sm font-medium transition",
-              isCurrent ? "bg-sky-500 text-white hover:bg-sky-400" : "bg-[#468ADD] text-slate-200 hover:bg-[#3b79c4]",
+              isCurrent
+                ? "bg-sky-500 text-white hover:bg-sky-400"
+                : "bg-action-secondary text-slate-200 hover:brightness-110",
             )}
           >
-            {subject.started ? "Continuar Estudo" : "Iniciar Tópico"}
+            {subject.started ? "Continuar estudo" : "Iniciar tópico"}
           </Link>
         ) : (
           <div

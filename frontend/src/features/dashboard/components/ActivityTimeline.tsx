@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { Panel, PanelBody, PanelHeader } from "@/components/ui/panel";
+import { EmptyState } from "@/components/shared/EmptyState";
 import {
   STUDY_ACTIVITY_DOT_COLORS,
   STUDY_ACTIVITY_LABELS,
@@ -74,9 +75,7 @@ export function ActivityTimeline({ activities }: ActivityTimelineProps) {
 
       <PanelBody className="flex-1 p-2">
         {activities.length === 0 ? (
-          <p className="px-4 py-6 text-sm text-slate-500">
-            Nenhuma atividade recente.
-          </p>
+          <EmptyState message="Nenhuma atividade recente." className="px-4 py-6" />
         ) : (
           <div className="flex flex-col">
             {activities.map((activity) => (

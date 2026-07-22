@@ -41,6 +41,8 @@
   --color-surface-deep: var(--surface-deep);
   --color-surface-input: var(--surface-input);
   --color-surface-elevated: var(--surface-elevated);
+  --color-sidebar-active: var(--sidebar-active);
+  --color-action-secondary: var(--action-secondary);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -121,6 +123,8 @@
   --surface-deep: #0f1520;
   --surface-input: #152035;
   --surface-elevated: #141C27;
+  --sidebar-active: #313E4E;
+  --action-secondary: #468ADD;
 }
 
 @layer base {

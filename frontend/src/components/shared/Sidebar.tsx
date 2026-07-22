@@ -14,7 +14,6 @@ import {
   User,
   LogOut,
 } from "lucide-react";
-
 import { useAuthContext } from "@/providers/auth-provider";
 
 const navigation = [
@@ -28,7 +27,6 @@ const navigation = [
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-
   const { user, logout } = useAuthContext();
 
   function handleLogout() {
@@ -37,9 +35,9 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="flex h-full w-64 shrink-0 flex-col border-r border-white/5 bg-[#1E2834] px-4 py-6">
+    <aside className="flex h-full w-64 shrink-0 flex-col border-r border-white/5 bg-card px-4 py-6">
       <div className="mb-6 flex items-center gap-2.5 px-3">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#EDAA3F]/15">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15">
           <Plane className="h-4 w-4 text-amber-400" />
         </div>
         <span className="text-base font-semibold tracking-tight text-white">
@@ -47,9 +45,9 @@ export function Sidebar() {
         </span>
       </div>
 
-      <div className="mb-8 flex items-center justify-between rounded-xl border border-white/5 bg-[#1E2834] px-3 py-2.5">
+      <div className="mb-8 flex items-center justify-between rounded-xl border border-white/5 bg-surface-elevated px-3 py-2.5">
         <div className="flex min-w-0 items-center gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#1c2438]">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted">
             <User className="h-4 w-4 text-slate-300" />
           </div>
           <div className="flex min-w-0 flex-col">
@@ -66,7 +64,8 @@ export function Sidebar() {
 
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto">
         {navigation.map((item) => {
-          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+          const isActive =
+            pathname === item.href || pathname.startsWith(`${item.href}/`);
           const Icon = item.icon;
 
           return (
@@ -76,14 +75,14 @@ export function Sidebar() {
               className={cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-[#313E4E] text-amber-400"
-                  : "text-slate-400 hover:bg-[#1E2834] hover:text-slate-200"
+                  ? "bg-sidebar-active text-amber-400"
+                  : "text-slate-400 hover:bg-surface-elevated hover:text-slate-200",
               )}
             >
               <Icon
                 className={cn(
                   "h-5 w-5",
-                  isActive ? "text-amber-400" : "text-slate-500"
+                  isActive ? "text-amber-400" : "text-slate-500",
                 )}
               />
               {item.name}
