@@ -1,7 +1,7 @@
 import { PageHeader } from "@/components/shared/PageHeader";
 import { FlashcardsFilterPanel } from "./FlashcardsFilterPanel";
 import { FlashcardsOverviewCards } from "./FlashcardsOverviewCards";
-import type { EnrollmentSummary } from "@/features/dashboard/types";
+import type { EnrollmentSummary } from "@/features/enrollments/types";
 import type { FlashcardOverview } from "../types";
 
 interface SubjectOption {

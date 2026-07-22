@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
-import { getApiErrorMessage } from "@/lib/api/get-api-error-message";
+import { getErrorMessage } from "@/lib/api/errors";
 import { routes } from "@/lib/routes";
-import { registerSchema, type RegisterFormData } from "../schemas";
+import { registerSchema, type RegisterFormData } from "../lib/schemas";
 import { useAuth } from "../hooks/useAuth";
 import { AuthFormAlert } from "./AuthFormAlert";
 
@@ -45,7 +45,7 @@ export function RegisterForm() {
         },
         onError(error) {
           setApiError(
-            getApiErrorMessage(error, "Não foi possível criar a conta."),
+            getErrorMessage(error, "Não foi possível criar a conta."),
           );
         },
       },

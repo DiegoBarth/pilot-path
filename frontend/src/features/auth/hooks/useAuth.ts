@@ -10,19 +10,16 @@ export function useAuth() {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess(data) {
-      auth.login(
-        data.user,
-        data.access_token
-      );
-    }
+      auth.login(data.user, data.access_token, data.refresh_token);
+    },
   });
 
   const registerMutation = useMutation({
-    mutationFn: register
+    mutationFn: register,
   });
 
   return {
     login: loginMutation,
-    register: registerMutation
+    register: registerMutation,
   };
 }

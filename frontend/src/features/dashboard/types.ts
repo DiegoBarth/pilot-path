@@ -93,16 +93,7 @@ export interface SubjectAnalyticsResponse {
   weakSubjects: WeakSubject[];
 }
 
-export interface EnrollmentSummary {
-  id: string;
-  certificationId: string;
-  status: EnrollmentStatus;
-  targetExamDate?: string;
-  certification: {
-    id: string;
-    name: string;
-  };
-}
+export type { EnrollmentSummary } from "@/features/enrollments/types";
 
 export interface RecentStudySession {
   id: string;

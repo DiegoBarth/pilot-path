@@ -13,6 +13,7 @@ import {
   getCertificationSubjects,
 } from "../api/certifications.api";
 import { useEnrollments } from "@/features/enrollments/hooks/useEnrollments";
+import { calculateCertificationProgress } from "../lib/progress";
 
 export function useCertification(id: string) {
   const certification = useQuery({
@@ -55,13 +56,10 @@ export function useCertification(id: string) {
   );
 
   const progress = useMemo(() => {
-    const totalSubjects = subjects.data?.length ?? 0;
-
-    if (totalSubjects === 0) {
-      return 0;
-    }
-
-    return Math.round((studiedSubjectIds.size / totalSubjects) * 100);
+    return calculateCertificationProgress(
+      subjects.data?.length ?? 0,
+      studiedSubjectIds.size,
+    );
   }, [subjects.data, studiedSubjectIds]);
 
   const enrollment = useMemo(

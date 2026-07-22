@@ -6,11 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
-import { getApiErrorMessage } from "@/lib/api/get-api-error-message";
+import { getErrorMessage } from "@/lib/api/errors";
 import { routes } from "@/lib/routes";
 import { useAuth } from "../hooks/useAuth";
 import { getDevLoginDefaults } from "../lib/dev-credentials";
-import { loginSchema, type LoginFormData } from "../schemas";
+import { loginSchema, type LoginFormData } from "../lib/schemas";
 import { AuthFormAlert } from "./AuthFormAlert";
 
 export function LoginForm() {
@@ -39,7 +39,7 @@ export function LoginForm() {
         router.push(routes.dashboard);
       },
       onError(error) {
-        setApiError(getApiErrorMessage(error, "Não foi possível entrar."));
+        setApiError(getErrorMessage(error, "Não foi possível entrar."));
       },
     });
   }

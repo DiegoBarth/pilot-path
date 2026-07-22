@@ -1,0 +1,1 @@
+export const DEFAULT_DAILY_FLASHCARD_GOAL = 20;

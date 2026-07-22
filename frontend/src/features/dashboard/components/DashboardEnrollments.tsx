@@ -4,7 +4,7 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { Panel, PanelBody, PanelHeader } from "@/components/ui/panel";
 import { EnrollmentStatusBadge } from "@/features/enrollments/components/EnrollmentStatusBadge";
 import { filterActiveEnrollments } from "@/features/enrollments/lib/utils";
-import type { EnrollmentSummary } from "../types";
+import type { EnrollmentSummary } from "@/features/enrollments/types";
 
 interface DashboardEnrollmentsProps {
   enrollments: EnrollmentSummary[];

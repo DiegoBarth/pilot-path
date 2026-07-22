@@ -1,6 +1,6 @@
 import { ACTIVE_ENROLLMENT_STATUSES } from "../constants";
 import type { EnrollmentStatus } from "@/domain/enrollment";
-import type { EnrollmentSummary } from "@/features/dashboard/types";
+import type { EnrollmentSummary } from "../types";
 
 export function isActiveEnrollment(
   status?: EnrollmentStatus | EnrollmentSummary["status"],

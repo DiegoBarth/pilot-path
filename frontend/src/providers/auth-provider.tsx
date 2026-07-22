@@ -6,70 +6,63 @@ import {
   useEffect,
   useState,
 } from "react";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
-
-interface AuthContextData {
-  user: User | null;
-  token: string | null;
-  isAuthenticated: boolean;
-  login: (user: User, token: string) => void;
-  logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextData>(
-  {} as AuthContextData,
-);
+import {
+  clearAuthSession,
+  getAccessToken,
+  getStoredUser,
+  setAuthSession,
+  type StoredUser,
+} from "@/lib/api/auth-session";
 
 interface AuthContextData {
-  user: User | null;
+  user: StoredUser | null;
   token: string | null;
   isAuthenticated: boolean;
   loading: boolean;
-
-  login: (user: User, token: string) => void;
+  login: (user: StoredUser, token: string, refreshToken?: string) => void;
   logout: () => void;
 }
 
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export function AuthProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<StoredUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("access_token");
-    const storedUser = localStorage.getItem("user");
+    const storedToken = getAccessToken();
+    const storedUser = getStoredUser();
 
     if (storedToken && storedUser) {
       setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+      setUser(storedUser);
     }
 
     setLoading(false);
   }, []);
 
-  function login(user: User, token: string) {
-    localStorage.setItem("access_token", token);
-    localStorage.setItem("user", JSON.stringify(user));
+  function login(
+    nextUser: StoredUser,
+    nextToken: string,
+    refreshToken?: string,
+  ) {
+    setAuthSession({
+      user: nextUser,
+      accessToken: nextToken,
+      refreshToken,
+    });
 
-    setUser(user);
-    setToken(token);
+    setUser(nextUser);
+    setToken(nextToken);
   }
 
   function logout() {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
-
+    clearAuthSession();
     setUser(null);
     setToken(null);
   }

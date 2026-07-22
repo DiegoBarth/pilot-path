@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Panel, PanelBody, PanelHeader } from "@/components/ui/panel";
 import { SelectField } from "@/components/ui/select-field";
 import { formatCountLabel } from "@/lib/utils";
-import type { EnrollmentSummary } from "@/features/dashboard/types";
+import type { EnrollmentSummary } from "@/features/enrollments/types";
 import type { FlashcardOverview } from "../types";
 
 interface SubjectOption {
