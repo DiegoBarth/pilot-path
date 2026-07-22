@@ -1,4 +1,5 @@
 import type { StudyActivityType } from "@/domain/study-activity";
+import { routes } from "@/lib/routes";
 
 interface BuildStudyActivityHrefParams {
   studyType: StudyActivityType | string;
@@ -27,15 +28,21 @@ export function buildStudyActivityHref({
 }: BuildStudyActivityHrefParams) {
   switch (studyType) {
     case "FLASHCARDS":
-      return withSubjectContext("/flashcards", subjectId, certificationId);
+      return withSubjectContext(
+        routes.flashcards,
+        subjectId,
+        certificationId,
+      );
 
     case "MOCK_EXAM":
     case "SIMULATOR":
-      return withSubjectContext("/mock-exams", subjectId, certificationId);
+      return withSubjectContext(
+        routes.mockExams,
+        subjectId,
+        certificationId,
+      );
 
     default:
-      return certificationId
-        ? `/study/subject/${subjectId}?certificationId=${certificationId}`
-        : `/study/subject/${subjectId}`;
+      return routes.studySubject(subjectId, certificationId);
   }
 }

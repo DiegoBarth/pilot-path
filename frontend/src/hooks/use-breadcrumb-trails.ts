@@ -9,6 +9,15 @@ import {
   buildFlashcardsReviewTrail,
 } from "@/lib/breadcrumb-trails";
 
+function useCertificationBreadcrumbContext(certificationId?: string) {
+  const query = useCertificationQuery(certificationId);
+
+  return {
+    certification: query.data ?? null,
+    isPending: Boolean(certificationId) && query.isLoading,
+  };
+}
+
 export function useCertificationBreadcrumbs(
   certification?: { name: string } | null,
 ) {
@@ -27,7 +36,8 @@ export function useSubjectStudyBreadcrumbs({
   subject?: { name: string } | null;
   certificationId?: string;
 }) {
-  const certification = useCertificationQuery(certificationId);
+  const { certification, isPending } =
+    useCertificationBreadcrumbContext(certificationId);
 
   const items = useMemo(() => {
     if (!subject) {
@@ -38,12 +48,12 @@ export function useSubjectStudyBreadcrumbs({
       return buildSubjectStudyTrail(subject.name);
     }
 
-    if (!certification.data) {
+    if (isPending || !certification) {
       return null;
     }
 
-    return buildSubjectStudyTrail(subject.name, certification.data);
-  }, [subject, certificationId, certification.data]);
+    return buildSubjectStudyTrail(subject.name, certification);
+  }, [subject, certificationId, certification, isPending]);
 
   useBreadcrumbs(items);
 }
@@ -55,18 +65,16 @@ export function useFlashcardReviewBreadcrumbs({
   subject?: { id: string; name: string } | null;
   certificationId?: string;
 }) {
-  const certification = useCertificationQuery(certificationId);
+  const { certification, isPending } =
+    useCertificationBreadcrumbContext(certificationId);
 
   const items = useMemo(() => {
-    if (certificationId && !certification.data) {
+    if (certificationId && (isPending || !certification)) {
       return null;
     }
 
-    return buildFlashcardsReviewTrail(
-      subject ?? null,
-      certification.data ?? null,
-    );
-  }, [subject, certificationId, certification.data]);
+    return buildFlashcardsReviewTrail(subject ?? null, certification);
+  }, [subject, certificationId, certification, isPending]);
 
   useBreadcrumbs(items);
 }

@@ -1,91 +1,90 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema, type RegisterFormData } from "../schemas";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { FormField } from "@/components/ui/form-field";
+import { getApiErrorMessage } from "@/lib/api/get-api-error-message";
+import { routes } from "@/lib/routes";
+import { registerSchema, type RegisterFormData } from "../schemas";
 import { useAuth } from "../hooks/useAuth";
+import { AuthFormAlert } from "./AuthFormAlert";
 
 export function RegisterForm() {
+  const router = useRouter();
   const { register: registerUser } = useAuth();
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
-    formState: {
-      errors,
-    },
+    formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
       email: "",
-      password: ""
+      password: "",
     },
   });
 
-  function onSubmit(
-    data: RegisterFormData) {
-    registerUser.mutate({
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
+  function onSubmit(data: RegisterFormData) {
+    setApiError(null);
+
+    registerUser.mutate(
+      {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess() {
+          router.push(routes.login);
+        },
+        onError(error) {
+          setApiError(
+            getApiErrorMessage(error, "Não foi possível criar a conta."),
+          );
+        },
+      },
+    );
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="space-y-2">
-        <label htmlFor="name" className="text-sm font-medium text-slate-200">
-          Nome Completo
-        </label>
-        <input
-          id="name"
-          type="text"
-          placeholder="Seu nome"
-          {...register("name")}
-          className="w-full rounded-md border border-slate-800 bg-slate-900/50 px-3 py-2 text-sm text-slate-50 placeholder-slate-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-          disabled={registerUser.isPending}
-        />
-        {errors.name && (
-          <p className="text-sm text-red-500">{errors.name.message}</p>
-        )}
-      </div>
+      {apiError && <AuthFormAlert message={apiError} />}
 
-      <div className="space-y-2">
-        <label htmlFor="email" className="text-sm font-medium text-slate-200">
-          E-mail
-        </label>
-        <input
-          id="email"
-          type="email"
-          placeholder="piloto@exemplo.com"
-          {...register("email")}
-          className="w-full rounded-md border border-slate-800 bg-slate-900/50 px-3 py-2 text-sm text-slate-50 placeholder-slate-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-          disabled={registerUser.isPending}
-        />
-        {errors.email && (
-          <p className="text-sm text-red-500">{errors.email.message}</p>
-        )}
-      </div>
+      <FormField
+        label="Nome Completo"
+        id="name"
+        type="text"
+        placeholder="Seu nome"
+        error={errors.name?.message}
+        disabled={registerUser.isPending}
+        {...register("name")}
+      />
 
-      <div className="space-y-2">
-        <label htmlFor="password" className="text-sm font-medium text-slate-200">
-          Senha
-        </label>
-        <input
-          id="password"
-          type="password"
-          placeholder="••••••••"
-          {...register("password")}
-          className="w-full rounded-md border border-slate-800 bg-slate-900/50 px-3 py-2 text-sm text-slate-50 placeholder-slate-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-          disabled={registerUser.isPending}
-        />
-        {errors.password && (
-          <p className="text-sm text-red-500">{errors.password.message}</p>
-        )}
-      </div>
+      <FormField
+        label="E-mail"
+        id="email"
+        type="email"
+        placeholder="piloto@exemplo.com"
+        error={errors.email?.message}
+        disabled={registerUser.isPending}
+        {...register("email")}
+      />
 
+      <FormField
+        label="Senha"
+        id="password"
+        type="password"
+        placeholder="••••••••"
+        error={errors.password?.message}
+        disabled={registerUser.isPending}
+        {...register("password")}
+      />
 
       <Button
         type="submit"
@@ -93,11 +92,7 @@ export function RegisterForm() {
         disabled={registerUser.isPending}
         className="mt-2 w-full font-semibold"
       >
-        {
-          registerUser.isPending
-            ? "Criando Conta..."
-            : "Criar Conta"
-        }
+        {registerUser.isPending ? "Criando Conta..." : "Criar Conta"}
       </Button>
     </form>
   );

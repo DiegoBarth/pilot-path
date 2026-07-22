@@ -1,115 +1,72 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useAuth } from "../hooks/useAuth";
-import {
-  loginSchema,
-  type LoginFormData,
-} from "../schemas";
-
-import {
-  useForm,
-} from "react-hook-form";
-
-import {
-  zodResolver,
-} from "@hookform/resolvers/zod";
-
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { FormField } from "@/components/ui/form-field";
+import { getApiErrorMessage } from "@/lib/api/get-api-error-message";
+import { routes } from "@/lib/routes";
+import { useAuth } from "../hooks/useAuth";
+import { getDevLoginDefaults } from "../lib/dev-credentials";
+import { loginSchema, type LoginFormData } from "../schemas";
+import { AuthFormAlert } from "./AuthFormAlert";
 
 export function LoginForm() {
   const router = useRouter();
-
-  const {
-    login,
-  } = useAuth();
-
+  const { login } = useAuth();
+  const [apiError, setApiError] = useState<string | null>(null);
+  const devDefaults = getDevLoginDefaults();
 
   const {
     register,
     handleSubmit,
-    formState: {
-      errors,
-    },
+    formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "admin@pilotpath.com",
-      password: "Password123!",
+      email: devDefaults.email,
+      password: devDefaults.password,
     },
   });
 
-
   function onSubmit(data: LoginFormData) {
+    setApiError(null);
+
     login.mutate(data, {
-      onSuccess(data) {
-        router.push("/dashboard");
+      onSuccess() {
+        router.push(routes.dashboard);
       },
       onError(error) {
-        console.error(error);
+        setApiError(getApiErrorMessage(error, "Não foi possível entrar."));
       },
     });
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {apiError && <AuthFormAlert message={apiError} />}
 
-      <div className="space-y-2">
+      <FormField
+        label="E-mail"
+        id="email"
+        type="email"
+        placeholder="piloto@exemplo.com"
+        error={errors.email?.message}
+        disabled={login.isPending}
+        {...register("email")}
+      />
 
-        <label
-          htmlFor="email"
-          className="text-sm font-medium text-slate-200"
-        >
-          E-mail
-        </label>
-
-        <input
-          id="email"
-          type="email"
-          placeholder="piloto@exemplo.com"
-          {...register("email")}
-          disabled={login.isPending}
-          className="w-full rounded-md border border-slate-800 bg-slate-900/50 px-3 py-2 text-sm text-slate-50 placeholder-slate-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-        />
-
-        {errors.email && (
-          <p className="text-sm text-red-500">
-            {errors.email.message}
-          </p>
-        )}
-
-      </div>
-
-
-      <div className="space-y-2">
-
-        <label
-          htmlFor="password"
-          className="text-sm font-medium text-slate-200"
-        >
-          Senha
-        </label>
-
-        <input
-          id="password"
-          type="password"
-          placeholder="••••••••"
-          {...register("password")}
-          disabled={login.isPending}
-          className="w-full rounded-md border border-slate-800 bg-slate-900/50 px-3 py-2 text-sm text-slate-50 placeholder-slate-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-        />
-
-        {errors.password && (
-          <p className="text-sm text-red-500">
-            {errors.password.message}
-          </p>
-        )}
-
-      </div>
-
+      <FormField
+        label="Senha"
+        id="password"
+        type="password"
+        placeholder="••••••••"
+        error={errors.password?.message}
+        disabled={login.isPending}
+        {...register("password")}
+      />
 
       <Button
         type="submit"
@@ -117,14 +74,8 @@ export function LoginForm() {
         disabled={login.isPending}
         className="w-full font-semibold"
       >
-        {
-          login.isPending
-            ? "Entrando..."
-            : "Entrar"
-        }
+        {login.isPending ? "Entrando..." : "Entrar"}
       </Button>
-
-
     </form>
   );
 }

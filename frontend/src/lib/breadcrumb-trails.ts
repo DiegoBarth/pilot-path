@@ -1,21 +1,22 @@
 import type { BreadcrumbItem } from "@/components/shared/breadcrumb";
+import { routes } from "@/lib/routes";
 
 export const STATIC_ROUTE_BREADCRUMBS: Record<string, BreadcrumbItem[]> = {
-  "/dashboard": [{ label: "Painel" }],
-  "/certifications": [{ label: "Certificações" }],
-  "/flashcards": [{ label: "Flashcards" }],
-  "/mock-exams": [{ label: "Simulados" }],
-  "/analytics": [{ label: "Estatísticas" }],
+  [routes.dashboard]: [{ label: "Painel" }],
+  [routes.certifications]: [{ label: "Certificações" }],
+  [routes.flashcards]: [{ label: "Flashcards" }],
+  [routes.mockExams]: [{ label: "Simulados" }],
+  [routes.analytics]: [{ label: "Estatísticas" }],
 };
 
 const certificationsRoot: BreadcrumbItem = {
   label: "Certificações",
-  href: "/certifications",
+  href: routes.certifications,
 };
 
 const flashcardsRoot: BreadcrumbItem = {
   label: "Flashcards",
-  href: "/flashcards",
+  href: routes.flashcards,
 };
 
 export function buildCertificationTrail(name: string): BreadcrumbItem[] {
@@ -34,7 +35,7 @@ export function buildSubjectStudyTrail(
     certificationsRoot,
     {
       label: certification.name,
-      href: `/certifications/${certification.id}`,
+      href: routes.certification(certification.id),
     },
     { label: subjectName },
   ];
@@ -50,11 +51,11 @@ export function buildFlashcardsReviewTrail(
       certificationsRoot,
       {
         label: certification.name,
-        href: `/certifications/${certification.id}`,
+        href: routes.certification(certification.id),
       },
       {
         label: subject.name,
-        href: `/study/subject/${subject.id}?certificationId=${certification.id}`,
+        href: routes.studySubject(subject.id, certification.id),
       },
       { label: "Flashcards" },
     ];

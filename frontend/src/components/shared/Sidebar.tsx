@@ -14,14 +14,15 @@ import {
   User,
   LogOut,
 } from "lucide-react";
+import { routes } from "@/lib/routes";
 import { useAuthContext } from "@/providers/auth-provider";
 
 const navigation = [
-  { name: "Painel", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Certificações", href: "/certifications", icon: Award },
-  { name: "Flashcards", href: "/flashcards", icon: Layers },
-  { name: "Simulados", href: "/mock-exams", icon: FileText },
-  { name: "Estatísticas", href: "/analytics", icon: BarChart2 },
+  { name: "Painel", href: routes.dashboard, icon: LayoutDashboard },
+  { name: "Certificações", href: routes.certifications, icon: Award },
+  { name: "Flashcards", href: routes.flashcards, icon: Layers },
+  { name: "Simulados", href: routes.mockExams, icon: FileText },
+  { name: "Estatísticas", href: routes.analytics, icon: BarChart2 },
 ];
 
 export function Sidebar() {
@@ -31,7 +32,7 @@ export function Sidebar() {
 
   function handleLogout() {
     logout();
-    router.replace("/login");
+    router.replace(routes.login);
   }
 
   return (
