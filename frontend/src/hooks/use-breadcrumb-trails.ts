@@ -7,6 +7,7 @@ import { useBreadcrumbs } from "@/components/shared/breadcrumb";
 import {
   buildCertificationTrail,
   buildSubjectStudyTrail,
+  buildFlashcardsReviewTrail,
 } from "@/lib/breadcrumb-trails";
 
 export function useCertificationBreadcrumbs(
@@ -47,6 +48,33 @@ export function useSubjectStudyBreadcrumbs({
     }
 
     return buildSubjectStudyTrail(subject.name, certification.data);
+  }, [subject, certificationId, certification.data]);
+
+  useBreadcrumbs(items);
+}
+
+export function useFlashcardReviewBreadcrumbs({
+  subject,
+  certificationId,
+}: {
+  subject?: { id: string; name: string } | null;
+  certificationId?: string;
+}) {
+  const certification = useQuery({
+    queryKey: ["certification", certificationId],
+    queryFn: () => getCertification(certificationId!),
+    enabled: Boolean(certificationId),
+  });
+
+  const items = useMemo(() => {
+    if (certificationId && !certification.data) {
+      return null;
+    }
+
+    return buildFlashcardsReviewTrail(
+      subject ?? null,
+      certification.data ?? null,
+    );
   }, [subject, certificationId, certification.data]);
 
   useBreadcrumbs(items);

@@ -102,9 +102,9 @@ export function DashboardHero({
 
       <div className="relative flex min-h-[220px] flex-col justify-end overflow-hidden border-t border-white/5 p-5 lg:col-span-2 lg:min-h-0 lg:border-l lg:border-t-0">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <AltimeterWatermark className="absolute -left-8 -top-4 h-48 w-48 opacity-[0.07]" />
-          <ChronographWatermark className="absolute -right-6 top-0 h-44 w-44 opacity-[0.06]" />
-          <AttitudeWatermark className="absolute -bottom-6 left-1/2 h-28 w-auto -translate-x-1/2 opacity-[0.05]" />
+          <AltimeterWatermark className="absolute -left-8 -top-4 h-48 w-48" />
+          <ChronographWatermark className="absolute -right-6 top-0 h-44 w-44" />
+          <AttitudeWatermark className="absolute -bottom-6 left-1/2 h-28 w-auto -translate-x-1/2" />
           <div className="absolute inset-0 bg-gradient-to-br from-[#1E2834]/40 via-[#1E2834]/70 to-[#0f1520]/90" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(245,158,11,0.06),transparent_45%)]" />
         </div>

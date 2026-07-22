@@ -13,6 +13,11 @@ const certificationsRoot: BreadcrumbItem = {
   href: "/certifications",
 };
 
+const flashcardsRoot: BreadcrumbItem = {
+  label: "Flashcards",
+  href: "/flashcards",
+};
+
 export function buildCertificationTrail(name: string): BreadcrumbItem[] {
   return [certificationsRoot, { label: name }];
 }
@@ -33,4 +38,36 @@ export function buildSubjectStudyTrail(
     },
     { label: subjectName },
   ];
+}
+
+export function buildFlashcardsReviewTrail(
+  subject?: { id: string; name: string } | null,
+  certification?: { id: string; name: string } | null,
+): BreadcrumbItem[] {
+  // Fluxo completo: Certificações > Piloto Privado > Teoria de Voo > Flashcards
+  if (certification && subject) {
+    return [
+      certificationsRoot,
+      {
+        label: certification.name,
+        href: `/certifications/${certification.id}`,
+      },
+      {
+        label: subject.name,
+        href: `/study/subject/${subject.id}?certificationId=${certification.id}`,
+      },
+      { label: "Flashcards" },
+    ];
+  }
+
+  // Fluxo via Sidebar filtrado por matéria: Flashcards > Teoria de Voo
+  if (subject) {
+    return [
+      flashcardsRoot,
+      { label: subject.name },
+    ];
+  }
+
+  // Visão geral de Flashcards
+  return [flashcardsRoot];
 }

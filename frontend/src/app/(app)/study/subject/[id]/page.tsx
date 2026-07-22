@@ -213,7 +213,7 @@ export default function SubjectStudyPage() {
 
                 <button
                   type="button"
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 py-3 font-semibold text-slate-950 transition hover:bg-amber-400"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 cursor-pointer py-3 font-semibold text-slate-950 transition"
                 >
                   <Play className="h-4 w-4" />
                   Iniciar Simulado
