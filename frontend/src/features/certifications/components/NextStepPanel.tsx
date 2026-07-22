@@ -36,7 +36,9 @@ export function NextStepPanel({
     totalSessions,
     examCountdown,
   } = useMemo(() => {
-    const sortedSubjects = [...subjects].sort((a, b) => a.order - b.order);
+    const sortedSubjects = [...subjects].sort(
+      (a, b) => a.displayOrder - b.displayOrder,
+    );
 
     const lastSession = [...studySessions].sort(
       (a, b) =>

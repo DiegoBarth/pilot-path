@@ -1,13 +1,6 @@
-import type { EnrollmentStatus } from "@/domain/enrollment";
+import type { StudyActivityType } from "@/domain/study-activity";
 
-export type { EnrollmentStatus };
-export type { PaginatedResult, PaginationMeta } from "@/domain/pagination";
-export type { StudyActivityType } from "@/domain/study-activity";
-
-export type QuestionDifficulty =
-  | "EASY"
-  | "MEDIUM"
-  | "HARD";
+export type QuestionDifficulty = "EASY" | "MEDIUM" | "HARD";
 
 export interface DifficultyPerformance {
   difficulty: QuestionDifficulty;
@@ -98,7 +91,7 @@ export type { EnrollmentSummary } from "@/features/enrollments/types";
 export interface RecentStudySession {
   id: string;
   startedAt: string;
-  studyType: import("@/domain/study-activity").StudyActivityType;
+  studyType: StudyActivityType;
   certification: {
     id: string;
     name: string;

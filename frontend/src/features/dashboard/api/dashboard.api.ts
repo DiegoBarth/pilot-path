@@ -10,8 +10,6 @@ import type {
   RecentStudySession,
 } from "../types";
 
-export { getEnrollments };
-
 export function getLearningStatistics() {
   return apiClient<LearningStatistics>(
     "/learning/statistics",

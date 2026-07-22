@@ -1,8 +1,6 @@
+import { redirect } from "next/navigation";
+import { routes } from "@/lib/routes";
+
 export default function Home() {
-  return (
-    <main>
-      <h1>PilotPath ✈️</h1>
-      <p>Your journey to becoming a pilot.</p>
-    </main>
-  );
+  redirect(routes.login);
 }

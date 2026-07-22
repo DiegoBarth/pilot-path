@@ -1,4 +1,4 @@
-import type { FlashcardFilters } from "@/features/flashcards/api/flashcards.api";
+import type { FlashcardQueryFilters } from "@/lib/flashcard-filters";
 
 type QueryClientLike = {
   invalidateQueries: (options: { queryKey: readonly unknown[] }) => void;
@@ -14,9 +14,9 @@ export const queryKeys = {
   subjectStudyHistory: (subjectId: string, certificationId?: string) =>
     ["study-history", subjectId, certificationId] as const,
   flashcardsAll: () => ["flashcards-all"] as const,
-  flashcardsOverview: (filters: FlashcardFilters = {}) =>
+  flashcardsOverview: (filters: FlashcardQueryFilters = {}) =>
     ["flashcards-overview", filters] as const,
-  flashcardsReviewQueue: (filters: FlashcardFilters = {}) =>
+  flashcardsReviewQueue: (filters: FlashcardQueryFilters = {}) =>
     ["flashcards-review-queue", filters] as const,
   learningStatistics: () => ["learning-statistics"] as const,
   subjectAnalytics: () => ["subject-analytics"] as const,

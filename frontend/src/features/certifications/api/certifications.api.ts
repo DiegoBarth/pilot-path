@@ -1,5 +1,4 @@
 import { apiClient } from "@/lib/api/client";
-import { getEnrollments } from "@/features/enrollments/api/enrollments.api";
 import type { PaginatedResult } from "@/domain/pagination";
 import type {
   Certification,
@@ -7,8 +6,6 @@ import type {
   Enrollment,
   StudySession,
 } from "../types";
-
-export { getEnrollments };
 
 export function getCertifications() {
   return apiClient<Certification[]>(

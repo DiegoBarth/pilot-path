@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowLeft, CheckCircle2, RotateCcw, Trophy, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn, formatAccuracy, formatCountLabel } from "@/lib/utils";
-import { MOOD_OPTIONS } from "@/features/study/lib/mood-options";
+import { MOOD_OPTIONS } from "@/domain/mood";
 import type { ReviewSessionStats } from "../types";
 import type { Mood } from "@/domain/mood";
 

@@ -6,11 +6,11 @@ import { filterActiveEnrollments } from "@/features/enrollments/lib/utils";
 import { formatRelativeDate } from "@/lib/utils";
 import { queryKeys } from "@/lib/query-keys";
 import { buildStudyActivityHref } from "@/features/study/lib/activity-href";
+import { getEnrollments } from "@/features/enrollments/api/enrollments.api";
 import {
   getLearningStatistics,
   getSubjectAnalytics,
   getRecentStudyHistory,
-  getEnrollments,
 } from "../api/dashboard.api";
 
 export function useDashboard() {

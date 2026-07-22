@@ -1,7 +1,5 @@
 import type { EnrollmentStatus } from "@/domain/enrollment";
-
-export type { EnrollmentStatus };
-export type { PaginatedResult, PaginationMeta } from "@/domain/pagination";
+import type { PaginatedResult } from "@/domain/pagination";
 
 export interface Certification {
   id: string;
@@ -39,8 +37,8 @@ export interface CertificationSubject {
   id: string;
   certificationId: string;
   subjectId: string;
-  order: number;
-  required: boolean;
+  displayOrder: number;
+  isRequired: boolean;
   subject: Subject;
 }
 
@@ -55,3 +53,5 @@ export interface StudySession {
   certification: Certification;
   subject: Subject;
 }
+
+export type { PaginatedResult };

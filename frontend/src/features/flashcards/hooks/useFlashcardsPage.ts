@@ -6,7 +6,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCertificationSubjects } from "@/features/certifications/api/certifications.api";
 import { filterActiveEnrollments } from "@/features/enrollments/lib/utils";
 import { useEnrollments } from "@/features/enrollments/hooks/useEnrollments";
-import { useFlashcardReviewBreadcrumbs } from "@/hooks/use-breadcrumb-trails";
+import { useFlashcardReviewBreadcrumbs } from "@/lib/breadcrumbs/use-breadcrumb-trails";
 import { queryKeys, invalidateFlashcardSessionQueries, invalidateStudyHistoryQueries } from "@/lib/query-keys";
 import { getFlashcards } from "../api/flashcards.api";
 import { getAvailableFlashcardSubjects } from "../lib/available-subjects";

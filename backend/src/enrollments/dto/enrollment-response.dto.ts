@@ -1,64 +1,55 @@
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { EnrollmentStatus } from '@prisma/client';
+import { CertificationSummaryDto } from '../../certifications/dto/certification-summary.dto';
 
-import { CertificationResponseDto } from '../../certifications/dto/certification-response.dto';
-
-export class EnrollmentResponseDto {
-
-  @ApiProperty({format: 'uuid'})
+/** Enrollment fields without nested certification.enrollments cycle. */
+export class EnrollmentSummaryDto {
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   id!: string;
 
-  @ApiProperty({format: 'uuid'})
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   userId!: string;
 
-  @ApiProperty({format: 'uuid'})
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   certificationId!: string;
 
-  @ApiProperty({
-    enum: EnrollmentStatus,
-    enumName: 'EnrollmentStatus'
-  })
+  @Expose()
+  @ApiProperty({ enum: EnrollmentStatus, enumName: 'EnrollmentStatus' })
   status!: EnrollmentStatus;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time',
-    nullable: true
-  })
+  @Expose()
+  @ApiProperty({ type: String, format: 'date-time', nullable: true })
   targetExamDate?: Date;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time'
-  })
+  @Expose()
+  @ApiProperty({ type: String, format: 'date-time' })
   startedAt!: Date;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time',
-    nullable: true
-  })
+  @Expose()
+  @ApiProperty({ type: String, format: 'date-time', nullable: true })
   completedAt?: Date;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time'
-  })
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty({ type: String, format: 'date-time' })
   createdAt!: Date;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time',
-  })
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty({ type: String, format: 'date-time' })
   updatedAt!: Date;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time',
-    nullable: true
-  })
+  @Exclude()
   deletedAt?: Date;
+}
 
-  @ApiProperty({type: CertificationResponseDto})
-  certification!: CertificationResponseDto;
+export class EnrollmentResponseDto extends EnrollmentSummaryDto {
+  @Expose()
+  @Type(() => CertificationSummaryDto)
+  @ApiProperty({ type: () => CertificationSummaryDto, required: false })
+  certification?: CertificationSummaryDto;
 }

@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { isActiveEnrollment } from "@/features/enrollments/lib/utils";
 import { getEnrollmentDisplayStatus } from "@/features/enrollments/constants";
-import { useCertificationBreadcrumbs } from "@/hooks/use-breadcrumb-trails";
+import { useCertificationBreadcrumbs } from "@/lib/breadcrumbs/use-breadcrumb-trails";
 import { useCertification } from "./useCertification";
 import { useEnrollCertification } from "./useEnrollCertification";
 

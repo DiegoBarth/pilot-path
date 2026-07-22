@@ -2,7 +2,7 @@
 
 import { QueryProvider } from "./query-provider";
 import { AuthProvider } from "./auth-provider";
-import { ApiAuthHandler } from "@/components/providers/ApiAuthHandler";
+import { ApiAuthHandler } from "./ApiAuthHandler";
 
 export function Providers({
   children,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useSearchParams } from "next/navigation";
-import { useSubjectStudyBreadcrumbs } from "@/hooks/use-breadcrumb-trails";
+import { useSubjectStudyBreadcrumbs } from "@/lib/breadcrumbs/use-breadcrumb-trails";
 import { buildStudyActivityHref } from "../lib/activity-href";
 import { useSubjectStudy } from "./useSubjectStudy";
 

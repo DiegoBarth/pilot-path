@@ -1,4 +1,5 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../database/prisma.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 
@@ -48,28 +49,22 @@ export class QuestionsService {
       );
     }
 
-    const data: any = {
-      subjectId: dto.subjectId,
+    const data: Prisma.QuestionCreateInput = {
+      subject: { connect: { id: dto.subjectId } },
       statement: dto.statement,
       difficulty: dto.difficulty,
       isActive: dto.isActive ?? true,
-
+      ...(dto.explanation !== undefined && { explanation: dto.explanation }),
       alternatives: {
-        create: dto.alternatives.map(alternative => ({
+        create: dto.alternatives.map((alternative) => ({
           letter: alternative.letter,
           content: alternative.content,
-          isCorrect: alternative.isCorrect
-        }))
-      }
+          isCorrect: alternative.isCorrect,
+        })),
+      },
     };
 
-    if (dto.explanation !== undefined) {
-      data.explanation = dto.explanation;
-    }
-
-    return this.prisma.question.create({
-      data
-    });
+    return this.prisma.question.create({ data });
 
   }
 

@@ -1,4 +1,5 @@
 import { apiClient } from "@/lib/api/client";
+import type { FlashcardQueryFilters } from "@/lib/flashcard-filters";
 import type {
   CreateFlashcardReviewPayload,
   Flashcard,
@@ -7,12 +8,9 @@ import type {
   FlashcardReviewCard,
 } from "../types";
 
-export interface FlashcardFilters {
-  subjectId?: string;
-  certificationId?: string;
-}
+export type FlashcardFilters = FlashcardQueryFilters;
 
-function buildFlashcardQuery(filters: FlashcardFilters = {}) {
+function buildFlashcardQuery(filters: FlashcardQueryFilters = {}) {
   const params = new URLSearchParams();
 
   if (filters.subjectId) {

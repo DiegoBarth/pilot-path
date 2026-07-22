@@ -1,27 +1,25 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
+import { UserRole } from '@prisma/client';
 import { Auth } from '../auth/decorators/auth.decorator';
-import { ApplySwagger } from '../common/decorators/apply-swagger.decorator';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { SubjectsService } from './subjects.service';
 import { SubjectsSwagger } from './subjects.swagger';
 
 @Controller('subjects')
 export class SubjectsController {
+  constructor(private readonly subjectsService: SubjectsService) {}
 
-  constructor(private readonly subjectsService: SubjectsService) { }
-
-  @Auth()
+  @Auth(UserRole.ADMIN)
   @Post()
-  @ApplySwagger(SubjectsSwagger.create)
+  @SubjectsSwagger.create
   create(@Body() dto: CreateSubjectDto) {
     return this.subjectsService.create(dto);
   }
 
   @Auth()
   @Get()
-  @ApplySwagger(SubjectsSwagger.findAll)
+  @SubjectsSwagger.findAll
   findAll() {
     return this.subjectsService.findAll();
   }
-  
 }

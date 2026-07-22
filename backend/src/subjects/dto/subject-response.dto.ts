@@ -1,37 +1,37 @@
+import { Exclude, Expose, Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class SubjectResponseDto {
-  @ApiProperty({format: 'uuid'})
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   id!: string;
 
+  @Expose()
   @ApiProperty()
   name!: string;
 
+  @Expose()
   @ApiProperty()
   slug!: string;
 
-  @ApiProperty({nullable: true})
+  @Expose()
+  @ApiProperty({ nullable: true })
   description?: string;
 
+  @Expose()
   @ApiProperty()
   isActive!: boolean;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time'
-  })
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty({ type: String, format: 'date-time' })
   createdAt!: Date;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time'
-  })
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty({ type: String, format: 'date-time' })
   updatedAt!: Date;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time',
-    nullable: true
-  })
+  @Exclude()
   deletedAt?: Date;
 }

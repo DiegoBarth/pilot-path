@@ -39,6 +39,10 @@ export function AuthProvider({
     const storedUser = getStoredUser();
 
     if (storedToken && storedUser) {
+      setAuthSession({
+        user: storedUser,
+        accessToken: storedToken,
+      });
       setToken(storedToken);
       setUser(storedUser);
     }

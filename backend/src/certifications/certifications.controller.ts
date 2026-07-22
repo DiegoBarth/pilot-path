@@ -1,45 +1,53 @@
 import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
+import { UserRole } from '@prisma/client';
 import { Auth } from '../auth/decorators/auth.decorator';
+import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { CertificationsService } from './certifications.service';
 import { CreateCertificationDto } from './dto/create-certification.dto';
 import { UpdateCertificationDto } from './dto/update-certification.dto';
-import { ApplySwagger } from '../common/decorators/apply-swagger.decorator';
 import { CertificationsSwagger } from './certifications.swagger';
-import { AuthUser } from '../auth/decorators/auth-user.decorator';
 
 @Controller('certifications')
 export class CertificationsController {
   constructor(private readonly service: CertificationsService) {}
 
+  @Auth()
   @Get()
-  @ApplySwagger(CertificationsSwagger.findAll)
+  @CertificationsSwagger.findAll
   findAll(@AuthUser('id') userId: string) {
     return this.service.findAll(userId);
   }
 
+  @Auth()
   @Get(':id')
-  @ApplySwagger(CertificationsSwagger.findOne)
-  findOne(@Param('id', ParseUUIDPipe) id: string, @AuthUser('id') userId: string) {
+  @CertificationsSwagger.findOne
+  findOne(
+    @Param('id', ParseUUIDPipe) id: string,
+    @AuthUser('id') userId: string,
+  ) {
     return this.service.findOne(id, userId);
   }
 
-  @Auth()
+  @Auth(UserRole.ADMIN)
   @Post()
-  @ApplySwagger(CertificationsSwagger.create)
+  @CertificationsSwagger.create
   create(@Body() dto: CreateCertificationDto) {
     return this.service.create(dto);
   }
 
-  @Auth()
+  @Auth(UserRole.ADMIN)
   @Patch(':id')
-  @ApplySwagger(CertificationsSwagger.update)
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateCertificationDto) {
+  @CertificationsSwagger.update
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateCertificationDto,
+  ) {
     return this.service.update(id, dto);
   }
 
   @Auth()
   @Get(':id/subjects')
-  @ApplySwagger(CertificationsSwagger.findSubjects)
+  @CertificationsSwagger.findSubjects
   findSubjects(@Param('id', ParseUUIDPipe) id: string) {
     return this.service.findSubjects(id);
   }
