@@ -1,13 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { ReviewHeader } from "./ReviewHeader";
 import { Flashcard } from "./Flashcard";
 import { FeedbackActions } from "./FeedbackActions";
 import { ReviewSummary } from "./ReviewSummary";
+import { FlashcardsBackLink } from "./FlashcardsBackLink";
 import { useSubmitFlashcardReview } from "../hooks/useSubmitFlashcardReview";
-import { useCreateStudySessionBySubject } from "../hooks/useCreateFlashcardStudySession";
-import type { FlashcardReviewCard, ReviewSessionStats } from "../types";
+import { useCreateStudySessionBySubject } from "@/features/study/hooks/useCreateStudySessionBySubject";
+import { buildSessionStats } from "../lib/session-stats";
+import type { FlashcardReviewCard } from "../types";
 import type { FlashcardSessionContext } from "../lib/session-context";
 import { StudyType, type Mood } from "@/features/study/types";
 
@@ -44,6 +46,11 @@ export function ReviewContainer({
 
   const currentCard = cards[currentIndex];
   const completedCount = correctCount + wrongCount;
+
+  const sessionStats = useMemo(
+    () => buildSessionStats(totalCards, correctCount, wrongCount),
+    [totalCards, correctCount, wrongCount],
+  );
 
   const handleFeedback = async (correct: boolean) => {
     if (!currentCard || submitReview.isPending) {
@@ -86,12 +93,6 @@ export function ReviewContainer({
 
     setSaveError(null);
 
-    const stats: ReviewSessionStats = {
-      total: totalCards,
-      correct: correctCount,
-      wrong: wrongCount,
-    };
-
     const startedAt = new Date(sessionStartedAt.current);
     const endedAt = new Date();
 
@@ -107,7 +108,7 @@ export function ReviewContainer({
         endedAt: endedAt.toISOString(),
         studyType: StudyType.FLASHCARDS,
         mood,
-        notes: `${stats.total} flashcards revisados, ${stats.correct} acertos e ${stats.wrong} erros.`,
+        notes: `${sessionStats.total} flashcards revisados, ${sessionStats.correct} acertos e ${sessionStats.wrong} erros.`,
       });
 
       onSessionSaved?.();
@@ -130,15 +131,9 @@ export function ReviewContainer({
   };
 
   if (isFinished) {
-    const stats: ReviewSessionStats = {
-      total: totalCards,
-      correct: correctCount,
-      wrong: wrongCount,
-    };
-
     return (
       <ReviewSummary
-        stats={stats}
+        stats={sessionStats}
         canSaveSession={Boolean(sessionContext)}
         isSaving={createStudySession.isPending}
         saveError={saveError}
@@ -155,14 +150,7 @@ export function ReviewContainer({
         <p className="text-slate-400">
           Nenhum flashcard disponível para revisão no momento.
         </p>
-
-        <button
-          type="button"
-          onClick={onExit}
-          className="mt-4 text-sm font-medium text-amber-400 hover:text-amber-300"
-        >
-          Voltar para Flashcards
-        </button>
+        <FlashcardsBackLink onClick={onExit} className="mt-4" />
       </div>
     );
   }
@@ -173,7 +161,6 @@ export function ReviewContainer({
     <div className="mx-auto max-w-4xl space-y-8">
       <ReviewHeader
         subtitle={subjectName}
-        title="Revisão de Flashcards"
         reviewedToday={reviewedTodayBaseline + completedCount}
         dailyGoal={goal}
         sessionReviewed={completedCount}

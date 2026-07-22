@@ -1,44 +1,35 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { Panel, PanelBody, PanelHeader } from "@/components/ui/panel";
+import { filterActiveEnrollments } from "@/features/enrollments/lib/utils";
+import {
+  ENROLLMENT_STATUS_LABELS,
+  ENROLLMENT_STATUS_STYLES,
+} from "@/features/enrollments/constants";
 import type { EnrollmentSummary } from "../types";
-
-const ENROLLMENT_STATUS_LABELS: Record<string, string> = {
-  ACTIVE: "Em andamento",
-  COMPLETED: "Concluído",
-  PAUSED: "Pausado",
-  DROPPED: "Abandonado",
-};
-
-const STATUS_STYLES: Record<string, string> = {
-  ACTIVE: "bg-teal-500/10 text-teal-400",
-  COMPLETED: "bg-amber-500/10 text-amber-400",
-  PAUSED: "bg-slate-500/10 text-slate-400",
-  DROPPED: "bg-red-500/10 text-red-400",
-};
 
 interface DashboardEnrollmentsProps {
   enrollments: EnrollmentSummary[];
 }
 
 export function DashboardEnrollments({ enrollments }: DashboardEnrollmentsProps) {
-  const activeEnrollments = enrollments.filter((e) =>
-    ["ACTIVE", "COMPLETED"].includes(e.status),
-  );
+  const activeEnrollments = filterActiveEnrollments(enrollments);
 
   return (
-    <div className="flex flex-col rounded-2xl border border-white/5 bg-[#1E2834]">
-      <div className="flex items-center justify-between border-b border-white/5 px-6 py-4">
-        <h2 className="text-base font-semibold text-white">Minhas certificações</h2>
+    <Panel>
+      <PanelHeader
+        title="Minhas certificações"
+        action={
+          <Link
+            href="/certifications"
+            className="text-xs font-medium text-slate-400 transition hover:text-amber-400"
+          >
+            Ver todas
+          </Link>
+        }
+      />
 
-        <Link
-          href="/certifications"
-          className="text-xs font-medium text-slate-400 transition hover:text-amber-400"
-        >
-          Ver todas
-        </Link>
-      </div>
-
-      <div className="flex flex-col gap-1 p-3">
+      <PanelBody className="flex flex-col gap-1">
         {activeEnrollments.length === 0 ? (
           <p className="px-3 py-4 text-sm text-slate-500">
             Você ainda não está inscrito em nenhuma certificação.
@@ -55,9 +46,9 @@ export function DashboardEnrollments({ enrollments }: DashboardEnrollmentsProps)
                   {enrollment.certification.name}
                 </p>
                 <span
-                  className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide ${STATUS_STYLES[enrollment.status] ?? STATUS_STYLES.PAUSED}`}
+                  className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide ${ENROLLMENT_STATUS_STYLES[enrollment.status]}`}
                 >
-                  {ENROLLMENT_STATUS_LABELS[enrollment.status] ?? enrollment.status}
+                  {ENROLLMENT_STATUS_LABELS[enrollment.status]}
                 </span>
               </div>
 
@@ -65,7 +56,7 @@ export function DashboardEnrollments({ enrollments }: DashboardEnrollmentsProps)
             </Link>
           ))
         )}
-      </div>
-    </div>
+      </PanelBody>
+    </Panel>
   );
 }

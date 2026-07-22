@@ -2,19 +2,16 @@
 
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-
-export type ActivityType =
-  | "READING"
-  | "EXERCISES"
-  | "FLASHCARDS"
-  | "VIDEO"
-  | "SIMULATOR"
-  | "MOCK_EXAM"
-  | "OTHER";
+import { Panel, PanelBody, PanelHeader } from "@/components/ui/panel";
+import {
+  STUDY_ACTIVITY_DOT_COLORS,
+  STUDY_ACTIVITY_LABELS,
+} from "@/features/study/constants/study-activity";
+import type { StudyActivityType } from "../types";
 
 interface Activity {
   id: string;
-  type: ActivityType;
+  type: StudyActivityType;
   title: string;
   description: string;
   date: string;
@@ -25,29 +22,9 @@ interface ActivityTimelineProps {
   activities: Activity[];
 }
 
-const ACTIVITY_LABELS: Record<ActivityType, string> = {
-  READING: "Leitura",
-  EXERCISES: "Exercícios",
-  FLASHCARDS: "Flashcards",
-  VIDEO: "Vídeo",
-  SIMULATOR: "Simulador",
-  MOCK_EXAM: "Simulado",
-  OTHER: "Estudo",
-};
-
-const ACTIVITY_DOT_COLORS: Record<ActivityType, string> = {
-  READING: "bg-sky-500",
-  EXERCISES: "bg-amber-500",
-  FLASHCARDS: "bg-emerald-500",
-  VIDEO: "bg-violet-500",
-  SIMULATOR: "bg-teal-500",
-  MOCK_EXAM: "bg-orange-500",
-  OTHER: "bg-slate-500",
-};
-
 function ActivityRow({ activity }: { activity: Activity }) {
   const dotColor =
-    ACTIVITY_DOT_COLORS[activity.type] ?? ACTIVITY_DOT_COLORS.OTHER;
+    STUDY_ACTIVITY_DOT_COLORS[activity.type] ?? STUDY_ACTIVITY_DOT_COLORS.OTHER;
 
   const rowContent = (
     <>
@@ -61,7 +38,8 @@ function ActivityRow({ activity }: { activity: Activity }) {
           {activity.title}
         </p>
         <p className="mt-0.5 truncate text-xs text-slate-500">
-          {ACTIVITY_LABELS[activity.type] ?? activity.type} · {activity.description} · {activity.date}
+          {STUDY_ACTIVITY_LABELS[activity.type] ?? activity.type} ·{" "}
+          {activity.description} · {activity.date}
         </p>
       </div>
 
@@ -91,14 +69,10 @@ function ActivityRow({ activity }: { activity: Activity }) {
 
 export function ActivityTimeline({ activities }: ActivityTimelineProps) {
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-white/5 bg-[#1E2834]">
-      <div className="border-b border-white/5 px-6 py-4">
-        <h2 className="text-base font-semibold text-white">
-          Atividade recente
-        </h2>
-      </div>
+    <Panel className="h-full">
+      <PanelHeader title="Atividade recente" />
 
-      <div className="flex-1 p-2">
+      <PanelBody className="flex-1 p-2">
         {activities.length === 0 ? (
           <p className="px-4 py-6 text-sm text-slate-500">
             Nenhuma atividade recente.
@@ -110,7 +84,7 @@ export function ActivityTimeline({ activities }: ActivityTimelineProps) {
             ))}
           </div>
         )}
-      </div>
-    </div>
+      </PanelBody>
+    </Panel>
   );
 }

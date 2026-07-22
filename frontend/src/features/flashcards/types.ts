@@ -1,11 +1,3 @@
-export interface FlashcardItem {
-  id: string;
-  subjectId: string;
-  subjectName?: string;
-  question: string;
-  answer: string;
-}
-
 export interface ReviewSessionStats {
   total: number;
   correct: number;

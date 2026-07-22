@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { Compass, RotateCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CockpitWatermarkOverlay } from "@/components/shared/CockpitWatermarkOverlay";
 import { cn } from "@/lib/utils";
-import { AltimeterWatermark, AttitudeWatermark, ChronographWatermark } from "@/components/shared/CockpitWatermarks";
 
 interface FlashcardProps {
   question: string;
@@ -46,55 +47,30 @@ export function Flashcard({
 
   return (
     <div className="relative mx-auto w-full max-w-2xl py-6 [perspective:1200px]">
-
-      <div className="absolute inset-x-6 top-1 h-full rounded-3xl border border-white/5 bg-[#121A24] opacity-40" />
-
-      <div className="absolute inset-x-3 top-3 h-full rounded-3xl border border-white/5 bg-[#16212E] opacity-70" />
+      <div className="absolute inset-x-6 top-1 h-full rounded-3xl border border-white/5 bg-surface-deep opacity-40" />
+      <div className="absolute inset-x-3 top-3 h-full rounded-3xl border border-white/5 bg-surface-elevated opacity-70" />
 
       <div
         className={cn(
-          "relative min-h-[380px] w-full",
-          "[transform-style:preserve-3d]",
-
-          "transition-transform duration-250 ease-out",
-
+          "relative min-h-[380px] w-full [transform-style:preserve-3d] transition-transform duration-250 ease-out",
           isDropping && "translate-y-10",
         )}
       >
         <div
           className={cn(
-            "relative min-h-[380px] w-full",
-            "[transform-style:preserve-3d]",
-            "transition-transform duration-450 ease-in-out",
-
+            "relative min-h-[380px] w-full [transform-style:preserve-3d] transition-transform duration-450 ease-in-out",
             isRotating && "[transform:rotateX(180deg)]",
           )}
         >
-
           <div
             className={cn(
-              "absolute inset-0 min-h-[380px] w-full overflow-hidden rounded-3xl border bg-[#1A2432] p-8 md:p-10",
-              "[backface-visibility:hidden]",
-              "border-amber-500/30 shadow-[0_0_50px_-10px_rgba(245,158,11,0.2)]",
+              "absolute inset-0 min-h-[380px] w-full overflow-hidden rounded-3xl border bg-card p-8 md:p-10",
+              "[backface-visibility:hidden] border-amber-500/30 shadow-[0_0_50px_-10px_rgba(245,158,11,0.2)]",
             )}
           >
-            <div
-              className="pointer-events-none absolute inset-0"
-              aria-hidden
-            >
-              <AltimeterWatermark className="absolute -left-8 -top-4 h-48 w-48" />
+            <CockpitWatermarkOverlay />
 
-              <ChronographWatermark className="absolute -right-6 top-0 h-44 w-44" />
-
-              <AttitudeWatermark className="absolute -bottom-6 left-1/2 h-28 w-auto -translate-x-1/2" />
-
-              <div className="absolute inset-0 bg-gradient-to-br from-[#1E2834]/40 via-[#1E2834]/70 to-[#0f1520]/90" />
-
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(245,158,11,0.06),transparent_45%)]" />
-            </div>
-
-            <div className="relative z-10 flex h-full min-h-[320px] flex-col justify-between rounded-3xl border border-slate-700 bg-[#16212E] p-10">
-
+            <div className="relative z-10 flex h-full min-h-[320px] flex-col justify-between rounded-3xl border border-slate-700 bg-surface-elevated p-10">
               <div>
                 <span className="text-xs font-semibold tracking-wider text-amber-500">
                   PERGUNTA
@@ -105,22 +81,16 @@ export function Flashcard({
                 </h3>
               </div>
 
-              <button
-                type="button"
-                onClick={onFlip}
-                className="mx-auto mt-8 cursor-pointer rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-8 py-3.5 text-sm font-semibold text-slate-950 transition hover:from-amber-300 hover:to-orange-400 active:scale-95"
-              >
+              <Button variant="cta" size="xl" onClick={onFlip} className="mx-auto mt-8">
                 Mostrar resposta
-              </button>
+              </Button>
             </div>
           </div>
 
-          {/* Verso */}
           <div
             className={cn(
-              "absolute inset-0 min-h-[380px] w-full overflow-hidden rounded-3xl border bg-[#1A2432] p-8 md:p-10",
-              "[backface-visibility:hidden]",
-              "[transform:rotateX(180deg)]",
+              "absolute inset-0 min-h-[380px] w-full overflow-hidden rounded-3xl border bg-card p-8 md:p-10",
+              "[backface-visibility:hidden] [transform:rotateX(180deg)]",
               "border-teal-500/30 shadow-[0_0_50px_-10px_rgba(20,184,166,0.15)]",
             )}
           >
@@ -129,7 +99,6 @@ export function Flashcard({
             </div>
 
             <div className="relative z-10 flex min-h-[320px] flex-col justify-between">
-
               <div>
                 <span className="text-xs font-semibold tracking-wider text-teal-400">
                   RESPOSTA
@@ -141,7 +110,6 @@ export function Flashcard({
               </div>
 
               <div className="mt-8 flex items-center justify-between border-t border-white/5 pt-5">
-
                 <button
                   type="button"
                   onClick={onFlip}
@@ -151,14 +119,10 @@ export function Flashcard({
                   Ver pergunta novamente
                 </button>
 
-                <span className="text-xs text-slate-500">
-                  Como você se saiu?
-                </span>
-
+                <span className="text-xs text-slate-500">Como você se saiu?</span>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>

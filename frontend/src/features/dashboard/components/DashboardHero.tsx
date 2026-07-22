@@ -1,13 +1,9 @@
 import Link from "next/link";
 import { BookOpen, Calendar, CalendarClock, Play, Zap } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
+import { CockpitWatermarkOverlay } from "@/components/shared/CockpitWatermarkOverlay";
 import { cn, formatRelativeDate } from "@/lib/utils";
 import { formatExamCountdown, getDaysUntilExam } from "@/lib/study-utils";
-import {
-  AltimeterWatermark,
-  AttitudeWatermark,
-  ChronographWatermark,
-} from "@/components/shared/CockpitWatermarks";
 import type { EnrollmentSummary, RecentStudySession } from "../types";
 import { buildStudyActivityHref } from "../lib/activity-href";
 
@@ -37,7 +33,7 @@ export function DashboardHero({
     : null;
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/5 bg-[#1E2834] lg:grid lg:grid-cols-5">
+    <div className="overflow-hidden rounded-2xl border border-white/5 bg-card lg:grid lg:grid-cols-5">
       <div className="flex flex-col justify-between p-6 lg:col-span-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-amber-400">
@@ -72,10 +68,7 @@ export function DashboardHero({
           {studyHref ? (
             <Link
               href={studyHref}
-              className={cn(
-                buttonVariants({ size: "lg" }),
-                "bg-gradient-to-r from-amber-400 to-orange-500 font-semibold text-slate-950 shadow-[0_0_20px_rgba(245,158,11,0.25)] hover:from-amber-300 hover:to-orange-400",
-              )}
+              className={cn(buttonVariants({ variant: "cta", size: "lg" }))}
             >
               <Play className="mr-2 h-4 w-4" />
               Continuar estudo
@@ -83,10 +76,7 @@ export function DashboardHero({
           ) : (
             <Link
               href="/certifications"
-              className={cn(
-                buttonVariants({ size: "lg" }),
-                "bg-gradient-to-r from-amber-400 to-orange-500 font-semibold text-slate-950 hover:from-amber-300 hover:to-orange-400",
-              )}
+              className={cn(buttonVariants({ variant: "cta", size: "lg" }))}
             >
               Explorar certificações
             </Link>
@@ -106,16 +96,10 @@ export function DashboardHero({
       </div>
 
       <div className="relative flex min-h-[220px] flex-col justify-end overflow-hidden border-t border-white/5 p-5 lg:col-span-2 lg:min-h-0 lg:border-l lg:border-t-0">
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <AltimeterWatermark className="absolute -left-8 -top-4 h-48 w-48" />
-          <ChronographWatermark className="absolute -right-6 top-0 h-44 w-44" />
-          <AttitudeWatermark className="absolute -bottom-6 left-1/2 h-28 w-auto -translate-x-1/2" />
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1E2834]/40 via-[#1E2834]/70 to-[#0f1520]/90" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(245,158,11,0.06),transparent_45%)]" />
-        </div>
+        <CockpitWatermarkOverlay />
 
         <div className="relative z-10 grid grid-cols-2 gap-2">
-          <div className="rounded-xl border border-white/[0.08] bg-[#0f1520]/70 p-3 text-center backdrop-blur-sm">
+          <div className="rounded-xl border border-white/[0.08] bg-surface-deep/70 p-3 text-center backdrop-blur-sm">
             <BookOpen className="mx-auto mb-1 h-4 w-4 text-slate-400" />
             <p className="text-lg font-bold text-white">{activeEnrollmentsCount}</p>
             <p className="text-[10px] uppercase tracking-wide text-slate-500">
@@ -123,7 +107,7 @@ export function DashboardHero({
             </p>
           </div>
 
-          <div className="rounded-xl border border-white/[0.08] bg-[#0f1520]/70 p-3 text-center backdrop-blur-sm">
+          <div className="rounded-xl border border-white/[0.08] bg-surface-deep/70 p-3 text-center backdrop-blur-sm">
             <CalendarClock className="mx-auto mb-1 h-4 w-4 text-slate-400" />
             <p className="text-lg font-bold text-white">{totalSessions}</p>
             <p className="text-[10px] uppercase tracking-wide text-slate-500">

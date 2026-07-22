@@ -7,7 +7,7 @@ import { BreadcrumbProvider } from "@/components/shared/breadcrumb";
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <BreadcrumbProvider>
-      <div className="flex h-screen overflow-hidden bg-[#131925]">
+      <div className="flex h-screen overflow-hidden bg-background">
         <Sidebar />
 
         <div className="flex min-w-0 flex-1 flex-col overflow-y-auto">

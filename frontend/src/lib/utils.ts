@@ -27,3 +27,15 @@ export function formatRelativeDate(date: string | Date) {
 
   return formatter.format(diffInSeconds, "second");
 }
+
+export function formatAccuracy(value: number, decimals = 1) {
+  return `${value.toFixed(decimals)}%`;
+}
+
+export function formatCountLabel(
+  count: number,
+  singular: string,
+  plural: string,
+) {
+  return `${count} ${count === 1 ? singular : plural}`;
+}

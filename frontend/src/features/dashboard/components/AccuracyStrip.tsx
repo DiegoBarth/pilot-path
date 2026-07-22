@@ -1,5 +1,5 @@
 import { Award, BookOpen, Target } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatAccuracy } from "@/lib/utils";
 import type { LearningStatistics } from "../types";
 
 interface AccuracyStripProps {
@@ -33,9 +33,9 @@ export function AccuracyStrip({ data }: AccuracyStripProps) {
       {METRICS.map((metric) => (
         <div
           key={metric.key}
-          className="flex items-center gap-4 rounded-xl border border-white/5 bg-[#1E2834] px-5 py-4"
+          className="flex items-center gap-4 rounded-xl border border-white/5 bg-card px-5 py-4"
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#0f1520]">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface-deep">
             <metric.icon className={cn("h-5 w-5", metric.iconClass)} />
           </div>
 
@@ -44,7 +44,7 @@ export function AccuracyStrip({ data }: AccuracyStripProps) {
               {metric.label}
             </p>
             <p className="text-2xl font-bold text-white">
-              {(data?.[metric.key] ?? 0).toFixed(1)}%
+              {formatAccuracy(data?.[metric.key] ?? 0)}
             </p>
           </div>
         </div>

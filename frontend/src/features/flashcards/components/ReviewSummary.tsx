@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { ArrowLeft, CheckCircle2, RotateCcw, Trophy, XCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { MOOD_OPTIONS } from "../lib/mood-options";
+import { Button } from "@/components/ui/button";
+import { cn, formatAccuracy, formatCountLabel } from "@/lib/utils";
+import { MOOD_OPTIONS } from "@/features/study/lib/mood-options";
 import type { ReviewSessionStats } from "../types";
 import type { Mood } from "@/features/study/types";
 
@@ -39,32 +40,30 @@ export function ReviewSummary({
   };
 
   return (
-    <div className="mx-auto w-full max-w-lg rounded-3xl border border-white/5 bg-[#1E2834] p-8 text-center shadow-xl md:p-10">
+    <div className="mx-auto w-full max-w-lg rounded-3xl border border-white/5 bg-card p-8 text-center shadow-xl md:p-10">
       <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 text-amber-400">
         <Trophy className="h-8 w-8" />
       </div>
 
-      <h2 className="mt-5 text-2xl font-bold text-white">
-        Revisão concluída!
-      </h2>
+      <h2 className="mt-5 text-2xl font-bold text-white">Revisão concluída!</h2>
 
       <p className="mt-2 text-sm text-slate-400">
         Você finalizou a revisão de{" "}
         <span className="font-medium text-slate-200">
-          {stats.total} {stats.total === 1 ? "flashcard" : "flashcards"}
+          {formatCountLabel(stats.total, "flashcard", "flashcards")}
         </span>
         .
       </p>
 
       <div className="my-8 grid grid-cols-3 gap-3">
-        <div className="rounded-xl border border-white/5 bg-[#152035] p-4">
+        <div className="rounded-xl border border-white/5 bg-surface-input p-4">
           <span className="block text-xs text-slate-400">Acerto</span>
           <span className="mt-1 block text-xl font-bold text-amber-400">
-            {accuracy}%
+            {formatAccuracy(accuracy, 0)}
           </span>
         </div>
 
-        <div className="rounded-xl border border-white/5 bg-[#152035] p-4">
+        <div className="rounded-xl border border-white/5 bg-surface-input p-4">
           <CheckCircle2 className="mx-auto h-4 w-4 text-teal-400" />
           <span className="mt-1 block text-xl font-bold text-white">
             {stats.correct}
@@ -72,7 +71,7 @@ export function ReviewSummary({
           <span className="block text-xs text-slate-400">Acertos</span>
         </div>
 
-        <div className="rounded-xl border border-white/5 bg-[#152035] p-4">
+        <div className="rounded-xl border border-white/5 bg-surface-input p-4">
           <XCircle className="mx-auto h-4 w-4 text-rose-400" />
           <span className="mt-1 block text-xl font-bold text-white">
             {stats.wrong}
@@ -95,10 +94,10 @@ export function ReviewSummary({
                 disabled={isSaving}
                 onClick={() => setSelectedMood(option.value)}
                 className={cn(
-                  "rounded-xl border px-3 py-2.5 text-sm transition cursor-pointer",
+                  "cursor-pointer rounded-xl border px-3 py-2.5 text-sm transition",
                   selectedMood === option.value
                     ? "border-amber-500/50 bg-amber-500/10 text-amber-300"
-                    : "border-white/5 bg-[#152035] text-slate-400 hover:border-white/10 hover:text-slate-200",
+                    : "border-white/5 bg-surface-input text-slate-400 hover:border-white/10 hover:text-slate-200",
                 )}
               >
                 <span className="mr-1.5">{option.emoji}</span>
@@ -121,14 +120,13 @@ export function ReviewSummary({
 
       <div className="space-y-3">
         {canSaveSession && !isSaved && (
-          <button
-            type="button"
-            onClick={handleSave}
+          <Button
+            className="w-full rounded-xl py-3"
             disabled={isSaving}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-500 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50"
+            onClick={handleSave}
           >
             {isSaving ? "Salvando sessão..." : "Salvar sessão de estudo"}
-          </button>
+          </Button>
         )}
 
         {!canSaveSession && (
@@ -138,25 +136,25 @@ export function ReviewSummary({
           </p>
         )}
 
-        <button
-          type="button"
+        <Button
+          variant="outline"
+          className="w-full rounded-xl border-slate-700 bg-slate-800 py-3 text-slate-200 hover:bg-slate-700"
+          disabled={isSaving}
           onClick={onRestart}
-          disabled={isSaving}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 py-3 text-sm font-medium text-slate-200 transition hover:bg-slate-700 disabled:opacity-50"
         >
-          <RotateCcw className="h-4 w-4" />
+          <RotateCcw />
           Revisar novamente
-        </button>
+        </Button>
 
-        <button
-          type="button"
-          onClick={onExit}
+        <Button
+          variant="outline"
+          className="w-full rounded-xl border-slate-700 bg-slate-800 py-3 text-slate-200 hover:bg-slate-700"
           disabled={isSaving}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 py-3 text-sm font-medium text-slate-200 transition hover:bg-slate-700 disabled:opacity-50"
+          onClick={onExit}
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft />
           Voltar para Flashcards
-        </button>
+        </Button>
       </div>
     </div>
   );

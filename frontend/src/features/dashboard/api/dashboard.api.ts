@@ -1,14 +1,16 @@
 import { apiClient } from "@/lib/api/client";
+import { getEnrollments } from "@/features/enrollments/api/enrollments.api";
 import type {
   LearningStatistics,
   FlashcardPerformance,
   QuestionPerformance,
   MockExamPerformance,
   SubjectAnalyticsResponse,
-  EnrollmentSummary,
   RecentStudySession,
   PaginatedResult,
 } from "../types";
+
+export { getEnrollments };
 
 export function getLearningStatistics() {
   return apiClient<LearningStatistics>(
@@ -37,12 +39,6 @@ export function getMockExamStatistics() {
 export function getSubjectAnalytics() {
   return apiClient<SubjectAnalyticsResponse>(
     "/learning/statistics/subjects",
-  );
-}
-
-export function getEnrollments() {
-  return apiClient<EnrollmentSummary[]>(
-    "/enrollments",
   );
 }
 

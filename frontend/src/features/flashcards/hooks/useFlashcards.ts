@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import {
   getFlashcardReviewQueue,
   getFlashcardsOverview,
@@ -9,7 +10,7 @@ import {
 
 export function useFlashcardsOverview(filters: FlashcardFilters = {}) {
   return useQuery({
-    queryKey: ["flashcards-overview", filters],
+    queryKey: queryKeys.flashcardsOverview(filters),
     queryFn: () => getFlashcardsOverview(filters),
   });
 }
@@ -19,7 +20,7 @@ export function useFlashcardReviewQueue(
   enabled = true,
 ) {
   return useQuery({
-    queryKey: ["flashcards-review-queue", filters],
+    queryKey: queryKeys.flashcardsReviewQueue(filters),
     queryFn: () => getFlashcardReviewQueue(filters),
     enabled,
   });

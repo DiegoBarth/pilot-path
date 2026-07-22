@@ -1,57 +1,86 @@
 "use client";
 
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-
+import { filterActiveEnrollments } from "@/features/enrollments/lib/utils";
+import { formatRelativeDate } from "@/lib/utils";
+import { queryKeys } from "@/lib/query-keys";
+import { buildStudyActivityHref } from "../lib/activity-href";
 import {
   getLearningStatistics,
   getSubjectAnalytics,
-  getEnrollments,
   getRecentStudyHistory,
+  getEnrollments,
 } from "../api/dashboard.api";
 
-
 export function useDashboard() {
-
   const statistics = useQuery({
-    queryKey: [
-      "learning-statistics",
-    ],
-    queryFn:
-      getLearningStatistics,
+    queryKey: queryKeys.learningStatistics(),
+    queryFn: getLearningStatistics,
   });
-
 
   const subjects = useQuery({
-    queryKey: [
-      "subject-analytics",
-    ],
-    queryFn:
-      getSubjectAnalytics,
+    queryKey: queryKeys.subjectAnalytics(),
+    queryFn: getSubjectAnalytics,
   });
-
 
   const enrollments = useQuery({
-    queryKey: [
-      "enrollments",
-    ],
-    queryFn:
-      getEnrollments,
+    queryKey: queryKeys.enrollments(),
+    queryFn: getEnrollments,
   });
-
 
   const recentActivity = useQuery({
-    queryKey: [
-      "recent-study-history",
-    ],
-    queryFn: () =>
-      getRecentStudyHistory(6),
+    queryKey: queryKeys.recentStudyHistory(6),
+    queryFn: () => getRecentStudyHistory(6),
   });
 
+  const enrollmentList = enrollments.data ?? [];
+  const sessions = recentActivity.data?.data ?? [];
+  const lastSession = sessions[0];
+
+  const enrollmentForLastSession = useMemo(() => {
+    if (!lastSession) {
+      return undefined;
+    }
+
+    return enrollmentList.find(
+      (enrollment) =>
+        enrollment.certificationId === lastSession.certification.id,
+    );
+  }, [lastSession, enrollmentList]);
+
+  const activeEnrollmentsCount = useMemo(
+    () => filterActiveEnrollments(enrollmentList).length,
+    [enrollmentList],
+  );
+
+  const activities = useMemo(
+    () =>
+      sessions.map((session) => ({
+        id: session.id,
+        type: session.studyType,
+        title: session.subject.name,
+        description: session.certification.name,
+        date: formatRelativeDate(session.startedAt),
+        href: buildStudyActivityHref({
+          studyType: session.studyType,
+          subjectId: session.subject.id,
+          certificationId: session.certification.id,
+        }),
+      })),
+    [sessions],
+  );
 
   return {
     statistics,
     subjects,
     enrollments,
     recentActivity,
+    enrollmentList,
+    lastSession,
+    enrollmentForLastSession,
+    activeEnrollmentsCount,
+    activities,
+    totalSessions: recentActivity.data?.meta.total ?? sessions.length,
   };
 }

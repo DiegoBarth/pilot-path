@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Panel, PanelBody, PanelHeader } from "@/components/ui/panel";
+import { cn, formatAccuracy } from "@/lib/utils";
 import type { WeakSubject } from "../types";
 
 interface WeakSubjectsPanelProps {
@@ -10,12 +11,10 @@ interface WeakSubjectsPanelProps {
 
 export function WeakSubjectsPanel({ weakSubjects }: WeakSubjectsPanelProps) {
   return (
-    <div className="flex flex-col rounded-2xl border border-white/5 bg-[#1E2834]">
-      <div className="border-b border-white/5 px-6 py-4">
-        <h2 className="text-base font-semibold text-white">Pontos de atenção</h2>
-      </div>
+    <Panel>
+      <PanelHeader title="Pontos de atenção" />
 
-      <div className="flex flex-1 flex-col gap-1 p-3">
+      <PanelBody className="flex flex-1 flex-col gap-1">
         {weakSubjects.length === 0 ? (
           <p className="px-3 py-4 text-sm text-slate-500">
             Nenhum ponto de atenção identificado até agora.
@@ -36,7 +35,7 @@ export function WeakSubjectsPanel({ weakSubjects }: WeakSubjectsPanelProps) {
                     {subject.subjectName}
                   </p>
                   <p className="text-xs text-slate-500">
-                    {subject.accuracy.toFixed(0)}% de acerto
+                    {formatAccuracy(subject.accuracy, 0)} de acerto
                   </p>
                 </div>
               </div>
@@ -53,7 +52,7 @@ export function WeakSubjectsPanel({ weakSubjects }: WeakSubjectsPanelProps) {
             </div>
           ))
         )}
-      </div>
-    </div>
+      </PanelBody>
+    </Panel>
   );
 }

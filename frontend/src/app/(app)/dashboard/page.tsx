@@ -1,52 +1,29 @@
 "use client";
 
-import { useMemo } from "react";
+import { useAuthContext } from "@/providers/auth-provider";
+import { PageContainer } from "@/components/shared/PageContainer";
+import { PageLoading } from "@/components/shared/PageLoading";
 import { DashboardHero } from "@/features/dashboard/components/DashboardHero";
 import { AccuracyStrip } from "@/features/dashboard/components/AccuracyStrip";
 import { ActivityTimeline } from "@/features/dashboard/components/ActivityTimeline";
 import { DashboardEnrollments } from "@/features/dashboard/components/DashboardEnrollments";
 import { WeakSubjectsPanel } from "@/features/dashboard/components/WeakSubjectsPanel";
-import { useAuthContext } from "@/providers/auth-provider";
 import { useDashboard } from "@/features/dashboard/hooks/useDashboard";
-import { formatRelativeDate } from "@/lib/utils";
-import { buildStudyActivityHref } from "@/features/dashboard/lib/activity-href";
 
 export default function DashboardPage() {
   const { user } = useAuthContext();
-  const { statistics, subjects, enrollments, recentActivity } = useDashboard();
-
-  const enrollmentList = enrollments.data ?? [];
-  const sessions = recentActivity.data?.data ?? [];
-
-  const lastSession = sessions[0];
-
-  const enrollmentForLastSession = useMemo(() => {
-    if (!lastSession) {
-      return undefined;
-    }
-
-    return enrollmentList.find(
-      (enrollment) =>
-        enrollment.certificationId === lastSession.certification.id,
-    );
-  }, [lastSession, enrollmentList]);
-
-  const activeEnrollmentsCount = enrollmentList.filter((enrollment) =>
-    ["ACTIVE", "COMPLETED"].includes(enrollment.status),
-  ).length;
-
-  const activities = sessions.map((session) => ({
-    id: session.id,
-    type: session.studyType,
-    title: session.subject.name,
-    description: session.certification.name,
-    date: formatRelativeDate(session.startedAt),
-    href: buildStudyActivityHref({
-      studyType: session.studyType,
-      subjectId: session.subject.id,
-      certificationId: session.certification.id,
-    }),
-  }));
+  const {
+    statistics,
+    subjects,
+    enrollments,
+    recentActivity,
+    enrollmentList,
+    lastSession,
+    enrollmentForLastSession,
+    activeEnrollmentsCount,
+    activities,
+    totalSessions,
+  } = useDashboard();
 
   if (
     statistics.isLoading ||
@@ -54,20 +31,14 @@ export default function DashboardPage() {
     enrollments.isLoading ||
     recentActivity.isLoading
   ) {
-    return (
-      <div className="p-8 text-slate-400">
-        Carregando dashboard...
-      </div>
-    );
+    return <PageLoading message="Carregando dashboard..." />;
   }
 
-  const userName = user?.name ?? "Piloto";
-
   return (
-    <div className="flex flex-col gap-6 px-6 pb-8 pt-2 md:px-8">
+    <PageContainer variant="compact" className="flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-slate-50 md:text-3xl">
-          Olá, {userName}
+          Olá, {user?.name ?? "Piloto"}
         </h1>
         <p className="mt-1 text-sm text-slate-400">
           Acompanhe seu progresso e retome seus estudos.
@@ -77,7 +48,7 @@ export default function DashboardPage() {
       <DashboardHero
         lastSession={lastSession}
         activeEnrollmentsCount={activeEnrollmentsCount}
-        totalSessions={recentActivity.data?.meta.total ?? sessions.length}
+        totalSessions={totalSessions}
         enrollmentForLastSession={enrollmentForLastSession}
       />
 
@@ -91,6 +62,6 @@ export default function DashboardPage() {
           <WeakSubjectsPanel weakSubjects={subjects.data?.weakSubjects ?? []} />
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }
