@@ -1,3 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { EnrollmentStatusBadge } from "@/features/enrollments/components/EnrollmentStatusBadge";
+import { ENROLLMENT_NOT_STARTED } from "@/domain/enrollment";
+import type { EnrollmentDisplayStatus } from "@/domain/enrollment";
+
 interface CertificationHeaderProps {
   certification: {
     id: string;
@@ -5,19 +10,11 @@ interface CertificationHeaderProps {
     description?: string;
   };
   progress: number;
-  status: string;
+  status: EnrollmentDisplayStatus;
   onEnroll?: () => void;
   onCancel?: () => void;
   isUpdating?: boolean;
 }
-
-const STATUS_STYLES: Record<string, string> = {
-  "Em Andamento": "border-amber-500/40 bg-[#EDAA3F]/10 text-amber-400",
-  "Concluído": "border-teal-500/40 bg-teal-500/10 text-teal-400",
-  "Pausado": "border-sky-500/40 bg-sky-500/10 text-sky-400",
-  "Abandonado": "border-red-500/40 bg-red-500/10 text-red-400",
-  "Não Iniciado": "border-slate-500/40 bg-slate-500/10 text-slate-400",
-};
 
 export function CertificationHeader({
   certification,
@@ -26,8 +23,9 @@ export function CertificationHeader({
   onCancel,
   isUpdating,
 }: CertificationHeaderProps) {
-  const isNotStarted = status === "Não Iniciado" || status === 'Abandonado';
-  const isInProgress = status === "Em Andamento";
+  const isNotStarted =
+    status === ENROLLMENT_NOT_STARTED || status === "DROPPED";
+  const isInProgress = status === "ACTIVE";
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
@@ -36,41 +34,27 @@ export function CertificationHeader({
           {certification.name}
         </h1>
 
-        <span
-          className={`rounded-full border px-3 py-1 text-xs font-medium ${STATUS_STYLES[status] ?? STATUS_STYLES["Não Iniciado"]}`}
-        >
-          {status}
-        </span>
+        <EnrollmentStatusBadge status={status} />
       </div>
 
       {isNotStarted && (
-        <button
-          type="button"
+        <Button
           onClick={onEnroll}
           disabled={isUpdating}
-          className="
-            cursor-pointer rounded-lg bg-amber-500 px-5 py-3
-            text-sm font-semibold text-slate-950 transition
-            hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50
-          "
+          className="rounded-lg px-5 py-3"
         >
           {isUpdating ? "Iniciando..." : "Iniciar certificação"}
-        </button>
+        </Button>
       )}
 
       {isInProgress && (
-        <button
-          type="button"
+        <Button
           onClick={onCancel}
           disabled={isUpdating}
-          className="
-            cursor-pointer rounded-lg bg-amber-500 px-5 py-3
-            text-sm font-semibold text-slate-950 transition
-            hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50
-          "
+          className="rounded-lg px-5 py-3"
         >
           {isUpdating ? "Cancelando..." : "Cancelar certificação"}
-        </button>
+        </Button>
       )}
     </div>
   );

@@ -1,77 +1,45 @@
 "use client";
 
+import { PageContainer } from "@/components/shared/PageContainer";
+import { PageError } from "@/components/shared/PageError";
+import { PageHeader } from "@/components/shared/PageHeader";
+import { PageLoading } from "@/components/shared/PageLoading";
 import { CertificationCard } from "@/features/certifications/components/CertificationCard";
-import { useCertifications } from "@/features/certifications/hooks/useCertifications";
-
-const STATUS_LABELS: Record<string, string> = {
-  ACTIVE: "Em Andamento",
-  COMPLETED: "Concluído",
-  PAUSED: "Pausado",
-  DROPPED: "Abandonado",
-};
+import { useCertificationsPage } from "@/features/certifications/hooks/useCertificationsPage";
 
 export default function CertificationsPage() {
-  const { certifications } = useCertifications();
+  const { certifications, items } = useCertificationsPage();
 
   if (certifications.isLoading) {
-    return (
-      <div className="p-8 text-slate-400">
-        Carregando certificações...
-      </div>
-    );
+    return <PageLoading message="Carregando certificações..." />;
   }
 
   if (certifications.isError) {
     return (
-      <div className="p-8 text-slate-400">
-        Não foi possível carregar suas certificações. Tentar novamente.
-      </div>
+      <PageError message="Não foi possível carregar suas certificações. Tentar novamente." />
     );
   }
 
-  const items = (certifications.data ?? []).map((certification) => {
-    return {
-      id: certification.id,
-      name: certification.name,
-      description: certification.description ?? "",
-      status: certification.enrollments.length ? STATUS_LABELS[certification.enrollments[0].status] : "Não Iniciado",
-    };
-  });
-
   return (
-    <div className="px-6 pb-6 pt-2 md:px-8 md:pb-8">
+    <PageContainer variant="compact" constrained>
+      <PageHeader
+        title="Certificações"
+        description="Acompanhe seu progresso e continue sua jornada de formação."
+        className="mb-8"
+      />
 
-      <div className="mx-auto max-w-7xl">
-
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold tracking-tight text-slate-50">
-            Certificações
-          </h1>
-
-          <p className="mt-2 text-slate-400">
-            Acompanhe seu progresso e continue sua jornada de formação.
-          </p>
+      {items.length === 0 ? (
+        <p className="text-slate-500">Nenhuma certificação disponível no momento.</p>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {items.map((certification) => (
+            <CertificationCard
+              key={certification.id}
+              certification={certification}
+            />
+          ))}
         </div>
-
-        {items.length === 0 ? (
-          <p className="text-slate-500">
-            Nenhuma certificação disponível no momento.
-          </p>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-
-            {items.map(certification => (
-              <CertificationCard
-                key={certification.id}
-                certification={certification}
-              />
-            ))}
-
-          </div>
-        )}
-
-      </div>
-
-    </div>
+      )}
+    </PageContainer>
   );
 }

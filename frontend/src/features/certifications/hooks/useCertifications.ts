@@ -1,8 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-
-import { getCertifications, getEnrollments } from "../api/certifications.api";
+import { getCertifications } from "../api/certifications.api";
 
 export function useCertifications() {
 

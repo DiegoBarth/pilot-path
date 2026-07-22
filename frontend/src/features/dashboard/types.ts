@@ -1,3 +1,9 @@
+import type { EnrollmentStatus } from "@/domain/enrollment";
+
+export type { EnrollmentStatus };
+export type { PaginatedResult, PaginationMeta } from "@/domain/pagination";
+export type { StudyActivityType } from "@/domain/study-activity";
+
 export type QuestionDifficulty =
   | "EASY"
   | "MEDIUM"
@@ -87,8 +93,6 @@ export interface SubjectAnalyticsResponse {
   weakSubjects: WeakSubject[];
 }
 
-export type EnrollmentStatus = "ACTIVE" | "COMPLETED" | "PAUSED" | "DROPPED";
-
 export interface EnrollmentSummary {
   id: string;
   certificationId: string;
@@ -100,19 +104,10 @@ export interface EnrollmentSummary {
   };
 }
 
-export type StudyActivityType =
-  | "READING"
-  | "EXERCISES"
-  | "FLASHCARDS"
-  | "VIDEO"
-  | "SIMULATOR"
-  | "MOCK_EXAM"
-  | "OTHER";
-
 export interface RecentStudySession {
   id: string;
   startedAt: string;
-  studyType: StudyActivityType;
+  studyType: import("@/domain/study-activity").StudyActivityType;
   certification: {
     id: string;
     name: string;
@@ -120,15 +115,5 @@ export interface RecentStudySession {
   subject: {
     id: string;
     name: string;
-  };
-}
-
-export interface PaginatedResult<T> {
-  data: T[];
-  meta: {
-    page: number;
-    limit: number;
-    total: number;
-    pages: number;
   };
 }

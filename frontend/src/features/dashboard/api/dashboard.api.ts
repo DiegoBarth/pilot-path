@@ -1,5 +1,6 @@
 import { apiClient } from "@/lib/api/client";
 import { getEnrollments } from "@/features/enrollments/api/enrollments.api";
+import type { PaginatedResult } from "@/domain/pagination";
 import type {
   LearningStatistics,
   FlashcardPerformance,
@@ -7,7 +8,6 @@ import type {
   MockExamPerformance,
   SubjectAnalyticsResponse,
   RecentStudySession,
-  PaginatedResult,
 } from "../types";
 
 export { getEnrollments };

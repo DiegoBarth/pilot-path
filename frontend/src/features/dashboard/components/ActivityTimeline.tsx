@@ -7,7 +7,7 @@ import {
   STUDY_ACTIVITY_DOT_COLORS,
   STUDY_ACTIVITY_LABELS,
 } from "@/features/study/constants/study-activity";
-import type { StudyActivityType } from "../types";
+import type { StudyActivityType } from "@/domain/study-activity";
 
 interface Activity {
   id: string;

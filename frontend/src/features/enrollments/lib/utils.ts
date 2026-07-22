@@ -1,8 +1,11 @@
 import { ACTIVE_ENROLLMENT_STATUSES } from "../constants";
+import type { EnrollmentStatus } from "@/domain/enrollment";
 import type { EnrollmentSummary } from "@/features/dashboard/types";
 
-export function isActiveEnrollment(status: EnrollmentSummary["status"]) {
-  return ACTIVE_ENROLLMENT_STATUSES.includes(status);
+export function isActiveEnrollment(
+  status?: EnrollmentStatus | EnrollmentSummary["status"],
+) {
+  return status ? ACTIVE_ENROLLMENT_STATUSES.includes(status) : false;
 }
 
 export function filterActiveEnrollments(enrollments: EnrollmentSummary[]) {

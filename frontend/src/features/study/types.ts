@@ -1,9 +1,11 @@
 export enum StudyType {
   READING = "READING",
   VIDEO = "VIDEO",
+  EXERCISES = "EXERCISES",
   SIMULATOR = "SIMULATOR",
   FLASHCARDS = "FLASHCARDS",
   MOCK_EXAM = "MOCK_EXAM",
+  OTHER = "OTHER",
 }
 
 export enum Mood {

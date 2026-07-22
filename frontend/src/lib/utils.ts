@@ -39,3 +39,8 @@ export function formatCountLabel(
 ) {
   return `${count} ${count === 1 ? singular : plural}`;
 }
+
+export function formatDate(date: string | Date) {
+  const target = typeof date === "string" ? new Date(date) : date;
+  return target.toLocaleDateString("pt-BR");
+}

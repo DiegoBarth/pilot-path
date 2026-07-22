@@ -1,4 +1,7 @@
-export type EnrollmentStatus = "ACTIVE" | "COMPLETED" | "PAUSED" | "DROPPED";
+import type { EnrollmentStatus } from "@/domain/enrollment";
+
+export type { EnrollmentStatus };
+export type { PaginatedResult, PaginationMeta } from "@/domain/pagination";
 
 export interface Certification {
   id: string;
@@ -51,16 +54,4 @@ export interface StudySession {
   createdAt: string;
   certification: Certification;
   subject: Subject;
-}
-
-export interface PaginationMeta {
-  page: number;
-  limit: number;
-  total: number;
-  pages: number;
-}
-
-export interface PaginatedResult<T> {
-  data: T[];
-  meta: PaginationMeta;
 }

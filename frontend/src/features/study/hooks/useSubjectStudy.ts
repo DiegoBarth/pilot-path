@@ -3,18 +3,8 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getSubjects, getSubjectStudyHistory, getStudySessions } from "../api/study.api";
+import { getSessionDurationMinutes } from "@/lib/study-utils";
 import type { StudySession } from "../types";
-
-function getSessionDurationMinutes(session: StudySession) {
-  const startedAt = new Date(session.startedAt).getTime();
-  const endedAt = new Date(session.endedAt).getTime();
-
-  if (Number.isNaN(startedAt) || Number.isNaN(endedAt)) {
-    return 0;
-  }
-
-  return Math.max(0, Math.round((endedAt - startedAt) / 1000 / 60));
-}
 
 export function useSubjectStudy({ subjectId, certificationId }: {
   subjectId: string;
@@ -113,8 +103,7 @@ export function useSubjectStudy({ subjectId, certificationId }: {
     totalStudyMinutes,
     totalStudySessions,
     lastStudySession,
-    getSessionDurationMinutes,
     isLoading: subjects.isLoading || studyHistory.isLoading || studySessions.isLoading,
-    isError: subjects.isError || studyHistory.isError || studySessions.isError
+    isError: subjects.isError || studyHistory.isError || studySessions.isError,
   };
 }

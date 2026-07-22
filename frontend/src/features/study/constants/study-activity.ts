@@ -1,4 +1,4 @@
-import type { StudyActivityType } from "@/features/dashboard/types";
+import type { StudyActivityType } from "@/domain/study-activity";
 
 export const STUDY_ACTIVITY_LABELS: Record<StudyActivityType, string> = {
   READING: "Leitura",
@@ -19,3 +19,9 @@ export const STUDY_ACTIVITY_DOT_COLORS: Record<StudyActivityType, string> = {
   MOCK_EXAM: "bg-orange-500",
   OTHER: "bg-slate-500",
 };
+
+export function getStudyActivityLabel(studyType: string) {
+  return (
+    STUDY_ACTIVITY_LABELS[studyType as StudyActivityType] ?? studyType
+  );
+}
