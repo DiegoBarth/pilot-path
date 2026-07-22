@@ -1,23 +1,7 @@
 import type { PaginatedResult } from "@/domain/pagination";
+import type { Mood } from "@/domain/mood";
 import type { StudyActivityType } from "@/domain/study-activity";
-
-export enum StudyType {
-  READING = "READING",
-  VIDEO = "VIDEO",
-  EXERCISES = "EXERCISES",
-  SIMULATOR = "SIMULATOR",
-  FLASHCARDS = "FLASHCARDS",
-  MOCK_EXAM = "MOCK_EXAM",
-  OTHER = "OTHER",
-}
-
-export enum Mood {
-  EXCELLENT = "EXCELLENT",
-  GOOD = "GOOD",
-  NEUTRAL = "NEUTRAL",
-  TIRED = "TIRED",
-  FRUSTRATED = "FRUSTRATED",
-}
+import type { StudyType } from "@/domain/study-type";
 
 export interface Subject {
   id: string;

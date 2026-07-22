@@ -107,14 +107,14 @@ async function refreshAccessToken() {
     }
 
     const data = (await response.json()) as RefreshTokenResponse;
-    const storedUser = localStorage.getItem("user");
+    const storedUser = getStoredUser();
 
     if (!storedUser) {
       return null;
     }
 
     setAuthSession({
-      user: JSON.parse(storedUser),
+      user: storedUser,
       accessToken: data.access_token,
       refreshToken: data.refresh_token ?? refreshToken,
     });

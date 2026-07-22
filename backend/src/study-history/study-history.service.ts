@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { StudyHistoryQueryDto } from './dto/study-history-query.dto';
+import { StudyHistoryItemResponseDto } from './dto/study-history-item-response.dto';
 import { PaginationUtil } from '../common/utils/pagination.util';
 import { PaginatedResult } from '../common/interfaces/paginated-result.interface';
 
@@ -9,7 +10,10 @@ export class StudyHistoryService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async findAll(userId: string, query: StudyHistoryQueryDto): Promise<PaginatedResult<any>> {
+  async findAll(
+    userId: string,
+    query: StudyHistoryQueryDto,
+  ): Promise<PaginatedResult<StudyHistoryItemResponseDto>> {
     const {
       certificationId,
       subjectId,
@@ -91,8 +95,14 @@ export class StudyHistoryService {
         mood: session.mood,
         notes: session.notes,
         createdAt: session.createdAt,
-        certification: session.certificationSubject.certification,
-        subject: session.certificationSubject.subject
+        certification: {
+          id: session.certificationSubject.certification.id,
+          name: session.certificationSubject.certification.name,
+        },
+        subject: {
+          id: session.certificationSubject.subject.id,
+          name: session.certificationSubject.subject.name,
+        },
       })),
       page,
       limit,

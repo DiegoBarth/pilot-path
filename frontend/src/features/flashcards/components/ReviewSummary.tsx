@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { cn, formatAccuracy, formatCountLabel } from "@/lib/utils";
 import { MOOD_OPTIONS } from "@/features/study/lib/mood-options";
 import type { ReviewSessionStats } from "../types";
-import type { Mood } from "@/features/study/types";
+import type { Mood } from "@/domain/mood";
 
 interface ReviewSummaryProps {
   stats: ReviewSessionStats;

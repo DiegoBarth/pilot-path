@@ -11,7 +11,7 @@ import { useCreateStudySessionBySubject } from "@/features/study/hooks/useCreate
 import { buildSessionStats } from "../lib/session-stats";
 import type { FlashcardReviewCard } from "../types";
 import type { FlashcardSessionContext } from "../lib/session-context";
-import { StudyType, type Mood } from "@/features/study/types";
+import type { Mood } from "@/domain/mood";
 
 interface ReviewContainerProps {
   cards: FlashcardReviewCard[];
@@ -106,7 +106,7 @@ export function ReviewContainer({
         certificationId: sessionContext.certificationId,
         startedAt: startedAt.toISOString(),
         endedAt: endedAt.toISOString(),
-        studyType: StudyType.FLASHCARDS,
+        studyType: "FLASHCARDS",
         mood,
         notes: `${sessionStats.total} flashcards revisados, ${sessionStats.correct} acertos e ${sessionStats.wrong} erros.`,
       });

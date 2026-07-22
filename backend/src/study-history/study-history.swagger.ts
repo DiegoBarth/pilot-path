@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { StudySessionResponseDto } from '../study-sessions/dto/study-session-response.dto';
+import { StudyHistoryItemResponseDto } from './dto/study-history-item-response.dto';
 import { ApiPaginatedResponse } from '../common/swagger/paginated-response.swagger';
 
 export const StudyHistorySwagger = {
@@ -59,7 +59,7 @@ export const StudyHistorySwagger = {
       description: 'Items per page.'
     }),
 
-    ApiPaginatedResponse(StudySessionResponseDto),
+    ApiPaginatedResponse(StudyHistoryItemResponseDto),
 
     ApiUnauthorizedResponse({
       description: 'Unauthorized.'
