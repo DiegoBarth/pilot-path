@@ -1,34 +1,44 @@
 import { ApiProperty } from '@nestjs/swagger';
-
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { SubjectResponseDto } from '../../subjects/dto/subject-response.dto';
 
 export class FlashcardResponseDto {
-
-  @ApiProperty({ example: 'b2db0b51-3cf8-4c1c-a8d7-2a0c8bbf2b37' })
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   id!: string;
 
-  @ApiProperty({ example: 'What does METAR stand for?' })
+  @Expose()
+  @ApiProperty()
   question!: string;
 
-  @ApiProperty({ example: 'Meteorological Aerodrome Report.' })
+  @Expose()
+  @ApiProperty()
   answer!: string;
 
-  @ApiProperty({ example: true })
+  @Expose()
+  @ApiProperty()
   isActive!: boolean;
 
+  @Expose()
+  @Type(() => SubjectResponseDto)
   @ApiProperty({ type: SubjectResponseDto })
   subject!: SubjectResponseDto;
 
-  @ApiProperty({ example: '2026-07-17T13:45:00.000Z' })
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty()
   createdAt!: Date;
 
-  @ApiProperty({ example: '2026-07-17T13:45:00.000Z' })
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty()
   updatedAt!: Date;
 
-  @ApiProperty({
-    example: null,
-    nullable: true
-  })
-  deletedAt?: Date;
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty({ nullable: true })
+  deletedAt?: Date | null;
 
+  @Exclude()
+  subjectId?: string;
 }

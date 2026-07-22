@@ -1,7 +1,9 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../database/prisma.service';
+import { mapToDto, mapToDtoArray } from '../common/utils/map-to-dto.util';
 import { CreateQuestionDto } from './dto/create-question.dto';
+import { QuestionResponseDto } from './dto/question-response.dto';
 
 @Injectable()
 export class QuestionsService {
@@ -64,12 +66,28 @@ export class QuestionsService {
       },
     };
 
-    return this.prisma.question.create({ data });
+    const question = await this.prisma.question.create({
+      data,
+      include: {
+        subject: true,
+        alternatives: {
+          select: {
+            id: true,
+            letter: true,
+            content: true,
+          },
+          orderBy: {
+            letter: 'asc',
+          },
+        },
+      },
+    });
 
+    return mapToDto(QuestionResponseDto, question);
   }
 
   async findAll() {
-    return this.prisma.question.findMany({
+    const questions = await this.prisma.question.findMany({
       where: {
         isActive: true,
         deletedAt: null
@@ -94,6 +112,8 @@ export class QuestionsService {
         statement: 'asc'
       }
     });
+
+    return mapToDtoArray(QuestionResponseDto, questions);
   }
 
   async findOne(id: string) {
@@ -124,7 +144,7 @@ export class QuestionsService {
       throw new NotFoundException('Question not found.');
     }
 
-    return question;
+    return mapToDto(QuestionResponseDto, question);
   }
 
 }

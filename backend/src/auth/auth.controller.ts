@@ -3,6 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { AuthSwagger } from './auth.swagger';
 import { Auth } from './decorators/auth.decorator';
 import { AuthUser } from './decorators/auth-user.decorator';
@@ -23,6 +24,12 @@ export class AuthController {
   @AuthSwagger.login
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
+  }
+
+  @Post('refresh')
+  @AuthSwagger.refresh
+  refresh(@Body() dto: RefreshTokenDto) {
+    return this.authService.refresh(dto);
   }
 
   @Auth()

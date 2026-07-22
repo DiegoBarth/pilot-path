@@ -3,6 +3,7 @@ import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, Api
 import { CreateMockExamDto } from './dto/create-mock-exam.dto';
 import { FinishMockExamDto } from './dto/finish-mock-exam.dto';
 import { MockExamResponseDto } from './dto/mock-exam-response.dto';
+import { MockExamSummaryResponseDto } from './dto/mock-exam-summary-response.dto';
 
 export const MockExamsSwagger = {
 
@@ -37,7 +38,7 @@ export const MockExamsSwagger = {
     }),
 
     ApiOkResponse({
-      type: MockExamResponseDto,
+      type: MockExamSummaryResponseDto,
       isArray: true,
       description: 'Mock exams retrieved successfully.'
     }),

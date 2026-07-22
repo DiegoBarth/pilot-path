@@ -10,3 +10,22 @@ export interface EnrollmentSummary {
     name: string;
   };
 }
+
+export interface Enrollment {
+  id: string;
+  userId: string;
+  certificationId: string;
+  status: EnrollmentStatus;
+  targetExamDate?: string;
+  startedAt: string;
+  completedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  certification: {
+    id: string;
+    name: string;
+    slug: string;
+    description?: string;
+    isActive: boolean;
+  };
+}

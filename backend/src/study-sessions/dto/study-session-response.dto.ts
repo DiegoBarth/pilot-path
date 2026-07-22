@@ -1,38 +1,58 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { StudyType } from '@prisma/client';
+import { Mood, StudyType } from '@prisma/client';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { CertificationSubjectResponseDto } from '../../certifications/dto/certification-subject-response.dto';
 
 export class StudySessionResponseDto {
-  @ApiProperty()
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   id!: string;
 
-  @ApiProperty()
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   enrollmentId!: string;
 
-  @ApiProperty()
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   certificationSubjectId!: string;
 
+  @Expose()
   @ApiProperty({ enum: StudyType })
   studyType!: StudyType;
 
-  @ApiProperty({ example: 90 })
-  duration!: number;
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty({ type: String, format: 'date-time' })
+  startedAt!: Date;
 
-  @ApiProperty()
-  studiedAt!: Date;
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty({ type: String, format: 'date-time' })
+  endedAt!: Date;
 
-  @ApiPropertyOptional()
+  @Expose()
+  @ApiPropertyOptional({ enum: Mood, nullable: true })
+  mood?: Mood | null;
+
+  @Expose()
+  @ApiPropertyOptional({ nullable: true })
   notes?: string | null;
 
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
   @ApiProperty()
   createdAt!: Date;
 
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
   @ApiProperty()
   updatedAt!: Date;
 
-  @ApiPropertyOptional()
+  @Exclude()
   deletedAt?: Date | null;
 
+  @Expose()
+  @Type(() => CertificationSubjectResponseDto)
   @ApiProperty({ type: () => CertificationSubjectResponseDto })
   certificationSubject!: CertificationSubjectResponseDto;
 }

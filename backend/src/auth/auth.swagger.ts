@@ -12,6 +12,7 @@ import {
 import { AuthTokenResponseDto, AuthUserResponseDto } from './dto/auth-response.dto';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 export const AuthSwagger = {
   register: applyDecorators(
@@ -20,7 +21,7 @@ export const AuthSwagger = {
     ApiBody({ type: RegisterDto }),
     ApiCreatedResponse({
       description: 'User successfully registered',
-      type: AuthUserResponseDto,
+      type: AuthTokenResponseDto,
     }),
     ApiConflictResponse({ description: 'Email already registered' }),
   ),
@@ -34,6 +35,17 @@ export const AuthSwagger = {
       type: AuthTokenResponseDto,
     }),
     ApiUnauthorizedResponse({ description: 'Invalid credentials' }),
+  ),
+
+  refresh: applyDecorators(
+    ApiTags('Authentication'),
+    ApiOperation({ summary: 'Refresh access token' }),
+    ApiBody({ type: RefreshTokenDto }),
+    ApiOkResponse({
+      description: 'Returns new JWT tokens',
+      type: AuthTokenResponseDto,
+    }),
+    ApiUnauthorizedResponse({ description: 'Invalid refresh token' }),
   ),
 
   me: applyDecorators(

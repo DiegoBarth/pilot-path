@@ -1,5 +1,7 @@
-import type { EnrollmentStatus } from "@/domain/enrollment";
 import type { PaginatedResult } from "@/domain/pagination";
+import type { EnrollmentSummary } from "@/features/enrollments/types";
+
+export type { Enrollment } from "@/features/enrollments/types";
 
 export interface Certification {
   id: string;
@@ -9,20 +11,7 @@ export interface Certification {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-  enrollments: Enrollment[];
-}
-
-export interface Enrollment {
-  id: string;
-  userId: string;
-  certificationId: string;
-  status: EnrollmentStatus;
-  targetExamDate?: string;
-  startedAt: string;
-  completedAt?: string;
-  createdAt: string;
-  updatedAt: string;
-  certification: Certification;
+  enrollments: EnrollmentSummary[];
 }
 
 export interface Subject {

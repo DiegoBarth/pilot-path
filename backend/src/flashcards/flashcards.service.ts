@@ -1,9 +1,11 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../database/prisma.service';
+import { mapToDto } from '../common/utils/map-to-dto.util';
 import { CreateFlashcardDto } from './dto/create-flashcard.dto';
 import { FlashcardQueryDto } from './dto/flashcard-query.dto';
 import { FlashcardOverviewDto } from './dto/flashcard-overview.dto';
+import { FlashcardResponseDto } from './dto/flashcard-response.dto';
 
 @Injectable()
 export class FlashcardsService {
@@ -34,7 +36,7 @@ export class FlashcardsService {
       throw new ConflictException('Flashcard already exists.');
     }
 
-    return this.prisma.flashcard.create({
+    const flashcard = await this.prisma.flashcard.create({
       data: {
         subjectId: dto.subjectId,
         question: dto.question,
@@ -44,6 +46,8 @@ export class FlashcardsService {
         subject: true
       }
     });
+
+    return mapToDto(FlashcardResponseDto, flashcard);
   }
 
   async findAll(userId: string, query: FlashcardQueryDto = {}) {
@@ -225,7 +229,7 @@ export class FlashcardsService {
     }
 
     if (!userId) {
-      return flashcard;
+      return mapToDto(FlashcardResponseDto, flashcard);
     }
 
     return {

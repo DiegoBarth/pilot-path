@@ -11,6 +11,7 @@ export default registerAs('auth', () => {
 
   return {
     secret: secret ?? 'development-secret',
-    expiresIn: (process.env.JWT_EXPIRES_IN ?? '7d') as StringValue,
+    expiresIn: (process.env.JWT_EXPIRES_IN ?? '15m') as StringValue,
+    refreshExpiresIn: (process.env.JWT_REFRESH_EXPIRES_IN ?? '7d') as StringValue,
   };
 });

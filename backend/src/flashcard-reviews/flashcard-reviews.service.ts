@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
+import { mapToDto, mapToDtoArray } from '../common/utils/map-to-dto.util';
 import { CreateFlashcardReviewDto } from './dto/create-flashcard-review.dto';
+import { FlashcardReviewResponseDto } from './dto/flashcard-review-response.dto';
 
 @Injectable()
 export class FlashcardReviewsService {
@@ -72,11 +74,11 @@ export class FlashcardReviewsService {
       }
     });
 
-    return review;
+    return mapToDto(FlashcardReviewResponseDto, review);
   }
 
   async findReviews(userId: string) {
-    return this.prisma.flashcardReview.findMany({
+    const reviews = await this.prisma.flashcardReview.findMany({
       where: {
         userFlashcard: {
           userId
@@ -96,6 +98,7 @@ export class FlashcardReviewsService {
       }
     });
 
+    return mapToDtoArray(FlashcardReviewResponseDto, reviews);
   }
 
   private calculateNextReview(correct: boolean, correctCount: number, wrongCount: number) {

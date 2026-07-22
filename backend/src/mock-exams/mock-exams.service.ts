@@ -1,8 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../database/prisma.service';
+import { mapToDto, mapToDtoArray } from '../common/utils/map-to-dto.util';
 import { CreateMockExamDto } from './dto/create-mock-exam.dto';
 import { FinishMockExamDto } from './dto/finish-mock-exam.dto';
+import { MockExamResponseDto } from './dto/mock-exam-response.dto';
+import { MockExamSummaryResponseDto } from './dto/mock-exam-summary-response.dto';
 
 @Injectable()
 export class MockExamsService {
@@ -68,28 +71,12 @@ export class MockExamsService {
         }
       },
       include: {
-        questions: {
-          orderBy: {
-            displayOrder: 'asc'
-          },
-          include: {
-            question: {
-              include: {
-                alternatives: {
-                  select: {
-                    id: true,
-                    letter: true,
-                    content: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+        subject: true,
+        ...this.examDetailInclude(),
+      },
     });
 
-    return exam;
+    return mapToDto(MockExamResponseDto, exam);
   }
 
   async finish(userId: string, examId: string, dto: FinishMockExamDto) {
@@ -186,25 +173,14 @@ export class MockExamsService {
         score,
         passed
       },
-      include: {
-        questions: {
-          include: {
-            question: {
-              include: {
-                alternatives: true
-              }
-            },
-            selectedAlternative: true
-          }
-        }
-      }
+      include: this.finishedExamInclude(),
     });
 
-    return finishedExam;
+    return mapToDto(MockExamResponseDto, finishedExam);
   }
 
   async findAll(userId: string) {
-    return this.prisma.mockExam.findMany({
+    const exams = await this.prisma.mockExam.findMany({
       where: {
         userId,
         deletedAt: null
@@ -217,6 +193,7 @@ export class MockExamsService {
       }
     });
 
+    return mapToDtoArray(MockExamSummaryResponseDto, exams);
   }
 
   async findOne(userId: string, id: string) {
@@ -228,24 +205,7 @@ export class MockExamsService {
       },
       include: {
         subject: true,
-        questions: {
-          orderBy: {
-            displayOrder: 'asc'
-          },
-          include: {
-            question: {
-              include: {
-                alternatives: {
-                  select: {
-                    id: true,
-                    letter: true,
-                    content: true
-                  }
-                }
-              }
-            }
-          }
-        }
+        ...this.examDetailInclude(),
       }
     });
 
@@ -253,7 +213,67 @@ export class MockExamsService {
       throw new NotFoundException('Mock exam not found.');
     }
 
-    return exam;
+    return mapToDto(MockExamResponseDto, exam);
+  }
+
+  private examDetailInclude() {
+    return {
+      questions: {
+        orderBy: {
+          displayOrder: 'asc' as const,
+        },
+        include: {
+          question: {
+            include: {
+              alternatives: {
+                select: {
+                  id: true,
+                  letter: true,
+                  content: true,
+                },
+                orderBy: {
+                  letter: 'asc' as const,
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+  }
+
+  private finishedExamInclude() {
+    return {
+      subject: true,
+      questions: {
+        orderBy: {
+          displayOrder: 'asc' as const,
+        },
+        include: {
+          question: {
+            include: {
+              alternatives: {
+                select: {
+                  id: true,
+                  letter: true,
+                  content: true,
+                },
+                orderBy: {
+                  letter: 'asc' as const,
+                },
+              },
+            },
+          },
+          selectedAlternative: {
+            select: {
+              id: true,
+              letter: true,
+              content: true,
+            },
+          },
+        },
+      },
+    };
   }
 
   private shuffle<T>(items: T[]): T[] {

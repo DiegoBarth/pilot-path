@@ -1,8 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { EnrollmentStatus } from '@prisma/client';
 import { PrismaService } from '../database/prisma.service';
+import { mapToDto, mapToDtoArray } from '../common/utils/map-to-dto.util';
 import { CreateStudySessionDto } from './dto/create-study-session.dto';
 import { CreateStudySessionBySubjectDto } from './dto/create-study-session-by-subject.dto';
+import { StudySessionResponseDto } from './dto/study-session-response.dto';
 
 @Injectable()
 export class StudySessionsService {
@@ -111,7 +113,7 @@ export class StudySessionsService {
       throw new BadRequestException('End date must be after start date.');
     }
 
-    return this.prisma.studySession.create({
+    const session = await this.prisma.studySession.create({
       data: {
         enrollmentId: enrollment.id,
         certificationSubjectId: certificationSubject.id,
@@ -130,10 +132,12 @@ export class StudySessionsService {
         }
       }
     });
+
+    return mapToDto(StudySessionResponseDto, session);
   }
 
   async findAll(userId: string) {
-    return this.prisma.studySession.findMany({
+    const sessions = await this.prisma.studySession.findMany({
       where: {
         enrollment: {
           userId
@@ -152,6 +156,8 @@ export class StudySessionsService {
         startedAt: 'desc'
       }
     });
+
+    return mapToDtoArray(StudySessionResponseDto, sessions);
   }
 
   async findOne(id: string, userId: string) {
@@ -177,6 +183,6 @@ export class StudySessionsService {
       throw new NotFoundException('Study session not found.');
     }
 
-    return session;
+    return mapToDto(StudySessionResponseDto, session);
   }
 }

@@ -1,42 +1,49 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { SubjectResponseDto } from '../../subjects/dto/subject-response.dto';
+import { CertificationSummaryDto } from './certification-summary.dto';
 
 export class CertificationSubjectResponseDto {
-
-  @ApiProperty({format: 'uuid'})
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   id!: string;
 
-  @ApiProperty({format: 'uuid'})
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   certificationId!: string;
 
-  @ApiProperty({format: 'uuid'})
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   subjectId!: string;
 
-  @ApiProperty({example: 1})
-  order!: number;
+  @Expose()
+  @ApiProperty({ example: 1 })
+  displayOrder!: number;
 
-  @ApiProperty({example: true})
-  required!: boolean;
+  @Expose()
+  @ApiProperty({ example: true })
+  isRequired!: boolean;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time'
-  })
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty({ type: String, format: 'date-time' })
   createdAt!: Date;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time'
-  })
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty({ type: String, format: 'date-time' })
   updatedAt!: Date;
 
-  @ApiProperty({
-    type: String,
-    format: 'date-time',
-    nullable: true
-  })
+  @Exclude()
   deletedAt?: Date;
 
-  @ApiProperty({type: SubjectResponseDto})
-  subject!: SubjectResponseDto;
+  @Expose()
+  @Type(() => SubjectResponseDto)
+  @ApiProperty({ type: SubjectResponseDto })
+  subject?: SubjectResponseDto;
+
+  @Expose()
+  @Type(() => CertificationSummaryDto)
+  @ApiProperty({ type: CertificationSummaryDto, required: false })
+  certification?: CertificationSummaryDto;
 }

@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
+import { mapToDto, mapToDtoArray } from '../common/utils/map-to-dto.util';
 import { CreateQuestionAnswerDto } from './dto/create-question-answer.dto';
+import { QuestionAnswerResponseDto } from './dto/question-answer-response.dto';
 
 @Injectable()
 export class QuestionPracticeService {
@@ -44,11 +46,11 @@ export class QuestionPracticeService {
       }
     });
 
-    return answer;
+    return mapToDto(QuestionAnswerResponseDto, answer);
   }
 
   async findHistory(userId: string) {
-    return this.prisma.userQuestion.findMany({
+    const history = await this.prisma.userQuestion.findMany({
       where: {
         userId
       },
@@ -76,6 +78,8 @@ export class QuestionPracticeService {
         answeredAt: 'desc'
       }
     });
+
+    return mapToDtoArray(QuestionAnswerResponseDto, history);
   }
 
 }

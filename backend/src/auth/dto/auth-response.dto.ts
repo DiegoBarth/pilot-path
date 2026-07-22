@@ -24,6 +24,9 @@ export class AuthTokenResponseDto {
   @ApiProperty()
   access_token!: string;
 
+  @ApiProperty()
+  refresh_token!: string;
+
   @ApiProperty({ type: AuthUserResponseDto })
   user!: AuthUserResponseDto;
 }

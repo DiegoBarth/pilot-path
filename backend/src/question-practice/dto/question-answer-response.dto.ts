@@ -1,37 +1,32 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude, Expose, Transform } from 'class-transformer';
 
 export class QuestionAnswerResponseDto {
-
-  @ApiProperty({
-    example: '6b6d8f15-c76c-4b5a-9a92-7b95a82e2b14'
-  })
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   id!: string;
 
-  @ApiProperty({
-    example: '6b6d8f15-c76c-4b5a-9a92-7b95a82e2b14'
-  })
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   questionId!: string;
 
-  @ApiProperty({
-    example: '6b6d8f15-c76c-4b5a-9a92-7b95a82e2b14'
-  })
+  @Expose()
+  @ApiProperty({ format: 'uuid' })
   selectedAlternativeId!: string;
 
-  @ApiProperty({
-    example: true,
-    description: 'Indicates whether the selected alternative was correct.'
-  })
+  @Expose()
+  @ApiProperty()
   isCorrect!: boolean;
 
-  @ApiProperty({
-    example: 25,
-    description: 'Response time in seconds.'
-  })
+  @Expose()
+  @ApiProperty({ description: 'Response time in seconds.' })
   responseTime!: number;
 
-  @ApiProperty({
-    example: '2026-07-18T20:00:00.000Z'
-  })
+  @Expose()
+  @Transform(({ value }) => value?.toISOString?.() ?? value)
+  @ApiProperty({ type: String, format: 'date-time' })
   answeredAt!: Date;
 
+  @Exclude()
+  userId?: string;
 }

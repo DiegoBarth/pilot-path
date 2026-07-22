@@ -3,9 +3,9 @@ import type { PaginatedResult } from "@/domain/pagination";
 import type {
   Certification,
   CertificationSubject,
-  Enrollment,
   StudySession,
 } from "../types";
+import type { Enrollment } from "@/features/enrollments/types";
 
 export function getCertifications() {
   return apiClient<Certification[]>(
