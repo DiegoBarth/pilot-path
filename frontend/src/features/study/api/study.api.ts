@@ -39,12 +39,6 @@ export function getSubjectStudyHistory(subjectId: string, certificationId?: stri
   );
 }
 
-export function getStudySessions() {
-  return apiClient<StudySession[]>(
-    "/study-sessions"
-  );
-}
-
 export function createStudySessionBySubject(
   payload: CreateStudySessionBySubjectPayload,
 ) {

@@ -3,14 +3,14 @@ import { SubjectStudyStats } from "./SubjectStudyStats";
 import { SubjectStudyMaterial } from "./SubjectStudyMaterial";
 import { SubjectPracticePanel } from "./SubjectPracticePanel";
 import { SubjectStudyHistory } from "./SubjectStudyHistory";
-import type { StudySession, Subject } from "../types";
+import type { StudyHistorySession, Subject } from "../types";
 
 interface SubjectStudyLandingProps {
   subject: Subject;
-  sessions: StudySession[];
+  sessions: StudyHistorySession[];
   totalStudySessions: number;
   totalStudyMinutes: number;
-  lastStudySession?: StudySession;
+  lastStudySession?: StudyHistorySession;
   flashcardsHref: string;
 }
 

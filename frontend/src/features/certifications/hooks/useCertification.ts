@@ -2,56 +2,38 @@
 
 import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { cancelCertificationEnrollment } from "../api/certifications.api";
-
 import {
+  invalidateEnrollmentMutations,
+  queryKeys,
+} from "@/lib/query-keys";
+import {
+  cancelCertificationEnrollment,
   getCertification,
   getCertificationStudySessions,
   getCertificationSubjects,
-  getEnrollments,
 } from "../api/certifications.api";
+import { useEnrollments } from "@/features/enrollments/hooks/useEnrollments";
 
 export function useCertification(id: string) {
-
   const certification = useQuery({
-    queryKey: [
-      "certification",
-      id,
-    ],
+    queryKey: queryKeys.certification(id),
     queryFn: () => getCertification(id),
     enabled: Boolean(id),
   });
 
   const subjects = useQuery({
-    queryKey: [
-      "certification-subjects",
-      id,
-    ],
-    queryFn: () =>
-      getCertificationSubjects(id),
+    queryKey: queryKeys.certificationSubjects(id),
+    queryFn: () => getCertificationSubjects(id),
     enabled: Boolean(id),
   });
-
 
   const studySessions = useQuery({
-    queryKey: [
-      "certification-study-sessions",
-      id,
-    ],
-    queryFn: () =>
-      getCertificationStudySessions(id),
+    queryKey: queryKeys.certificationStudySessions(id),
+    queryFn: () => getCertificationStudySessions(id),
     enabled: Boolean(id),
   });
 
-
-  const enrollments = useQuery({
-    queryKey: [
-      "enrollments",
-    ],
-    queryFn:
-      getEnrollments,
-  });
-
+  const enrollments = useEnrollments();
 
   const sessionsCountBySubjectId = useMemo(() => {
     const sessions = studySessions.data?.data ?? [];
@@ -67,12 +49,10 @@ export function useCertification(id: string) {
     return counts;
   }, [studySessions.data]);
 
-
   const studiedSubjectIds = useMemo(
     () => new Set(sessionsCountBySubjectId.keys()),
     [sessionsCountBySubjectId],
   );
-
 
   const progress = useMemo(() => {
     const totalSubjects = subjects.data?.length ?? 0;
@@ -81,31 +61,22 @@ export function useCertification(id: string) {
       return 0;
     }
 
-    return Math.round(
-      (studiedSubjectIds.size / totalSubjects) * 100,
-    );
+    return Math.round((studiedSubjectIds.size / totalSubjects) * 100);
   }, [subjects.data, studiedSubjectIds]);
 
-
   const enrollment = useMemo(
-    () => enrollments.data?.find(
-      (item) => item.certificationId === id,
-    ),
+    () =>
+      enrollments.data?.find((item) => item.certificationId === id),
     [enrollments.data, id],
   );
-
 
   const queryClient = useQueryClient();
 
   const cancelEnrollment = useMutation({
     mutationFn: cancelCertificationEnrollment,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [
-          "enrollments"
-        ]
-      });
-    }
+      invalidateEnrollmentMutations(queryClient, id);
+    },
   });
 
   return {
@@ -116,6 +87,6 @@ export function useCertification(id: string) {
     sessionsCountBySubjectId,
     progress,
     enrollment,
-    cancelEnrollment
+    cancelEnrollment,
   };
 }

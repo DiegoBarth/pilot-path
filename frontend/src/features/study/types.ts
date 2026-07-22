@@ -1,3 +1,6 @@
+import type { PaginatedResult } from "@/domain/pagination";
+import type { StudyActivityType } from "@/domain/study-activity";
+
 export enum StudyType {
   READING = "READING",
   VIDEO = "VIDEO",
@@ -52,41 +55,33 @@ export interface StudySession {
   id: string;
   enrollmentId: string;
   certificationSubjectId: string;
-
   startedAt: string;
   endedAt: string;
-
   studyType: StudyType;
   mood?: Mood | null;
   notes?: string | null;
-
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
-
   certificationSubject: CertificationSubject;
 }
 
-export interface StudyHistoryItem {
+export interface StudyHistorySession {
   id: string;
-  enrollmentId: string;
-  certificationSubjectId: string;
-  studyType: StudyType;
-  duration: number;
-  studiedAt: string;
+  startedAt: string;
+  endedAt: string;
+  studyType: StudyActivityType;
+  mood?: Mood | null;
   notes?: string | null;
   createdAt: string;
-  updatedAt: string;
-  deletedAt?: string | null;
-  certificationSubject: CertificationSubject;
-}
-
-export interface StudyHistoryResponse {
-  data: StudyHistoryItem[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
+  certification: {
+    id: string;
+    name: string;
+  };
+  subject: {
+    id: string;
+    name: string;
   };
 }
+
+export type StudyHistoryResponse = PaginatedResult<StudyHistorySession>;

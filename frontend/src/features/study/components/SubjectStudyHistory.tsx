@@ -2,10 +2,10 @@ import { getStudyActivityLabel } from "../constants/study-activity";
 import { Panel, PanelBody } from "@/components/ui/panel";
 import { formatDate } from "@/lib/utils";
 import { getSessionDurationMinutes } from "@/lib/study-utils";
-import type { StudySession } from "../types";
+import type { StudyHistorySession } from "../types";
 
 interface SubjectStudyHistoryProps {
-  sessions: StudySession[];
+  sessions: StudyHistorySession[];
 }
 
 export function SubjectStudyHistory({ sessions }: SubjectStudyHistoryProps) {

@@ -2,12 +2,12 @@ import { BookOpen, Clock, Layers } from "lucide-react";
 import { StatCard } from "@/components/ui/stat-card";
 import { formatDate } from "@/lib/utils";
 import { formatStudyTime } from "@/lib/study-utils";
-import type { StudySession } from "../types";
+import type { StudyHistorySession } from "../types";
 
 interface SubjectStudyStatsProps {
   totalStudySessions: number;
   totalStudyMinutes: number;
-  lastStudySession?: StudySession;
+  lastStudySession?: StudyHistorySession;
 }
 
 export function SubjectStudyStats({

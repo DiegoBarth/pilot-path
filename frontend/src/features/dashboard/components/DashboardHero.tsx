@@ -5,7 +5,7 @@ import { CockpitWatermarkOverlay } from "@/components/shared/CockpitWatermarkOve
 import { cn, formatRelativeDate } from "@/lib/utils";
 import { formatExamCountdown, getDaysUntilExam } from "@/lib/study-utils";
 import type { EnrollmentSummary, RecentStudySession } from "../types";
-import { buildStudyActivityHref } from "../lib/activity-href";
+import { buildStudyActivityHref } from "@/features/study/lib/activity-href";
 
 interface DashboardHeroProps {
   lastSession?: RecentStudySession;

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { filterActiveEnrollments } from "@/features/enrollments/lib/utils";
 import { formatRelativeDate } from "@/lib/utils";
 import { queryKeys } from "@/lib/query-keys";
-import { buildStudyActivityHref } from "../lib/activity-href";
+import { buildStudyActivityHref } from "@/features/study/lib/activity-href";
 import {
   getLearningStatistics,
   getSubjectAnalytics,

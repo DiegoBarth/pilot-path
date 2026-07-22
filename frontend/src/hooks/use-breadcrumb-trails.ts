@@ -1,9 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getCertification } from "@/features/certifications/api/certifications.api";
 import { useBreadcrumbs } from "@/components/shared/breadcrumb";
+import { useCertificationQuery } from "@/features/certifications/hooks/useCertificationQuery";
 import {
   buildCertificationTrail,
   buildSubjectStudyTrail,
@@ -28,11 +27,7 @@ export function useSubjectStudyBreadcrumbs({
   subject?: { name: string } | null;
   certificationId?: string;
 }) {
-  const certification = useQuery({
-    queryKey: ["certification", certificationId],
-    queryFn: () => getCertification(certificationId!),
-    enabled: Boolean(certificationId),
-  });
+  const certification = useCertificationQuery(certificationId);
 
   const items = useMemo(() => {
     if (!subject) {
@@ -60,11 +55,7 @@ export function useFlashcardReviewBreadcrumbs({
   subject?: { id: string; name: string } | null;
   certificationId?: string;
 }) {
-  const certification = useQuery({
-    queryKey: ["certification", certificationId],
-    queryFn: () => getCertification(certificationId!),
-    enabled: Boolean(certificationId),
-  });
+  const certification = useCertificationQuery(certificationId);
 
   const items = useMemo(() => {
     if (certificationId && !certification.data) {
