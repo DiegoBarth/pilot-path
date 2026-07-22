@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { BookOpen, Play, Layers, Clock } from "lucide-react";
 import { useSubjectStudy } from "@/features/study/hooks/useSubjectStudy";
 import { useSubjectStudyBreadcrumbs } from "@/hooks/use-breadcrumb-trails";
@@ -219,13 +220,13 @@ export default function SubjectStudyPage() {
                   Iniciar Simulado
                 </button>
 
-                <button
-                  type="button"
+                <Link
+                  href={`/flashcards?subjectId=${subjectId}${certificationId ? `&certificationId=${certificationId}` : ""}`}
                   className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-800 py-3 font-medium text-slate-200 transition hover:bg-slate-700 hover:text-white"
                 >
                   <Layers className="h-4 w-4 text-amber-500" />
                   Revisar Flashcards
-                </button>
+                </Link>
 
               </div>
 

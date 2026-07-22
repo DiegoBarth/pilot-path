@@ -52,7 +52,7 @@ export function ReviewHeader({
           <div className="flex items-center gap-2 rounded-xl border border-white/5 bg-[#141C27] px-3 py-2 text-xs font-medium text-slate-300">
             <Layers className="h-3.5 w-3.5 text-amber-500" />
             <span>
-              {sessionReviewed}/{sessionTotal}
+              {Math.min(sessionReviewed + 1, sessionTotal)}/{sessionTotal}
             </span>
           </div>
 
@@ -73,7 +73,10 @@ export function ReviewHeader({
         <div
           className="h-full rounded-full bg-amber-500 transition-all duration-300"
           style={{
-            width: sessionTotal > 0 ? `${(sessionReviewed / sessionTotal) * 100}%` : "0%"
+            width:
+              sessionTotal > 0
+                ? `${(Math.min(sessionReviewed + 1, sessionTotal) / sessionTotal) * 100}%`
+                : "0%",
           }}
         />
       </div>

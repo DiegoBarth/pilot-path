@@ -3,6 +3,7 @@ import { ApiBody, ApiConflictResponse, ApiCreatedResponse, ApiForbiddenResponse,
 
 import { CreateFlashcardDto } from './dto/create-flashcard.dto';
 import { FlashcardResponseDto } from './dto/flashcard-response.dto';
+import { FlashcardOverviewDto } from './dto/flashcard-overview.dto';
 
 export const FlashcardsSwagger = {
 
@@ -56,12 +57,70 @@ export const FlashcardsSwagger = {
       description: 'Filter flashcards by subject.'
     }),
 
+    ApiQuery({
+      name: 'certificationId',
+      required: false,
+      type: String,
+      description: 'Filter flashcards by certification.'
+    }),
+
     ApiOkResponse({
       type: FlashcardResponseDto,
       description: 'Flashcards retrieved successfully.',
       isArray: true
     })
 
+  ),
+
+  overview: applyDecorators(
+    ApiTags('Flashcards'),
+
+    ApiOperation({
+      summary: 'Flashcard overview',
+      description: 'Returns due count, reviewed today count and accuracy for the current user.'
+    }),
+
+    ApiQuery({
+      name: 'subjectId',
+      required: false,
+      type: String
+    }),
+
+    ApiQuery({
+      name: 'certificationId',
+      required: false,
+      type: String
+    }),
+
+    ApiOkResponse({
+      type: FlashcardOverviewDto
+    })
+  ),
+
+  reviewQueue: applyDecorators(
+    ApiTags('Flashcards'),
+
+    ApiOperation({
+      summary: 'Flashcard review queue',
+      description: 'Returns flashcards due for review for the current user.'
+    }),
+
+    ApiQuery({
+      name: 'subjectId',
+      required: false,
+      type: String
+    }),
+
+    ApiQuery({
+      name: 'certificationId',
+      required: false,
+      type: String
+    }),
+
+    ApiOkResponse({
+      type: FlashcardResponseDto,
+      isArray: true
+    })
   ),
 
   findOne: applyDecorators(

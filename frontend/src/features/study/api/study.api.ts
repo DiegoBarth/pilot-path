@@ -1,6 +1,22 @@
 import { apiClient } from "@/lib/api/client";
 
-import type { Subject, StudyHistoryResponse, StudySession } from "../types";
+import type {
+  Mood,
+  StudyHistoryResponse,
+  StudySession,
+  StudyType,
+  Subject,
+} from "../types";
+
+export interface CreateStudySessionBySubjectPayload {
+  subjectId: string;
+  certificationId?: string;
+  startedAt: string;
+  endedAt: string;
+  studyType: StudyType;
+  mood?: Mood;
+  notes?: string;
+}
 
 export function getSubjects() {
   return apiClient<Subject[]>(
@@ -27,4 +43,13 @@ export function getStudySessions() {
   return apiClient<StudySession[]>(
     "/study-sessions"
   );
+}
+
+export function createStudySessionBySubject(
+  payload: CreateStudySessionBySubjectPayload,
+) {
+  return apiClient<StudySession>("/study-sessions/by-subject", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }

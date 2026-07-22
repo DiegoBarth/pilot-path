@@ -106,6 +106,7 @@ export type StudyActivityType =
   | "FLASHCARDS"
   | "VIDEO"
   | "SIMULATOR"
+  | "MOCK_EXAM"
   | "OTHER";
 
 export interface RecentStudySession {

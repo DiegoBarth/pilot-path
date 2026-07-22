@@ -2,106 +2,95 @@
 
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, Filter, Layers, Play, Target } from "lucide-react";
 import { ReviewContainer } from "@/features/flashcards/components/ReviewContainer";
+import {
+  useFlashcardReviewQueue,
+  useFlashcardsOverview,
+} from "@/features/flashcards/hooks/useFlashcards";
+import { getFlashcards } from "@/features/flashcards/api/flashcards.api";
+import { getCertificationSubjects } from "@/features/certifications/api/certifications.api";
+import { getEnrollments } from "@/features/dashboard/api/dashboard.api";
 import { useFlashcardReviewBreadcrumbs } from "@/hooks/use-breadcrumb-trails";
-
-const MOCK_CERTIFICATIONS = [
-  {
-    id: "cert-pp",
-    name: "Piloto Privado (PP)",
-  },
-  {
-    id: "cert-pc",
-    name: "Piloto Comercial (PC)",
-  },
-];
-
-const MOCK_SUBJECTS = [
-  {
-    id: "subject-flight-theory",
-    certificationId: "cert-pp",
-    name: "Teoria de Voo",
-  },
-  {
-    id: "subject-air-regulations",
-    certificationId: "cert-pp",
-    name: "Regulamentos de Tráfego Aéreo",
-  },
-  {
-    id: "subject-meteorology",
-    certificationId: "cert-pp",
-    name: "Meteorologia",
-  },
-  {
-    id: "subject-air-navigation",
-    certificationId: "cert-pc",
-    name: "Navegação Aérea",
-  },
-];
+import type { FlashcardReviewCard } from "@/features/flashcards/types";
+import { resolveFlashcardSessionContext } from "@/features/flashcards/lib/session-context";
 
 export default function FlashcardsPage() {
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
 
   const initialCertificationId = searchParams.get("certificationId") ?? "";
-
   const initialSubjectId = searchParams.get("subjectId") ?? "";
 
   const [selectedCertification, setSelectedCertification] = useState(initialCertificationId);
-
   const [selectedSubject, setSelectedSubject] = useState(initialSubjectId);
-
   const [isReviewing, setIsReviewing] = useState(false);
+  const [sessionCards, setSessionCards] = useState<FlashcardReviewCard[]>([]);
+  const [sessionStats, setSessionStats] = useState({
+    reviewedTodayBaseline: 0,
+    dailyGoal: 0,
+    sessionContext: null as ReturnType<typeof resolveFlashcardSessionContext>,
+  });
+
+  const filters = useMemo(
+    () => ({
+      ...(selectedCertification && { certificationId: selectedCertification }),
+      ...(selectedSubject && { subjectId: selectedSubject }),
+    }),
+    [selectedCertification, selectedSubject],
+  );
+
+  const enrollments = useQuery({
+    queryKey: ["enrollments"],
+    queryFn: getEnrollments,
+  });
+
+  const certificationSubjects = useQuery({
+    queryKey: ["certification-subjects", selectedCertification],
+    queryFn: () => getCertificationSubjects(selectedCertification),
+    enabled: Boolean(selectedCertification),
+  });
+
+  const allFlashcards = useQuery({
+    queryKey: ["flashcards-all"],
+    queryFn: () => getFlashcards(),
+  });
+
+  const overview = useFlashcardsOverview(filters);
+  const reviewQueue = useFlashcardReviewQueue(filters);
+
+  const activeEnrollments = useMemo(
+    () =>
+      (enrollments.data ?? []).filter((enrollment) =>
+        ["ACTIVE", "COMPLETED"].includes(enrollment.status),
+      ),
+    [enrollments.data],
+  );
 
   const availableSubjects = useMemo(() => {
-    if (!selectedCertification) {
-      return MOCK_SUBJECTS;
-    }
-
-    return MOCK_SUBJECTS.filter(
-      (subject) => subject.certificationId === selectedCertification,
-    );
-  }, [selectedCertification]);
-
-  const currentSubject = useMemo(() => {
-    return (
-      MOCK_SUBJECTS.find(
-        (subject) =>
-          subject.id === selectedSubject,
-      ) ?? null
-    );
-  }, [selectedSubject]);
-
-  const availableFlashcards = useMemo((): number => {
-    if (selectedSubject) {
-      if (selectedSubject === "subject-flight-theory") {
-        return 12;
-      }
-
-      if (
-        selectedSubject === "subject-air-regulations"
-      ) {
-        return 8;
-      }
-
-      if (
-        selectedSubject === "subject-meteorology"
-      ) {
-        return 10;
-      }
-
-      return 6;
-    }
-
     if (selectedCertification) {
-      return selectedCertification === "cert-pp" ? 30 : 6;
+      return (certificationSubjects.data ?? []).map((item) => item.subject);
     }
 
-    return 36;
-  }, [
-    selectedCertification,
-    selectedSubject,
-  ]);
+    const subjectsMap = new Map<string, { id: string; name: string }>();
+
+    for (const card of allFlashcards.data ?? []) {
+      subjectsMap.set(card.subject.id, {
+        id: card.subject.id,
+        name: card.subject.name,
+      });
+    }
+
+    return Array.from(subjectsMap.values()).sort((a, b) =>
+      a.name.localeCompare(b.name, "pt-BR"),
+    );
+  }, [selectedCertification, certificationSubjects.data, allFlashcards.data]);
+
+  const currentSubject = useMemo(
+    () => availableSubjects.find((subject) => subject.id === selectedSubject) ?? null,
+    [availableSubjects, selectedSubject],
+  );
 
   useFlashcardReviewBreadcrumbs({
     subject: currentSubject,
@@ -110,87 +99,121 @@ export default function FlashcardsPage() {
 
   const handleCertificationChange = (certificationId: string) => {
     setSelectedCertification(certificationId);
-
-    if (!certificationId) {
-      return;
-    }
-
-    if (!selectedSubject) {
-      return;
-    }
-
-    const subjectBelongsToCertification = MOCK_SUBJECTS.some(
-      (subject) =>
-        subject.id === selectedSubject &&
-        subject.certificationId ===
-        certificationId,
-    );
-
-    if (!subjectBelongsToCertification) {
-      setSelectedSubject("");
-    }
+    setSelectedSubject("");
   };
 
-  if (isReviewing) {
+  const handleStartReview = () => {
+    const queue = reviewQueue.data ?? [];
+
+    if (queue.length === 0) {
+      return;
+    }
+
+    setSessionCards(queue);
+    setSessionStats({
+      reviewedTodayBaseline: overview.data?.reviewedTodayCount ?? 0,
+      dailyGoal:
+        (overview.data?.reviewedTodayCount ?? 0) + queue.length,
+      sessionContext: resolveFlashcardSessionContext(
+        queue,
+        selectedSubject || undefined,
+        selectedCertification || undefined,
+      ),
+    });
+    setIsReviewing(true);
+  };
+
+  const handleExitReview = () => {
+    setIsReviewing(false);
+    setSessionCards([]);
+    queryClient.invalidateQueries({ queryKey: ["flashcards-review-queue"] });
+    queryClient.invalidateQueries({ queryKey: ["flashcards-overview"] });
+    queryClient.invalidateQueries({ queryKey: ["learning-statistics"] });
+    queryClient.invalidateQueries({ queryKey: ["subject-analytics"] });
+    queryClient.invalidateQueries({ queryKey: ["recent-study-history"] });
+    queryClient.invalidateQueries({ queryKey: ["certification-study-sessions"] });
+  };
+
+  const handleSessionSaved = () => {
+    queryClient.invalidateQueries({ queryKey: ["recent-study-history"] });
+    queryClient.invalidateQueries({ queryKey: ["certification-study-sessions"] });
+  };
+
+  const isLoading =
+    enrollments.isLoading ||
+    overview.isLoading ||
+    reviewQueue.isLoading ||
+    (selectedCertification && certificationSubjects.isLoading) ||
+    allFlashcards.isLoading;
+
+  if (isLoading) {
+    return (
+      <div className="p-8 text-slate-400">
+        Carregando flashcards...
+      </div>
+    );
+  }
+
+  if (isReviewing && sessionCards.length > 0) {
     return (
       <div className="px-6 pb-10 pt-6 md:px-8">
         <ReviewContainer
-          subjectId={selectedSubject || undefined}
+          cards={sessionCards}
+          sessionContext={sessionStats.sessionContext}
           subjectName={currentSubject?.name ?? "Todas as matérias"}
-          onExit={() =>
-            setIsReviewing(false)
-          }
+          reviewedTodayBaseline={sessionStats.reviewedTodayBaseline}
+          dailyGoal={sessionStats.dailyGoal}
+          onSessionSaved={handleSessionSaved}
+          onExit={handleExitReview}
         />
       </div>
     );
   }
 
+  const overviewData = overview.data;
+  const availableCount = overviewData?.availableCount ?? 0;
+
   return (
     <div className="px-6 pb-10 pt-3 md:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
-        {/* Page Header */}
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white md:text-4xl">
             Flashcards
           </h1>
 
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
-            Revise conceitos importantes, teste sua
-            memória e acompanhe seu desempenho ao
-            longo dos estudos.
+            Revise conceitos importantes, teste sua memória e acompanhe seu
+            desempenho ao longo dos estudos.
           </p>
         </div>
 
-        {/* Overview Stats */}
         <div className="grid gap-4 sm:grid-cols-3">
           <OverviewCard
             icon={Layers}
             label="Para revisar"
-            value={24}
+            value={overviewData?.dueTodayCount ?? 0}
             iconClassName="bg-amber-500/10 text-amber-400"
           />
 
           <OverviewCard
             icon={CheckCircle2}
             label="Revisados hoje"
-            value={18}
+            value={overviewData?.reviewedTodayCount ?? 0}
             iconClassName="bg-teal-500/10 text-teal-400"
           />
 
           <OverviewCard
             icon={Target}
             label="Taxa de acerto"
-            value="82%"
+            value={`${(overviewData?.accuracyRate ?? 0).toFixed(1)}%`}
             iconClassName="bg-sky-500/10 text-sky-400"
           />
         </div>
 
-        {/* Review Setup */}
         <section className="rounded-2xl border border-white/5 bg-[#1E2834] p-6">
           <div className="flex flex-col gap-2 border-b border-white/5 pb-5">
             <div className="flex items-center gap-2">
               <Filter className="h-5 w-5 text-amber-500" />
-
               <h2 className="text-lg font-semibold text-white">
                 Iniciar revisão
               </h2>
@@ -202,7 +225,6 @@ export default function FlashcardsPage() {
           </div>
 
           <div className="mt-6 grid gap-5 md:grid-cols-2">
-            {/* Certification */}
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-300">
                 Certificação
@@ -215,24 +237,19 @@ export default function FlashcardsPage() {
                 }
                 className="w-full rounded-xl border border-slate-700 bg-[#152035] px-4 py-3 text-sm text-white outline-none transition focus:border-amber-500"
               >
-                <option value="">
-                  Todas as certificações
-                </option>
+                <option value="">Todas as certificações</option>
 
-                {MOCK_CERTIFICATIONS.map(
-                  (certification) => (
-                    <option
-                      key={certification.id}
-                      value={certification.id}
-                    >
-                      {certification.name}
-                    </option>
-                  ),
-                )}
+                {activeEnrollments.map((enrollment) => (
+                  <option
+                    key={enrollment.id}
+                    value={enrollment.certificationId}
+                  >
+                    {enrollment.certification.name}
+                  </option>
+                ))}
               </select>
             </div>
 
-            {/* Subject */}
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-300">
                 Matéria
@@ -240,55 +257,41 @@ export default function FlashcardsPage() {
 
               <select
                 value={selectedSubject}
-                onChange={(event) =>
-                  setSelectedSubject(event.target.value)
-                }
+                onChange={(event) => setSelectedSubject(event.target.value)}
                 disabled={availableSubjects.length === 0}
                 className="w-full rounded-xl border border-slate-700 bg-[#152035] px-4 py-3 text-sm text-white outline-none transition focus:border-amber-500 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <option value="">
-                  Todas as matérias
-                </option>
+                <option value="">Todas as matérias</option>
 
-                {availableSubjects.map(
-                  (subject) => (
-                    <option
-                      key={subject.id}
-                      value={subject.id}
-                    >
-                      {subject.name}
-                    </option>
-                  ),
-                )}
+                {availableSubjects.map((subject) => (
+                  <option key={subject.id} value={subject.id}>
+                    {subject.name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
 
-          {/* Review Summary */}
           <div className="mt-6 flex flex-col gap-4 border-t border-white/5 pt-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm font-medium text-white">
-                {availableFlashcards}{" "}
-                {availableFlashcards === 1
+                {availableCount}{" "}
+                {availableCount === 1
                   ? "flashcard disponível"
                   : "flashcards disponíveis"}
               </p>
 
               <p className="mt-1 text-xs text-slate-500">
-                Você poderá avaliar seu desempenho após
-                cada resposta.
+                {overviewData?.totalCount ?? 0} no total neste filtro · você
+                poderá avaliar seu desempenho após cada resposta.
               </p>
             </div>
 
             <button
               type="button"
-              disabled={
-                availableFlashcards === 0
-              }
-              onClick={() =>
-                setIsReviewing(true)
-              }
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 px-6 py-3 text-sm font-semibold text-slate-950 transition cursor-pointer active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+              disabled={availableCount === 0 || reviewQueue.isFetching}
+              onClick={handleStartReview}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:from-amber-300 hover:to-orange-400 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Play className="h-4 w-4 fill-current" />
               Começar revisão
@@ -322,13 +325,8 @@ function OverviewCard({
       </div>
 
       <div>
-        <span className="text-xs font-medium text-slate-400">
-          {label}
-        </span>
-
-        <p className="mt-1 text-2xl font-bold text-white">
-          {value}
-        </p>
+        <span className="text-xs font-medium text-slate-400">{label}</span>
+        <p className="mt-1 text-2xl font-bold text-white">{value}</p>
       </div>
     </div>
   );

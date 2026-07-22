@@ -9,6 +9,7 @@ import {
   ChronographWatermark,
 } from "@/components/shared/CockpitWatermarks";
 import type { EnrollmentSummary, RecentStudySession } from "../types";
+import { buildStudyActivityHref } from "../lib/activity-href";
 
 interface DashboardHeroProps {
   lastSession?: RecentStudySession;
@@ -24,7 +25,11 @@ export function DashboardHero({
   enrollmentForLastSession,
 }: DashboardHeroProps) {
   const studyHref = lastSession
-    ? `/study/subject/${lastSession.subject.id}?certificationId=${lastSession.certification.id}`
+    ? buildStudyActivityHref({
+        studyType: lastSession.studyType,
+        subjectId: lastSession.subject.id,
+        certificationId: lastSession.certification.id,
+      })
     : undefined;
 
   const examCountdown = enrollmentForLastSession?.targetExamDate

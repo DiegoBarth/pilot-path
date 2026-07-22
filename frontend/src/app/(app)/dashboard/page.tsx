@@ -9,6 +9,7 @@ import { WeakSubjectsPanel } from "@/features/dashboard/components/WeakSubjectsP
 import { useAuthContext } from "@/providers/auth-provider";
 import { useDashboard } from "@/features/dashboard/hooks/useDashboard";
 import { formatRelativeDate } from "@/lib/utils";
+import { buildStudyActivityHref } from "@/features/dashboard/lib/activity-href";
 
 export default function DashboardPage() {
   const { user } = useAuthContext();
@@ -40,7 +41,11 @@ export default function DashboardPage() {
     title: session.subject.name,
     description: session.certification.name,
     date: formatRelativeDate(session.startedAt),
-    href: `/study/subject/${session.subject.id}?certificationId=${session.certification.id}`,
+    href: buildStudyActivityHref({
+      studyType: session.studyType,
+      subjectId: session.subject.id,
+      certificationId: session.certification.id,
+    }),
   }));
 
   if (

@@ -10,8 +10,8 @@ export enum Mood {
   EXCELLENT = "EXCELLENT",
   GOOD = "GOOD",
   NEUTRAL = "NEUTRAL",
-  BAD = "BAD",
-  TERRIBLE = "TERRIBLE",
+  TIRED = "TIRED",
+  FRUSTRATED = "FRUSTRATED",
 }
 
 export interface Subject {

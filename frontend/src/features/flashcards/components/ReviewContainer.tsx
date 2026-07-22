@@ -1,126 +1,150 @@
 "use client";
 
-import { useState } from "react";
-
+import { useRef, useState } from "react";
 import { ReviewHeader } from "./ReviewHeader";
 import { Flashcard } from "./Flashcard";
 import { FeedbackActions } from "./FeedbackActions";
 import { ReviewSummary } from "./ReviewSummary";
-
-interface MockFlashcard {
-  id: string;
-  subjectId: string;
-  subjectName: string;
-  question: string;
-  answer: string;
-}
+import { useSubmitFlashcardReview } from "../hooks/useSubmitFlashcardReview";
+import { useCreateStudySessionBySubject } from "../hooks/useCreateFlashcardStudySession";
+import type { FlashcardReviewCard, ReviewSessionStats } from "../types";
+import type { FlashcardSessionContext } from "../lib/session-context";
+import { StudyType, type Mood } from "@/features/study/types";
 
 interface ReviewContainerProps {
-  subjectId?: string;
+  cards: FlashcardReviewCard[];
+  sessionContext: FlashcardSessionContext | null;
   subjectName?: string;
+  reviewedTodayBaseline?: number;
+  dailyGoal?: number;
+  onSessionSaved?: () => void;
   onExit?: () => void;
 }
 
-const MOCK_FLASHCARDS: MockFlashcard[] = [
-  {
-    id: "fc-1",
-    subjectId: "subject-flight-theory",
-    subjectName: "Teoria de Voo",
-    question: "O que é sustentação (Lift)?",
-    answer:
-      "É a força aerodinâmica que atua perpendicularmente ao vento relativo, opondo-se ao peso da aeronave.",
-  },
-  {
-    id: "fc-2",
-    subjectId: "subject-flight-theory",
-    subjectName: "Teoria de Voo",
-    question: "O que diz o Princípio de Bernoulli?",
-    answer:
-      "À medida que a velocidade de um fluido aumenta, a pressão estática exercida por esse fluido diminui.",
-  },
-  {
-    id: "fc-3",
-    subjectId: "subject-air-regulations",
-    subjectName: "Regulamentos de Tráfego Aéreo",
-    question:
-      "Qual é o teto máximo de operação dentro de um Espaço Aéreo Classe G?",
-    answer:
-      "O espaço aéreo Classe G estende-se do solo até o limite inferior do espaço aéreo controlado subjacente.",
-  },
-  {
-    id: "fc-4",
-    subjectId: "subject-meteorology",
-    subjectName: "Meteorologia",
-    question: "O que significa METAR?",
-    answer:
-      "METAR é um informe meteorológico aeronáutico de rotina que descreve as condições meteorológicas observadas em um aeródromo.",
-  },
-];
-
 export function ReviewContainer({
-  subjectId,
+  cards,
+  sessionContext,
   subjectName = "Todas as matérias",
+  reviewedTodayBaseline = 0,
+  dailyGoal = 0,
+  onSessionSaved,
   onExit,
 }: ReviewContainerProps) {
+  const submitReview = useSubmitFlashcardReview();
+  const createStudySession = useCreateStudySessionBySubject();
+  const sessionStartedAt = useRef(new Date().toISOString());
+  const totalCards = cards.length;
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-
   const [correctCount, setCorrectCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
-
   const [isFinished, setIsFinished] = useState(false);
-
-  const cards = MOCK_FLASHCARDS.filter((card) => {
-    if (!subjectId) {
-      return true;
-    }
-
-    return card.subjectId === subjectId;
-  });
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const currentCard = cards[currentIndex];
+  const completedCount = correctCount + wrongCount;
 
-  const handleFeedback = (correct: boolean) => {
-    if (!currentCard) {
+  const handleFeedback = async (correct: boolean) => {
+    if (!currentCard || submitReview.isPending) {
       return;
     }
 
-    if (correct) {
-      setCorrectCount((prev) => prev + 1);
-    } else {
-      setWrongCount((prev) => prev + 1);
+    try {
+      await submitReview.mutateAsync({
+        flashcardId: currentCard.id,
+        payload: { correct },
+      });
+
+      if (correct) {
+        setCorrectCount((prev) => prev + 1);
+      } else {
+        setWrongCount((prev) => prev + 1);
+      }
+
+      const nextIndex = currentIndex + 1;
+
+      if (nextIndex >= totalCards) {
+        setIsFinished(true);
+        return;
+      }
+
+      setIsFlipped(false);
+
+      setTimeout(() => {
+        setCurrentIndex(nextIndex);
+      }, 200);
+    } catch {
+      // Mantém o card atual para o usuário tentar novamente.
+    }
+  };
+
+  const handleSaveSession = async (mood: Mood) => {
+    if (!sessionContext) {
+      throw new Error("Contexto da sessão indisponível.");
     }
 
-    const nextIndex = currentIndex + 1;
+    setSaveError(null);
 
-    if (nextIndex >= cards.length) {
-      setIsFinished(true);
-      return;
+    const stats: ReviewSessionStats = {
+      total: totalCards,
+      correct: correctCount,
+      wrong: wrongCount,
+    };
+
+    const startedAt = new Date(sessionStartedAt.current);
+    const endedAt = new Date();
+
+    if (endedAt <= startedAt) {
+      endedAt.setSeconds(startedAt.getSeconds() + 1);
     }
 
+    try {
+      await createStudySession.mutateAsync({
+        subjectId: sessionContext.subjectId,
+        certificationId: sessionContext.certificationId,
+        startedAt: startedAt.toISOString(),
+        endedAt: endedAt.toISOString(),
+        studyType: StudyType.FLASHCARDS,
+        mood,
+        notes: `${stats.total} flashcards revisados, ${stats.correct} acertos e ${stats.wrong} erros.`,
+      });
+
+      onSessionSaved?.();
+    } catch {
+      setSaveError(
+        "Não foi possível salvar a sessão. Verifique sua matrícula e tente novamente.",
+      );
+      throw new Error("save failed");
+    }
+  };
+
+  const handleRestart = () => {
+    sessionStartedAt.current = new Date().toISOString();
+    setCurrentIndex(0);
+    setCorrectCount(0);
+    setWrongCount(0);
     setIsFlipped(false);
-
-    setTimeout(() => {
-      setCurrentIndex(nextIndex);
-    }, 200)
+    setIsFinished(false);
+    setSaveError(null);
   };
 
   if (isFinished) {
+    const stats: ReviewSessionStats = {
+      total: totalCards,
+      correct: correctCount,
+      wrong: wrongCount,
+    };
+
     return (
       <ReviewSummary
-        stats={{
-          total: cards.length,
-          correct: correctCount,
-          wrong: wrongCount,
-        }}
-        onRestart={() => {
-          setCurrentIndex(0);
-          setCorrectCount(0);
-          setWrongCount(0);
-          setIsFlipped(false);
-          setIsFinished(false);
-        }}
-        onExit={onExit ?? (() => { })}
+        stats={stats}
+        canSaveSession={Boolean(sessionContext)}
+        isSaving={createStudySession.isPending}
+        saveError={saveError}
+        onSaveSession={handleSaveSession}
+        onRestart={handleRestart}
+        onExit={onExit ?? (() => {})}
       />
     );
   }
@@ -129,7 +153,7 @@ export function ReviewContainer({
     return (
       <div className="py-12 text-center">
         <p className="text-slate-400">
-          Nenhum flashcard disponível para revisão.
+          Nenhum flashcard disponível para revisão no momento.
         </p>
 
         <button
@@ -143,16 +167,18 @@ export function ReviewContainer({
     );
   }
 
+  const goal = dailyGoal > 0 ? dailyGoal : totalCards;
+
   return (
     <div className="mx-auto max-w-4xl space-y-8">
       <ReviewHeader
         subtitle={subjectName}
         title="Revisão de Flashcards"
-        reviewedToday={18}
-        dailyGoal={50}
-        sessionReviewed={currentIndex}
+        reviewedToday={reviewedTodayBaseline + completedCount}
+        dailyGoal={goal}
+        sessionReviewed={completedCount}
         sessionCorrect={correctCount}
-        sessionTotal={cards.length}
+        sessionTotal={totalCards}
         onExit={onExit}
       />
 
@@ -166,7 +192,7 @@ export function ReviewContainer({
       {isFlipped && (
         <FeedbackActions
           onFeedback={handleFeedback}
-          disabled={false}
+          disabled={submitReview.isPending}
         />
       )}
     </div>

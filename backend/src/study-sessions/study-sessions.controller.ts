@@ -4,6 +4,7 @@ import { ApplySwagger } from '../common/decorators/apply-swagger.decorator';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { CreateStudySessionDto } from './dto/create-study-session.dto';
+import { CreateStudySessionBySubjectDto } from './dto/create-study-session-by-subject.dto';
 import { StudySessionsService } from './study-sessions.service';
 import { StudySessionsSwagger } from './study-sessions.swagger';
 
@@ -12,6 +13,16 @@ import { StudySessionsSwagger } from './study-sessions.swagger';
 export class StudySessionsController {
   
   constructor(private readonly studySessionsService: StudySessionsService) { }
+
+  @Auth()
+  @Post('by-subject')
+  @ApplySwagger(StudySessionsSwagger.createBySubject)
+  createBySubject(
+    @AuthUser('id', ParseUUIDPipe) userId: string,
+    @Body() dto: CreateStudySessionBySubjectDto,
+  ) {
+    return this.studySessionsService.createBySubject(userId, dto);
+  }
 
   @Auth()
   @Post()

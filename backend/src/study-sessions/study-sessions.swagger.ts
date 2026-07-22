@@ -10,6 +10,7 @@ import {
   ApiUnauthorizedResponse
 } from '@nestjs/swagger';
 import { CreateStudySessionDto } from './dto/create-study-session.dto';
+import { CreateStudySessionBySubjectDto } from './dto/create-study-session-by-subject.dto';
 import { StudySessionResponseDto } from './dto/study-session-response.dto';
 import { applyDecorators } from '@nestjs/common';
 
@@ -42,6 +43,37 @@ export const StudySessionsSwagger = {
     ApiUnauthorizedResponse({
       description: 'Unauthorized.'
     })
+  ),
+
+  createBySubject: applyDecorators(
+    ApiTags('Study Sessions'),
+
+    ApiOperation({
+      summary: 'Create a study session by subject',
+      description:
+        'Registers a study session resolving the certification subject from subjectId and optional certificationId.',
+    }),
+
+    ApiBody({
+      type: CreateStudySessionBySubjectDto,
+    }),
+
+    ApiCreatedResponse({
+      type: StudySessionResponseDto,
+      description: 'Study session created successfully.',
+    }),
+
+    ApiBadRequestResponse({
+      description: 'You are not enrolled in this certification or the end date must be after the start date.',
+    }),
+
+    ApiNotFoundResponse({
+      description: 'Subject or enrollment not found.',
+    }),
+
+    ApiUnauthorizedResponse({
+      description: 'Unauthorized.',
+    }),
   ),
 
   findAll: applyDecorators(

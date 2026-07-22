@@ -2,11 +2,80 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { EnrollmentStatus } from '@prisma/client';
 import { PrismaService } from '../database/prisma.service';
 import { CreateStudySessionDto } from './dto/create-study-session.dto';
+import { CreateStudySessionBySubjectDto } from './dto/create-study-session-by-subject.dto';
 
 @Injectable()
 export class StudySessionsService {
 
   constructor(private readonly prisma: PrismaService) { }
+
+  async createBySubject(userId: string, dto: CreateStudySessionBySubjectDto) {
+    const certificationSubject = await this.resolveCertificationSubject(
+      userId,
+      dto.subjectId,
+      dto.certificationId,
+    );
+
+    return this.create(userId, {
+      certificationSubjectId: certificationSubject.id,
+      startedAt: dto.startedAt,
+      endedAt: dto.endedAt,
+      studyType: dto.studyType,
+      ...(dto.mood !== undefined && { mood: dto.mood }),
+      ...(dto.notes !== undefined && { notes: dto.notes }),
+    });
+  }
+
+  private async resolveCertificationSubject(
+    userId: string,
+    subjectId: string,
+    certificationId?: string,
+  ) {
+    if (certificationId) {
+      const certificationSubject = await this.prisma.certificationSubject.findFirst({
+        where: {
+          certificationId,
+          subjectId,
+        },
+      });
+
+      if (!certificationSubject) {
+        throw new NotFoundException(
+          'Subject not found in the selected certification.',
+        );
+      }
+
+      return certificationSubject;
+    }
+
+    const enrollments = await this.prisma.enrollment.findMany({
+      where: {
+        userId,
+        status: EnrollmentStatus.ACTIVE,
+        deletedAt: null,
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    });
+
+    for (const enrollment of enrollments) {
+      const certificationSubject = await this.prisma.certificationSubject.findFirst({
+        where: {
+          certificationId: enrollment.certificationId,
+          subjectId,
+        },
+      });
+
+      if (certificationSubject) {
+        return certificationSubject;
+      }
+    }
+
+    throw new NotFoundException(
+      'No active enrollment found for this subject.',
+    );
+  }
 
   async create(userId: string, dto: CreateStudySessionDto) {
     const certificationSubject = await this.prisma.certificationSubject.findFirst({
