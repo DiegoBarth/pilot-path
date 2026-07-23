@@ -1,5 +1,4 @@
 import type { PaginatedResult } from "@/domain/pagination";
-import type { Mood } from "@/domain/mood";
 import type { StudyActivityType } from "@/domain/study-activity";
 import type { StudyType } from "@/domain/study-type";
 
@@ -42,7 +41,6 @@ export interface StudySession {
   startedAt: string;
   endedAt: string;
   studyType: StudyType;
-  mood?: Mood | null;
   notes?: string | null;
   createdAt: string;
   updatedAt: string;
@@ -55,7 +53,6 @@ export interface StudyHistorySession {
   startedAt: string;
   endedAt: string;
   studyType: StudyActivityType;
-  mood?: Mood | null;
   notes?: string | null;
   createdAt: string;
   certification: {

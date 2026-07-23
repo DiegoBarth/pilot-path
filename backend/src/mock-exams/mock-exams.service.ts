@@ -1,16 +1,21 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, StudyType } from '@prisma/client';
 import { PrismaService } from '../database/prisma.service';
+import { StudySessionsService } from '../study-sessions/study-sessions.service';
 import { mapToDto, mapToDtoArray } from '../common/utils/map-to-dto.util';
 import { CreateMockExamDto } from './dto/create-mock-exam.dto';
 import { FinishMockExamDto } from './dto/finish-mock-exam.dto';
 import { MockExamResponseDto } from './dto/mock-exam-response.dto';
 import { MockExamSummaryResponseDto } from './dto/mock-exam-summary-response.dto';
+import { SubjectQuestionAvailabilityDto } from './dto/subject-question-availability.dto';
 
 @Injectable()
 export class MockExamsService {
 
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly studySessionsService: StudySessionsService,
+  ) { }
 
   async create(userId: string, dto: CreateMockExamDto) {
     const questionCount = dto.questionCount ?? 20;
@@ -162,12 +167,13 @@ export class MockExamsService {
     );
 
     const passed       = score >= exam.passingScore;
+    const finishedAt = new Date();
     const finishedExam = await this.prisma.mockExam.update({
       where: {
         id: exam.id
       },
       data: {
-        finishedAt: new Date(),
+        finishedAt,
         duration: dto.duration,
         correctAnswers,
         score,
@@ -176,7 +182,38 @@ export class MockExamsService {
       include: this.finishedExamInclude(),
     });
 
+    await this.registerStudySession(
+      userId,
+      exam.subjectId,
+      exam.startedAt,
+      finishedAt,
+      correctAnswers,
+      exam.totalQuestions,
+      score,
+    );
+
     return mapToDto(MockExamResponseDto, finishedExam);
+  }
+
+  async getSubjectsAvailability() {
+    const counts = await this.prisma.question.groupBy({
+      by: ['subjectId'],
+      where: {
+        isActive: true,
+        deletedAt: null,
+      },
+      _count: {
+        id: true,
+      },
+    });
+
+    return mapToDtoArray(
+      SubjectQuestionAvailabilityDto,
+      counts.map((item) => ({
+        subjectId: item.subjectId,
+        questionCount: item._count.id,
+      })),
+    );
   }
 
   async findAll(userId: string) {
@@ -214,6 +251,32 @@ export class MockExamsService {
     }
 
     return mapToDto(MockExamResponseDto, exam);
+  }
+
+  private async registerStudySession(
+    userId: string,
+    subjectId: string | null,
+    startedAt: Date,
+    endedAt: Date,
+    correctAnswers: number,
+    totalQuestions: number,
+    score: number,
+  ) {
+    if (!subjectId) {
+      return;
+    }
+
+    try {
+      await this.studySessionsService.createBySubject(userId, {
+        subjectId,
+        startedAt: startedAt.toISOString(),
+        endedAt: endedAt.toISOString(),
+        studyType: StudyType.MOCK_EXAM,
+        notes: `Simulado: ${correctAnswers}/${totalQuestions} acertos (${score}%).`,
+      });
+    } catch {
+      // Exam finish succeeds even when the user has no active enrollment for the subject.
+    }
   }
 
   private examDetailInclude() {

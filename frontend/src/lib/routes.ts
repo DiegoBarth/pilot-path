@@ -4,6 +4,7 @@ export const routes = {
   certification: (id: string) => `/certifications/${id}`,
   flashcards: "/flashcards",
   mockExams: "/mock-exams",
+  mockExam: (id: string) => `/mock-exams/${id}`,
   analytics: "/analytics",
   login: "/login",
   register: "/register",

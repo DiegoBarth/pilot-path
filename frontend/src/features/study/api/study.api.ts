@@ -1,5 +1,4 @@
 import { apiClient } from "@/lib/api/client";
-import type { Mood } from "@/domain/mood";
 import type { StudyType } from "@/domain/study-type";
 import type {
   StudyHistoryResponse,
@@ -13,7 +12,6 @@ export interface CreateStudySessionBySubjectPayload {
   startedAt: string;
   endedAt: string;
   studyType: StudyType;
-  mood?: Mood;
   notes?: string;
 }
 

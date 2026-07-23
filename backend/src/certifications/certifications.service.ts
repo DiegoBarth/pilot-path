@@ -5,6 +5,7 @@ import { mapToDto, mapToDtoArray } from '../common/utils/map-to-dto.util';
 import { CreateCertificationDto } from './dto/create-certification.dto';
 import { UpdateCertificationDto } from './dto/update-certification.dto';
 import { CertificationResponseDto } from './dto/certification-response.dto';
+import { CertificationSubjectResponseDto } from './dto/certification-subject-response.dto';
 
 @Injectable()
 export class CertificationsService {
@@ -104,6 +105,6 @@ export class CertificationsService {
       throw new NotFoundException('Certification not found');
     }
 
-    return certification.subjects;
+    return mapToDtoArray(CertificationSubjectResponseDto, certification.subjects);
   }
 }

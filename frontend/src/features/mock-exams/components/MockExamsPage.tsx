@@ -1,24 +1,48 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { FileText } from "lucide-react";
 import { PageContainer } from "@/components/shared/PageContainer";
-import { FeaturePlaceholder } from "@/components/shared/FeaturePlaceholder";
+import { PageLoading } from "@/components/shared/PageLoading";
+import { MockExamsLanding } from "./MockExamsLanding";
+import { useMockExamsPage } from "../hooks/useMockExamsPage";
 
 export function MockExamsPage() {
-  const searchParams = useSearchParams();
-  const hasSubjectContext = Boolean(searchParams.get("subjectId"));
+  const {
+    isLoading,
+    activeEnrollments,
+    availableSubjects,
+    mockExams,
+    selectedCertification,
+    selectedSubject,
+    questionCount,
+    canStart,
+    isCreating,
+    createError,
+    handleCertificationChange,
+    handleSubjectChange,
+    handleQuestionCountChange,
+    handleStartExam,
+  } = useMockExamsPage();
 
-  const description = hasSubjectContext
-    ? "Pratique simulados no formato da prova para a matéria selecionada. Esta área estará disponível em breve."
-    : "Pratique simulados completos no formato da prova para suas certificações. Esta área estará disponível em breve.";
+  if (isLoading) {
+    return <PageLoading message="Carregando simulados..." />;
+  }
 
   return (
     <PageContainer constrained>
-      <FeaturePlaceholder
-        title="Simulados"
-        description={description}
-        icon={FileText}
+      <MockExamsLanding
+        enrollments={activeEnrollments}
+        subjects={availableSubjects}
+        mockExams={mockExams}
+        selectedCertification={selectedCertification}
+        selectedSubject={selectedSubject}
+        questionCount={questionCount}
+        canStart={canStart}
+        isCreating={isCreating}
+        createError={createError}
+        onCertificationChange={handleCertificationChange}
+        onSubjectChange={handleSubjectChange}
+        onQuestionCountChange={handleQuestionCountChange}
+        onStartExam={handleStartExam}
       />
     </PageContainer>
   );

@@ -15,5 +15,9 @@ import { StudySessionsService } from './study-sessions.service';
   providers: [
     StudySessionsService
   ],
+
+  exports: [
+    StudySessionsService
+  ],
 })
 export class StudySessionsModule { }

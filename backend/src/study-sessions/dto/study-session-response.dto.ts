@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Mood, StudyType } from '@prisma/client';
+import { StudyType } from '@prisma/client';
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { CertificationSubjectResponseDto } from '../../certifications/dto/certification-subject-response.dto';
 
@@ -29,10 +29,6 @@ export class StudySessionResponseDto {
   @Transform(({ value }) => value?.toISOString?.() ?? value)
   @ApiProperty({ type: String, format: 'date-time' })
   endedAt!: Date;
-
-  @Expose()
-  @ApiPropertyOptional({ enum: Mood, nullable: true })
-  mood?: Mood | null;
 
   @Expose()
   @ApiPropertyOptional({ nullable: true })

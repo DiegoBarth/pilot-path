@@ -11,7 +11,6 @@ import { useCreateStudySessionBySubject } from "@/features/study/hooks/useCreate
 import { buildSessionStats } from "../lib/session-stats";
 import type { FlashcardReviewCard } from "../types";
 import type { FlashcardSessionContext } from "../lib/session-context";
-import type { Mood } from "@/domain/mood";
 
 interface ReviewContainerProps {
   cards: FlashcardReviewCard[];
@@ -86,7 +85,7 @@ export function ReviewContainer({
     }
   };
 
-  const handleSaveSession = async (mood: Mood) => {
+  const handleSaveSession = async () => {
     if (!sessionContext) {
       throw new Error("Contexto da sessão indisponível.");
     }
@@ -107,7 +106,6 @@ export function ReviewContainer({
         startedAt: startedAt.toISOString(),
         endedAt: endedAt.toISOString(),
         studyType: "FLASHCARDS",
-        mood,
         notes: `${sessionStats.total} flashcards revisados, ${sessionStats.correct} acertos e ${sessionStats.wrong} erros.`,
       });
 

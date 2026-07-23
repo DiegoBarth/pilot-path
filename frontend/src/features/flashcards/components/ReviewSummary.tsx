@@ -3,17 +3,15 @@
 import { useState } from "react";
 import { ArrowLeft, CheckCircle2, RotateCcw, Trophy, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn, formatAccuracy, formatCountLabel } from "@/lib/utils";
-import { MOOD_OPTIONS } from "@/domain/mood";
+import { formatAccuracy, formatCountLabel } from "@/lib/utils";
 import type { ReviewSessionStats } from "../types";
-import type { Mood } from "@/domain/mood";
 
 interface ReviewSummaryProps {
   stats: ReviewSessionStats;
   canSaveSession: boolean;
   isSaving?: boolean;
   saveError?: string | null;
-  onSaveSession: (mood: Mood) => Promise<void>;
+  onSaveSession: () => Promise<void>;
   onRestart: () => void;
   onExit: () => void;
 }
@@ -27,7 +25,6 @@ export function ReviewSummary({
   onRestart,
   onExit,
 }: ReviewSummaryProps) {
-  const [selectedMood, setSelectedMood] = useState<Mood>(MOOD_OPTIONS[1]!.value);
   const [isSaved, setIsSaved] = useState(false);
 
   const accuracy = stats.total > 0
@@ -35,7 +32,7 @@ export function ReviewSummary({
     : 0;
 
   const handleSave = async () => {
-    await onSaveSession(selectedMood);
+    await onSaveSession();
     setIsSaved(true);
   };
 
@@ -80,36 +77,8 @@ export function ReviewSummary({
         </div>
       </div>
 
-      {canSaveSession && !isSaved && (
-        <div className="mb-6 text-left">
-          <p className="mb-3 text-sm font-medium text-slate-300">
-            Como você se sentiu nesta sessão?
-          </p>
-
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {MOOD_OPTIONS.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                disabled={isSaving}
-                onClick={() => setSelectedMood(option.value)}
-                className={cn(
-                  "cursor-pointer rounded-xl border px-3 py-2.5 text-sm transition",
-                  selectedMood === option.value
-                    ? "border-amber-500/50 bg-amber-500/10 text-amber-300"
-                    : "border-white/5 bg-surface-input text-slate-400 hover:border-white/10 hover:text-slate-200",
-                )}
-              >
-                <span className="mr-1.5">{option.emoji}</span>
-                {option.label}
-              </button>
-            ))}
-          </div>
-
-          {saveError && (
-            <p className="mt-3 text-sm text-rose-400">{saveError}</p>
-          )}
-        </div>
+      {canSaveSession && !isSaved && saveError && (
+        <p className="mb-6 text-sm text-rose-400">{saveError}</p>
       )}
 
       {isSaved && (

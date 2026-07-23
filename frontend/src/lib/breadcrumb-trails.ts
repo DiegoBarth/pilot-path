@@ -72,3 +72,35 @@ export function buildFlashcardsReviewTrail(
   // Visão geral de Flashcards
   return [flashcardsRoot];
 }
+
+const mockExamsRoot: BreadcrumbItem = {
+  label: "Simulados",
+  href: routes.mockExams,
+};
+
+export function buildMockExamTrail(
+  subject?: { id: string; name: string } | null,
+  certification?: { id: string; name: string } | null,
+  examLabel = "Simulado",
+): BreadcrumbItem[] {
+  if (certification && subject) {
+    return [
+      certificationsRoot,
+      {
+        label: certification.name,
+        href: routes.certification(certification.id),
+      },
+      {
+        label: subject.name,
+        href: routes.studySubject(subject.id, certification.id),
+      },
+      { label: examLabel },
+    ];
+  }
+
+  if (subject) {
+    return [mockExamsRoot, { label: subject.name }, { label: examLabel }];
+  }
+
+  return [mockExamsRoot, { label: examLabel }];
+}

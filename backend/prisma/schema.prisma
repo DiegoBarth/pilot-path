@@ -25,15 +25,8 @@ enum StudyType {
   FLASHCARDS
   VIDEO
   SIMULATOR
+  MOCK_EXAM
   OTHER
-}
-
-enum Mood {
-  EXCELLENT
-  GOOD
-  NEUTRAL
-  TIRED
-  FRUSTRATED
 }
 
 enum QuestionDifficulty {
@@ -155,7 +148,6 @@ model StudySession {
   endedAt   DateTime @map("ended_at")
 
   studyType StudyType @map("study_type")
-  mood      Mood?
   notes     String?
 
   createdAt DateTime  @default(now()) @map("created_at")

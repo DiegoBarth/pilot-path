@@ -23,6 +23,9 @@ export const queryKeys = {
   recentStudyHistory: (limit = 5) => ["recent-study-history", limit] as const,
   certificationStudySessions: (certificationId: string) =>
     ["certification-study-sessions", certificationId] as const,
+  mockExams: () => ["mock-exams"] as const,
+  mockExamSubjectsAvailability: () => ["mock-exam-subjects-availability"] as const,
+  mockExam: (id: string) => ["mock-exam", id] as const,
 } as const;
 
 export function invalidateEnrollments(queryClient: QueryClientLike) {
@@ -101,4 +104,17 @@ export function invalidateStudySessionMutations(
   );
   queryClient.invalidateQueries({ queryKey: queryKeys.learningStatistics() });
   queryClient.invalidateQueries({ queryKey: queryKeys.subjectAnalytics() });
+}
+
+export function invalidateMockExamQueries(
+  queryClient: QueryClientLike,
+  examId?: string,
+) {
+  queryClient.invalidateQueries({ queryKey: queryKeys.mockExams() });
+
+  if (examId) {
+    queryClient.invalidateQueries({ queryKey: queryKeys.mockExam(examId) });
+  }
+
+  queryClient.invalidateQueries({ queryKey: queryKeys.learningStatistics() });
 }

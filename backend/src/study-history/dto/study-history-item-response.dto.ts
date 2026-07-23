@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Mood, StudyType } from '@prisma/client';
+import { StudyType } from '@prisma/client';
 
 class StudyHistoryCertificationDto {
   @ApiProperty({ format: 'uuid' })
@@ -29,9 +29,6 @@ export class StudyHistoryItemResponseDto {
 
   @ApiProperty({ enum: StudyType })
   studyType!: StudyType;
-
-  @ApiPropertyOptional({ enum: Mood, nullable: true })
-  mood?: Mood | null;
 
   @ApiPropertyOptional({ nullable: true })
   notes?: string | null;

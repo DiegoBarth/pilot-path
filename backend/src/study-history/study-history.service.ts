@@ -92,7 +92,6 @@ export class StudyHistoryService {
         startedAt: session.startedAt,
         endedAt: session.endedAt,
         studyType: session.studyType,
-        mood: session.mood,
         notes: session.notes,
         createdAt: session.createdAt,
         certification: {

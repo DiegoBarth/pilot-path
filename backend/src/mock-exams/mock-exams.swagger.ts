@@ -4,6 +4,7 @@ import { CreateMockExamDto } from './dto/create-mock-exam.dto';
 import { FinishMockExamDto } from './dto/finish-mock-exam.dto';
 import { MockExamResponseDto } from './dto/mock-exam-response.dto';
 import { MockExamSummaryResponseDto } from './dto/mock-exam-summary-response.dto';
+import { SubjectQuestionAvailabilityDto } from './dto/subject-question-availability.dto';
 
 export const MockExamsSwagger = {
 
@@ -41,6 +42,25 @@ export const MockExamsSwagger = {
       type: MockExamSummaryResponseDto,
       isArray: true,
       description: 'Mock exams retrieved successfully.'
+    }),
+
+    ApiUnauthorizedResponse({
+      description: 'Unauthorized.'
+    })
+  ),
+
+  getSubjectsAvailability: applyDecorators(
+    ApiTags('Mock Exams'),
+
+    ApiOperation({
+      summary: 'Get question availability by subject',
+      description: 'Returns how many active questions are available per subject for mock exams.'
+    }),
+
+    ApiOkResponse({
+      type: SubjectQuestionAvailabilityDto,
+      isArray: true,
+      description: 'Subject question availability retrieved successfully.'
     }),
 
     ApiUnauthorizedResponse({

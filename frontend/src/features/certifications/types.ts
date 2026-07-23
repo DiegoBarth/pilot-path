@@ -36,7 +36,6 @@ export interface StudySession {
   startedAt: string;
   endedAt?: string;
   studyType: string;
-  mood?: string;
   notes?: string;
   createdAt: string;
   certification: Certification;

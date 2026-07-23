@@ -7,6 +7,7 @@ import {
   buildCertificationTrail,
   buildSubjectStudyTrail,
   buildFlashcardsReviewTrail,
+  buildMockExamTrail,
 } from "@/lib/breadcrumb-trails";
 
 function useCertificationBreadcrumbContext(certificationId?: string) {
@@ -75,6 +76,29 @@ export function useFlashcardReviewBreadcrumbs({
 
     return buildFlashcardsReviewTrail(subject ?? null, certification);
   }, [subject, certificationId, certification, isPending]);
+
+  useBreadcrumbs(items);
+}
+
+export function useMockExamBreadcrumbs({
+  subject,
+  certificationId,
+  examLabel = "Simulado",
+}: {
+  subject?: { id: string; name: string } | null;
+  certificationId?: string;
+  examLabel?: string;
+}) {
+  const { certification, isPending } =
+    useCertificationBreadcrumbContext(certificationId);
+
+  const items = useMemo(() => {
+    if (certificationId && (isPending || !certification)) {
+      return null;
+    }
+
+    return buildMockExamTrail(subject ?? null, certification, examLabel);
+  }, [subject, certificationId, certification, isPending, examLabel]);
 
   useBreadcrumbs(items);
 }

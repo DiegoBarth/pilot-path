@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Mood, StudyType } from '@prisma/client';
+import { StudyType } from '@prisma/client';
 import { IsDateString, IsEnum, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
 
 export class CreateStudySessionBySubjectDto {
@@ -23,11 +23,6 @@ export class CreateStudySessionBySubjectDto {
   @ApiProperty({ enum: StudyType, example: StudyType.FLASHCARDS })
   @IsEnum(StudyType)
   studyType!: StudyType;
-
-  @ApiPropertyOptional({ enum: Mood, example: Mood.GOOD })
-  @IsOptional()
-  @IsEnum(Mood)
-  mood?: Mood;
 
   @ApiPropertyOptional({ example: '3 flashcards revisados, 2 acertos.', maxLength: 1000 })
   @IsOptional()

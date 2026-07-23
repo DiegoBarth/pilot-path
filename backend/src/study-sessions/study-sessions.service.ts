@@ -23,7 +23,6 @@ export class StudySessionsService {
       startedAt: dto.startedAt,
       endedAt: dto.endedAt,
       studyType: dto.studyType,
-      ...(dto.mood !== undefined && { mood: dto.mood }),
       ...(dto.notes !== undefined && { notes: dto.notes }),
     });
   }
@@ -120,7 +119,6 @@ export class StudySessionsService {
         startedAt,
         endedAt,
         studyType: dto.studyType,
-        mood: dto.mood ?? null,
         notes: dto.notes ?? null
       },
       include: {

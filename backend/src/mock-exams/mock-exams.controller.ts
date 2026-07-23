@@ -24,6 +24,12 @@ export class MockExamsController {
     return this.service.findAll(user.id);
   }
 
+  @Get('subjects-availability')
+  @MockExamsSwagger.getSubjectsAvailability
+  getSubjectsAvailability() {
+    return this.service.getSubjectsAvailability();
+  }
+
   @Get(':id')
   @MockExamsSwagger.findOne
   findOne(

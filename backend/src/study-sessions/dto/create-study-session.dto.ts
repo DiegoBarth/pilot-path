@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Mood, StudyType } from '@prisma/client';
+import { StudyType } from '@prisma/client';
 import { IsDateString, IsEnum, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
 
 export class CreateStudySessionDto {
@@ -27,14 +27,6 @@ export class CreateStudySessionDto {
   })
   @IsEnum(StudyType)
   studyType!: StudyType;
-
-  @ApiPropertyOptional({
-    enum: Mood,
-    example: Mood.GOOD
-  })
-  @IsOptional()
-  @IsEnum(Mood)
-  mood?: Mood;
 
   @ApiPropertyOptional({
     example: 'Reviewed METAR decoding and cold fronts.',

@@ -5,6 +5,7 @@ export type StudyType =
   | "FLASHCARDS"
   | "VIDEO"
   | "SIMULATOR"
+  | "MOCK_EXAM"
   | "OTHER";
 
 export const STUDY_TYPES = [
@@ -13,5 +14,6 @@ export const STUDY_TYPES = [
   "FLASHCARDS",
   "VIDEO",
   "SIMULATOR",
+  "MOCK_EXAM",
   "OTHER",
 ] as const satisfies readonly StudyType[];
