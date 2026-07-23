@@ -69,8 +69,10 @@
 - [x] Protected Routes
 - [x] Dashboard Interface
 - [x] Certification Interface
-- [ ] Flashcard Interface
-- [ ] Mock Exam Interface
+- [x] Subject Study Interface
+- [x] Flashcard Interface
+- [x] Mock Exam Interface
+- [ ] Question Practice Interface
 - [ ] Learning Statistics Interface
 
 ---

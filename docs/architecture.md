@@ -45,15 +45,7 @@ The application follows a modern full-stack architecture with a clear separation
 - Passport
 - JWT
 - REST API
-- Next.js (App Router)
-- React
-- Tailwind CSS
-- shadcn/ui
-- Base UI
-- Lucide Icons
-- TanStack Query
-  
-### Responsibilities
+- Swagger/OpenAPI
 
 - Business logic
 - Authentication & Authorization
@@ -69,12 +61,16 @@ The application follows a modern full-stack architecture with a clear separation
 
 ### Technologies
 
-- Next.js
+- Next.js (App Router)
 - React
 - TypeScript
 - Tailwind CSS
 - shadcn/ui
+- Base UI
+- Lucide Icons
 - TanStack Query
+- React Hook Form
+- Zod
 
 ### Responsibilities
 
@@ -89,13 +85,14 @@ The application follows a modern full-stack architecture with a clear separation
 
 ## Authentication
 
-Authentication is implemented using JWT-based authentication.
+Authentication is implemented using JWT-based authentication with access and refresh tokens.
 
 The authentication flow includes:
 
 - User registration
 - Password hashing
-- JWT token generation
+- JWT access token generation
+- JWT refresh token generation and rotation
 - JWT token validation
 - Protected routes using guards
 
@@ -269,6 +266,7 @@ GET    /api/v1/health
 
 POST   /api/v1/auth/register
 POST   /api/v1/auth/login
+POST   /api/v1/auth/refresh
 GET    /api/v1/auth/me
 
 GET    /api/v1/certifications
@@ -287,11 +285,14 @@ POST   /api/v1/subjects
 GET    /api/v1/study-history
 
 POST   /api/v1/study-sessions
+POST   /api/v1/study-sessions/by-subject
 GET    /api/v1/study-sessions
 GET    /api/v1/study-sessions/:id
 
 POST   /api/v1/flashcards
 GET    /api/v1/flashcards
+GET    /api/v1/flashcards/overview
+GET    /api/v1/flashcards/review-queue
 GET    /api/v1/flashcards/:id
 
 GET    /api/v1/flashcards/reviews
@@ -300,12 +301,12 @@ POST   /api/v1/flashcards/:id/review
 POST   /api/v1/questions
 GET    /api/v1/questions
 GET    /api/v1/questions/:id
-
-POST   /api/v1/question-practice/:id/answer
-GET    /api/v1/question-practice/history
+POST   /api/v1/questions/:id/answer
+GET    /api/v1/questions/history
 
 POST   /api/v1/mock-exams
 GET    /api/v1/mock-exams
+GET    /api/v1/mock-exams/subjects-availability
 GET    /api/v1/mock-exams/:id
 POST   /api/v1/mock-exams/:id/finish
 

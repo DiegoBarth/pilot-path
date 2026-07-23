@@ -142,13 +142,12 @@ Current implementation includes:
 
 - Login
 - Registration
-- JWT storage
+- JWT access and refresh tokens
 - Authentication Context
 - Protected route guard
 - Session persistence through localStorage
 - Automatic session restoration after page reload
-
-Future iterations will introduce refresh tokens and backend session validation.
+- Silent access token refresh through `POST /auth/refresh`
 
 **Protected areas:**
 
@@ -249,14 +248,8 @@ Responsible for the active recall and spaced repetition learning system.
 
 Responsible for simulated exams.
 
-* **Includes:** Exam creation, Question navigation, Timer management, Answer submission, Result visualization.
-* **Timer Logic:**
-Timer is calculated from:
-* `startedAt`
-* configured `duration`
-* current time
-
-The frontend must persist unfinished exams and restore the session when reopened. This behavior depends on backend persistence through `MockExam` status fields and frontend session recovery logic.
+* **Includes:** Exam creation, subject availability checks, question navigation, timer, answer submission, result visualization, exam history.
+* **Timer Logic:** Count-up timer from exam `startedAt` during the session.
 * *On-screen messages:* "Tempo Restante: [MM:SS]", "Anterior", "Próxima", "Finalizar Simulado", "Pontuação Final", "Aprovado / Reprovado".
 
 ### Questions Feature
@@ -417,19 +410,20 @@ The frontend follows:
 
 ### Completed
 
-* Next.js project setup
-* TypeScript configuration
-* Tailwind CSS configuration
-* shadcn/ui setup
-* Base project structure
-* ESLint configuration
-* Prettier configuration
-* Provider structure
+* Next.js project setup and App Router structure
+* TypeScript, Tailwind CSS, shadcn/ui, ESLint and Prettier
+* Provider architecture (auth, React Query)
+* Centralized API client with refresh token handling
+* Authentication pages and protected app shell
+* Dashboard with learning statistics widgets
+* Certifications list and detail pages
+* Subject study page with history
+* Flashcard review interface
+* Mock exam interface (landing, session, results, history)
+* Analytics route placeholder
 
 ### Planned
 
-* Dashboard implementation
-* Certification progress UI
-* Flashcard review interface
-* Mock exam interface
-* Analytics dashboard visualization
+* Full analytics dashboard visualization
+* Question practice interface
+* Responsive design refinements

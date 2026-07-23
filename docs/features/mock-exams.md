@@ -12,6 +12,7 @@ The feature provides:
 - Score calculation
 - Pass/fail evaluation
 - Exam history
+- Study session registration on completion (`MOCK_EXAM`)
 
 ---
 
@@ -56,7 +57,7 @@ Stores:
 POST /api/v1/mock-exams
 ```
 
-Generates a new exam with randomized questions.
+Generates a new exam with randomized questions from an active subject.
 
 ---
 
@@ -67,6 +68,16 @@ GET /api/v1/mock-exams
 ```
 
 Returns user exam history.
+
+---
+
+### Subject Question Availability
+
+```http
+GET /api/v1/mock-exams/subjects-availability
+```
+
+Returns how many active questions are available per subject. Used by the frontend to disable subjects without enough questions for exam generation.
 
 ---
 
@@ -92,12 +103,27 @@ Calculates:
 - Score percentage
 - Pass/fail result
 
+Also registers a `StudySession` with `studyType: MOCK_EXAM` for the subject.
+
 ---
 
 ## Business Rules
 
-- Questions are randomly selected.
+- Questions are randomly selected from active questions in the chosen subject.
 - Only active questions can be used.
+- Minimum exam size is 5 questions.
 - Answers must belong to the exam questions.
 - Score is calculated based on correct answers.
-- Passing depends on passingScore.
+- Passing depends on `passingScore`.
+- Subjects without enough questions must not allow exam creation.
+
+---
+
+## Frontend
+
+Routes:
+
+- `/mock-exams` — landing (create panel + history)
+- `/mock-exams/[id]` — exam session and results
+
+Feature module: `frontend/src/features/mock-exams/`

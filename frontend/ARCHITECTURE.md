@@ -35,10 +35,9 @@ features/<name>/
 
 ## Auth
 
-- Session: `localStorage` + `access_token` cookie (for middleware).
-- `middleware.ts` protects `(app)` routes at the edge.
-- `AuthGuard` handles client-side loading/redirect with `PageLoading`.
-- API 401: `ApiAuthHandler` clears session and redirects to login.
+- Session: `localStorage` + `access_token` cookie (for edge redirects).
+- `(app)/layout.tsx` wraps routes with `AuthGuard` (client-side protection + loading).
+- API 401: client clears session and redirects to login; refresh token flow in `lib/api/client.ts`.
 
 ## Data fetching
 

@@ -91,7 +91,5 @@ Authentication:
 ### Future Improvements
 
 - Question categories
-- Exam simulation
-- Question randomization
-- Difficulty balancing
-- User performance analytics
+- Difficulty balancing for large banks
+- Admin question management UI

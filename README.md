@@ -55,7 +55,7 @@ The platform combines study management, aviation knowledge, performance tracking
 
 - User registration
 - User login
-- JWT authentication
+- JWT authentication (access + refresh tokens)
 - Protected API routes
 
 ---
@@ -113,7 +113,7 @@ The platform combines study management, aviation knowledge, performance tracking
                   │
                   ▼
             PostgreSQL
-````
+```
 
 The frontend follows a feature-based architecture using Next.js App Router.
 
@@ -140,6 +140,10 @@ pilot-path/
 │   ├── roadmap.md
 │   ├── decisions.md
 │   └── features/
+│       ├── flashcards.md
+│       ├── mock-exams.md
+│       ├── question-bank.md
+│       └── question-practice.md
 │
 ├── docker-compose.yml
 ├── README.md
@@ -161,6 +165,7 @@ Includes:
 * Architecture Decision Records (ADR)
 * Database Migrations
 * Database Seeding
+* Feature Documentation (`docs/features/`)
 
 ---
 
@@ -198,9 +203,9 @@ npm run build
 
 # 🚧 Project Status
 
-**Roadmap Milestone:** `v0.6 - Frontend Application` (see [docs/roadmap.md](docs/roadmap.md))
+**Current version:** `v0.6.0` (backend and frontend)
 
-**Package Versions:** backend `v0.5.5` · frontend `v0.1.0`
+**Roadmap milestone:** `v0.6 - Frontend Application` (see [docs/roadmap.md](docs/roadmap.md))
 
 ## Completed
 
@@ -209,70 +214,50 @@ npm run build
 * NestJS backend setup
 * PostgreSQL connectivity
 * Prisma ORM integration
-* Database schema
-* Database migrations
+* Database schema and migrations
 * Core domain modeling
 
 ### Authentication
 
-* User registration
-* Login
-* JWT authentication
+* User registration and login
+* JWT access and refresh tokens
 * Password hashing
 * Protected API routes
 * Swagger authentication
 
 ### Learning Platform
 
-* Certifications
-* Subjects
-* Enrollments
-* Study sessions
-* Study history
-* Flashcards
-* Flashcard reviews
-* Question bank
-* Question practice
+* Certifications, subjects and enrollments
+* Study sessions and study history
+* Flashcards and flashcard reviews
+* Question bank and question practice
 * Mock exams
 
-### Learning Analytics
+### Learning Analytics (API)
 
-* Learning statistics API
-* Flashcard performance statistics
-* Question performance statistics
-* Mock exam statistics
-* Subject performance analytics
+* Learning statistics aggregation
+* Flashcard, question and mock exam performance
+* Subject performance analytics and weak subject detection
 
-### Frontend Foundation
+### Frontend Application
 
-* Next.js App Router setup
-* TypeScript configuration
-* Tailwind CSS setup
-* shadcn/ui integration
-* Base UI configuration
-* Lucide Icons integration
-* Feature-based folder structure
-* ESLint configuration
-* Prettier configuration
-* Provider architecture
-* Frontend authentication flow
-* Login page
-* Registration page
-* Protected routes
-* Authentication persistence
-* Authentication context
-* Session restoration
-* Application layout (sidebar + protected shell)
-* Dashboard interface (learning statistics, certifications overview, recent activity)
-* Certification list and detail interface
+* Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui
+* Feature-based architecture, API client, TanStack Query
+* Authentication flow with protected routes and session persistence
+* Application shell (sidebar + layout)
+* Dashboard with learning statistics and recent activity
+* Certification list and detail pages
+* Subject study page with practice history
+* Flashcard review interface
+* Mock exam flow (create, session, results, history)
 
 ---
 
 ## In Progress
 
-* Flashcard review interface
-* Mock exam interface
-* Learning analytics dashboard visualization
+* Dedicated analytics page (full learning statistics UI)
+* Question practice interface
+* Responsive design and UX refinements
 
 ---
 

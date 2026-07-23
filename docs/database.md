@@ -38,8 +38,6 @@ DATABASE_URL=postgresql://user:password@localhost:5432/pilotpath
 
 ## Current Schema
 
-The initial database schema has been created.
-
 Current entities:
 
 - User
@@ -57,8 +55,20 @@ Current entities:
 - MockExam
 - MockExamQuestion
 
+### Enums
+
+`StudyType` values:
+
+- `READING`
+- `EXERCISES`
+- `FLASHCARDS`
+- `VIDEO`
+- `SIMULATOR` (flight simulator sessions)
+- `MOCK_EXAM` (mock certification exams)
+- `OTHER`
+
 Analytics features are generated dynamically from existing learning activity data, including flashcards, questions and mock exams. No dedicated analytics tables are currently required.
-  
+
 ## Development Workflow
 
 Whenever the database schema changes:
@@ -72,6 +82,8 @@ Whenever the database schema changes:
 
 ## Common Commands
 
+Run from the `backend` directory:
+
 ```bash
 npx prisma validate
 npx prisma format
@@ -79,6 +91,8 @@ npx prisma migrate dev --name <migration-name>
 npx prisma generate
 npx prisma db seed
 ```
+
+> Stop the backend before `npx prisma generate` on Windows to avoid file lock errors (`EPERM`).
 
 ## Reset Development Database (Only if Necessary)
 
@@ -89,3 +103,5 @@ Use the following command **only when you need to completely recreate the local 
 ```bash
 npx prisma migrate reset
 ```
+
+If reset fails with `P3015` (missing `migration.sql`), remove any empty migration folder under `prisma/migrations/` and run the command again.

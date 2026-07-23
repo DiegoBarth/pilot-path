@@ -5,7 +5,7 @@
 
 Question Practice allows users to answer aviation questions and track their learning performance.
 
-Each answer attempt is stored, enabling future statistics and adaptive learning features.
+Each answer attempt is stored, enabling statistics and adaptive learning features through the Learning Analytics API.
 
 ---
 
@@ -45,7 +45,7 @@ erDiagram
 ### Submit Answer
 
 ```http
-POST /api/v1/question-practice/:id/answer
+POST /api/v1/questions/:id/answer
 ```
 
 Features:
@@ -62,15 +62,21 @@ Authentication:
 ### Answer History
 
 ```http
-GET /api/v1/question-practice/history
+GET /api/v1/questions/history
 ```
 
 Returns previous answers from the authenticated user.
 
+### Analytics
+
+Question performance is available through:
+
+```http
+GET /api/v1/learning/statistics/questions
+```
+
 ### Future Improvements
 
-- Accuracy statistics
-- Subject performance
-- Weak area detection
-- Study recommendations
+- Dedicated question practice UI
 - Adaptive difficulty
+- Study recommendations

@@ -84,7 +84,7 @@ JWT provides a stateless authentication mechanism suitable for REST APIs.
 
 Passwords are never stored in plain text and are hashed using bcrypt before persistence.
 
-The initial implementation uses access tokens only, keeping the authentication layer simple while allowing refresh tokens and session management to be introduced in future iterations.
+The implementation uses access tokens together with refresh tokens. Login and registration return both tokens; the frontend renews the access token through `POST /auth/refresh`.
 
 ---
 

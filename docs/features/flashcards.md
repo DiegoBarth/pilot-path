@@ -58,6 +58,28 @@ The review process follows this flow:
 4. The review is stored.
 5. User progress is updated.
 6. The next review date is calculated.
+7. A study session can be saved after the review queue.
+
+---
+
+## API
+
+### Flashcards
+
+```http
+GET    /api/v1/flashcards
+GET    /api/v1/flashcards/overview
+GET    /api/v1/flashcards/review-queue
+GET    /api/v1/flashcards/:id
+POST   /api/v1/flashcards
+```
+
+### Reviews
+
+```http
+GET    /api/v1/flashcards/reviews
+POST   /api/v1/flashcards/:id/review
+```
 
 ---
 
@@ -76,4 +98,13 @@ Future improvements may include:
 - SM-2 algorithm
 - Difficulty scoring
 - Adaptive intervals
-- Learning statistics
+
+---
+
+## Frontend
+
+Route: `/flashcards`
+
+Feature module: `frontend/src/features/flashcards/`
+
+Includes certification/subject filters, review queue, flip cards, and session summary with study session persistence.
