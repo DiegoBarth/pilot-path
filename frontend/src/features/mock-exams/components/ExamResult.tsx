@@ -15,7 +15,6 @@ import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { formatElapsedTime } from "../lib/format-duration";
 import type { MockExam } from "../types";
-import { MockExamsBackLink } from "./MockExamsBackLink";
 
 interface ExamResultProps {
   exam: MockExam;
@@ -26,7 +25,6 @@ export function ExamResult({ exam }: ExamResultProps) {
 
   return (
     <div className="mx-auto max-w-4xl space-y-8">
-      <MockExamsBackLink />
 
       <div className="flex flex-col items-center gap-6 text-center">
         <ProgressRing

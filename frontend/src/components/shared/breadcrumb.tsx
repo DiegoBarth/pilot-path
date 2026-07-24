@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 export interface BreadcrumbItem {
   label: string;
@@ -26,7 +19,7 @@ export function BreadcrumbProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({ items, setItems }),
-    [items],
+    [items]
   );
 
   return (
@@ -46,7 +39,6 @@ function useBreadcrumbContext() {
   return context;
 }
 
-/** Define os itens do breadcrumb da página atual (substitui o padrão da rota). */
 export function useBreadcrumbs(items: BreadcrumbItem[] | null) {
   const { setItems } = useBreadcrumbContext();
 

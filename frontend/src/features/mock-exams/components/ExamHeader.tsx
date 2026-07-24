@@ -3,7 +3,6 @@
 import { FileText, ListChecks } from "lucide-react";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { ExamTimer } from "./ExamTimer";
-import { MockExamsBackLink } from "./MockExamsBackLink";
 
 interface ExamHeaderProps {
   subjectName: string;
@@ -12,7 +11,6 @@ interface ExamHeaderProps {
   answeredCount: number;
   elapsedSeconds: number;
   isTimerActive: boolean;
-  onExit?: () => void;
 }
 
 export function ExamHeader({
@@ -21,15 +19,13 @@ export function ExamHeader({
   totalQuestions,
   answeredCount,
   elapsedSeconds,
-  isTimerActive,
-  onExit,
+  isTimerActive
 }: ExamHeaderProps) {
   const progress =
     totalQuestions > 0 ? (currentQuestion / totalQuestions) * 100 : 0;
 
   return (
     <div className="space-y-5 border-b border-white/5 pb-6">
-      {onExit && <MockExamsBackLink onClick={onExit} />}
 
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div>

@@ -36,7 +36,6 @@ export function MockExamSessionPage({ examId }: MockExamSessionPageProps) {
     handleNext,
     handleGoToQuestion,
     handleFinish,
-    handleExit,
   } = useMockExamSessionPage(examId);
 
   if (examQuery.isLoading) {
@@ -75,7 +74,6 @@ export function MockExamSessionPage({ examId }: MockExamSessionPageProps) {
           answeredCount={answeredCount}
           elapsedSeconds={elapsedSeconds}
           isTimerActive
-          onExit={handleExit}
         />
 
         <Panel>

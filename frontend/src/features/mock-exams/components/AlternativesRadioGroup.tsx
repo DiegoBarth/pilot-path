@@ -27,7 +27,7 @@ export function AlternativesRadioGroup({
           <label
             key={alternative.id}
             className={cn(
-              "flex cursor-pointer items-start gap-4 rounded-2xl border px-4 py-4 transition",
+              "flex items-center cursor-pointer gap-4 rounded-2xl border px-4 py-4 transition",
               isSelected
                 ? "border-amber-500/40 bg-amber-500/10"
                 : "border-white/5 bg-surface-elevated hover:border-white/10",
@@ -44,10 +44,10 @@ export function AlternativesRadioGroup({
               className="mt-1 h-4 w-4 shrink-0 accent-amber-500"
             />
 
-            <div className="min-w-0">
-              <span className="text-xs font-semibold uppercase tracking-wider text-amber-500">
-                {alternative.letter}
-              </span>
+            <div className="min-w-0 flex items-center h-full gap-2">
+              <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-amber-500">
+                {alternative.letter}:
+              </p>
               <p className="mt-1 text-sm leading-relaxed text-slate-200 md:text-base">
                 {alternative.content}
               </p>

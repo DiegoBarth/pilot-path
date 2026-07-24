@@ -83,7 +83,6 @@ export function useFlashcardReviewBreadcrumbs({
 export function useMockExamBreadcrumbs({
   subject,
   certificationId,
-  examLabel = "Simulado",
 }: {
   subject?: { id: string; name: string } | null;
   certificationId?: string;
@@ -97,8 +96,8 @@ export function useMockExamBreadcrumbs({
       return null;
     }
 
-    return buildMockExamTrail(subject ?? null, certification, examLabel);
-  }, [subject, certificationId, certification, isPending, examLabel]);
+    return buildMockExamTrail(subject ?? null, certification);
+  }, [subject, certificationId, certification, isPending]);
 
   useBreadcrumbs(items);
 }

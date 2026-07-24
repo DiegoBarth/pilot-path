@@ -11,22 +11,19 @@ export const STATIC_ROUTE_BREADCRUMBS: Record<string, BreadcrumbItem[]> = {
 
 const certificationsRoot: BreadcrumbItem = {
   label: "Certificações",
-  href: routes.certifications,
+  href: routes.certifications
 };
 
 const flashcardsRoot: BreadcrumbItem = {
   label: "Flashcards",
-  href: routes.flashcards,
+  href: routes.flashcards
 };
 
 export function buildCertificationTrail(name: string): BreadcrumbItem[] {
   return [certificationsRoot, { label: name }];
 }
 
-export function buildSubjectStudyTrail(
-  subjectName: string,
-  certification?: { id: string; name: string } | null,
-): BreadcrumbItem[] {
+export function buildSubjectStudyTrail(subjectName: string, certification?: { id: string; name: string } | null): BreadcrumbItem[] {
   if (!certification) {
     return [{ label: subjectName }];
   }
@@ -35,9 +32,9 @@ export function buildSubjectStudyTrail(
     certificationsRoot,
     {
       label: certification.name,
-      href: routes.certification(certification.id),
+      href: routes.certification(certification.id)
     },
-    { label: subjectName },
+    { label: subjectName }
   ];
 }
 
@@ -45,62 +42,57 @@ export function buildFlashcardsReviewTrail(
   subject?: { id: string; name: string } | null,
   certification?: { id: string; name: string } | null,
 ): BreadcrumbItem[] {
-  // Fluxo completo: Certificações > Piloto Privado > Teoria de Voo > Flashcards
   if (certification && subject) {
     return [
       certificationsRoot,
       {
         label: certification.name,
-        href: routes.certification(certification.id),
+        href: routes.certification(certification.id)
       },
       {
         label: subject.name,
-        href: routes.studySubject(subject.id, certification.id),
+        href: routes.studySubject(subject.id, certification.id)
       },
       { label: "Flashcards" },
     ];
   }
 
-  // Fluxo via Sidebar filtrado por matéria: Flashcards > Teoria de Voo
   if (subject) {
     return [
       flashcardsRoot,
-      { label: subject.name },
+      { label: subject.name }
     ];
   }
 
-  // Visão geral de Flashcards
   return [flashcardsRoot];
 }
 
 const mockExamsRoot: BreadcrumbItem = {
   label: "Simulados",
-  href: routes.mockExams,
+  href: routes.mockExams
 };
 
 export function buildMockExamTrail(
   subject?: { id: string; name: string } | null,
-  certification?: { id: string; name: string } | null,
-  examLabel = "Simulado",
+  certification?: { id: string; name: string } | null
 ): BreadcrumbItem[] {
   if (certification && subject) {
     return [
       certificationsRoot,
       {
         label: certification.name,
-        href: routes.certification(certification.id),
+        href: routes.certification(certification.id)
       },
       {
         label: subject.name,
-        href: routes.studySubject(subject.id, certification.id),
-      },
-      { label: examLabel },
+        href: routes.studySubject(subject.id, certification.id)
+      }
     ];
   }
 
   if (subject) {
-    return [mockExamsRoot, { label: subject.name }, { label: examLabel }];
+    return [mockExamsRoot, { label: subject.name }];
   }
 
-  return [mockExamsRoot, { label: examLabel }];
+  return [mockExamsRoot];
 }

@@ -72,10 +72,6 @@ export function useMockExamSessionPage(examId: string) {
     setCurrentIndex(index);
   }, []);
 
-  const handleExit = useCallback(() => {
-    router.push(routes.mockExams);
-  }, [router]);
-
   const handleFinish = useCallback(() => {
     if (!exam || !allAnswered || finishMockExam.isPending) {
       return;
@@ -112,7 +108,6 @@ export function useMockExamSessionPage(examId: string) {
     handlePrevious,
     handleNext,
     handleGoToQuestion,
-    handleFinish,
-    handleExit,
+    handleFinish
   };
 }
